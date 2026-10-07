@@ -46,9 +46,7 @@
             position: relative;
         }
 
-        /* ========================================================
-           MULTI-LAYER 3D PARALLAX & DEPTH STAGE
-        ======================================================== */
+        /* 3D Depth Canvas and Atmospheric Elements */
         .stage-container {
             position: fixed;
             inset: 0;
@@ -121,9 +119,7 @@
             z-index: 3;
         }
 
-        /* ========================================================
-           PORTFOLIO FOREGROUND
-        ======================================================== */
+        /* Viewport Layout */
         .sq-viewport {
             position: relative;
             z-index: 10;
@@ -155,12 +151,10 @@
         .sq-nav-items {
             display: flex;
             align-items: center;
-            gap: 28px;
+            gap: 20px;
         }
 
-        /* ========================================================
-           INDIVIDUAL SEPARATE DROPDOWN MENUS
-        ======================================================== */
+        /* Nav Dropdown Wrappers */
         .nav-item-dropdown {
             position: relative;
         }
@@ -197,7 +191,9 @@
             transform: rotate(180deg);
         }
 
+        /* Isolated Floating Dropdown Panels */
         .dropdown-panel {
+            display: none;
             position: absolute;
             top: calc(100% + 12px);
             right: 0;
@@ -205,22 +201,28 @@
             border: 1px solid var(--border-glass);
             border-radius: 16px;
             padding: 24px;
-            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.75), 0 0 1px rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(10px) scale(0.98);
-            transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
-            z-index: 100;
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.85), 0 0 1px rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(28px);
+            -webkit-backdrop-filter: blur(28px);
+            z-index: 1000;
             max-height: 80vh;
             overflow-y: auto;
         }
 
         .dropdown-panel.active {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0) scale(1);
+            display: block;
+            animation: panelFade 0.2s ease-out forwards;
+        }
+
+        @keyframes panelFade {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .dropdown-panel::-webkit-scrollbar {
@@ -231,17 +233,17 @@
             border-radius: 4px;
         }
 
-        /* Specific dropdown sizes */
+        /* Widths strictly tuned for each isolated component */
         .panel-objective {
-            width: 380px;
+            width: 400px;
         }
 
         .panel-capabilities {
-            width: 620px;
+            width: 640px;
         }
 
         .panel-education {
-            width: 420px;
+            width: 440px;
         }
 
         .panel-title {
@@ -259,13 +261,13 @@
         .panel-text {
             color: var(--text-mid);
             font-size: 0.9rem;
-            line-height: 1.7;
+            line-height: 1.75;
         }
 
         .skills-dropdown-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 20px;
+            gap: 22px;
         }
 
         .skills-group-block {
@@ -304,7 +306,7 @@
         }
 
         .edu-item {
-            padding: 12px 0;
+            padding: 14px 0;
             border-bottom: 1px solid var(--border-glass);
         }
 
@@ -339,7 +341,7 @@
             font-size: 0.78rem;
             color: var(--text-muted);
             margin-top: 4px;
-            line-height: 1.4;
+            line-height: 1.45;
         }
 
         .sq-btn-pill {
@@ -423,7 +425,7 @@
             border-color: rgba(255, 255, 255, 0.2);
         }
 
-        /* Bottom stats strip */
+        /* Footer specs row */
         .sq-bottom-strip {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -458,7 +460,7 @@
                 padding: 24px 20px;
             }
             .sq-nav-items {
-                gap: 12px;
+                gap: 8px;
             }
             .sq-nav-btn {
                 font-size: 0.78rem;
@@ -471,7 +473,7 @@
             .panel-objective,
             .panel-capabilities,
             .panel-education {
-                width: 90vw;
+                width: 88vw;
                 max-width: 360px;
                 right: -20px;
             }
@@ -508,7 +510,7 @@
             <a href="#" class="sq-brand">Majid Hussain Mir</a>
             <nav class="sq-nav-items">
                 
-                <!-- 1. OBJECTIVE SEPARATE DROPDOWN -->
+                <!-- 1. OBJECTIVE ISOLATED DROPDOWN (ONLY Objective details) -->
                 <div class="nav-item-dropdown">
                     <button class="sq-nav-btn" onclick="toggleDropdown('objective', event)">
                         Objective <span class="dropdown-chevron">▼</span>
@@ -521,7 +523,7 @@
                     </div>
                 </div>
 
-                <!-- 2. CAPABILITIES SEPARATE DROPDOWN -->
+                <!-- 2. CAPABILITIES ISOLATED DROPDOWN (ONLY Capabilities details) -->
                 <div class="nav-item-dropdown">
                     <button class="sq-nav-btn" onclick="toggleDropdown('capabilities', event)">
                         Capabilities <span class="dropdown-chevron">▼</span>
@@ -576,7 +578,7 @@
                     </div>
                 </div>
 
-                <!-- 3. EDUCATION SEPARATE DROPDOWN -->
+                <!-- 3. EDUCATION ISOLATED DROPDOWN (ONLY Education details) -->
                 <div class="nav-item-dropdown">
                     <button class="sq-nav-btn" onclick="toggleDropdown('education', event)">
                         Education <span class="dropdown-chevron">▼</span>
@@ -643,25 +645,25 @@
             </div>
             <div class="metric-block">
                 <span class="metric-num">Indian</span>
-                <span class="metric-desc">Nationality &bull; Male &bull; 02/09/2005</span>
+                <span class="metric-desc">Nationality &bull; Male &bull; 02/09/2005[cite: 1]</span>
             </div>
         </footer>
 
     </div>
 
-    <!-- Dropdown Control Script -->
+    <!-- Dropdown Control Script (Ensures complete isolation) -->
     <script>
         function toggleDropdown(name, event) {
             event.stopPropagation();
             const panel = document.getElementById('dropdown-' + name);
             const button = event.currentTarget;
-            const isOpen = panel.classList.contains('active');
+            const isAlreadyOpen = panel.classList.contains('active');
 
-            // Close all dropdowns first
+            // Close every open dropdown first
             closeAllDropdowns();
 
-            // If it wasn't open, open this specific one
-            if (!isOpen) {
+            // Toggle only the clicked panel
+            if (!isAlreadyOpen) {
                 panel.classList.add('active');
                 button.classList.add('active');
             }
@@ -672,7 +674,7 @@
             document.querySelectorAll('.sq-nav-btn').forEach(b => b.classList.remove('active'));
         }
 
-        // Close on outside click
+        // Close on clicking outside
         document.addEventListener('click', (e) => {
             if (!e.target.closest('.nav-item-dropdown')) {
                 closeAllDropdowns();
