@@ -3,46 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="google-site-verification" content="DIBvQEdvsBkoA6gqZytm-TDfqIuL2IAVZ3EL-eY25eU" />
+    <title>Majid Hussain Mir | Programmer &amp; Problem Solver</title>
+    <meta name="description" content="Official portfolio and resume of Majid Hussain Mir. Seeking opportunities in computer networking, infrastructure, and software development.">
 
-    <title>Majid Hussain Mir | Systems &amp; Network Engineer</title>
-    <meta name="description" content="Official technical portfolio and resume of Majid Hussain Mir. Seeking opportunities in computer networking, infrastructure, and programming.">
-    <meta name="author" content="Majid Hussain Mir">
-
-    <!-- Schema.org JSON-LD -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Person",
-      "name": "Majid Hussain Mir",
-      "jobTitle": "Programmer",
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Magam, Budgam",
-        "addressRegion": "Jammu & Kashmir",
-        "postalCode": "193401",
-        "addressCountry": "IN"
-      },
-      "email": "majidhussainmir239@gmail.com",
-      "telephone": "+916006495081"
-    }
-    </script>
-
-    <!-- Google Fonts: Inter -->
+    <!-- Google Fonts: Editorial Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --text-main: #090d16;
-            --text-secondary: #334155;
-            --text-muted: #64748b;
-            --line-subtle: rgba(15, 23, 42, 0.12);
-            --line-strong: rgba(15, 23, 42, 0.22);
-            --accent-blue: #0284c7;
-            --font-sans: 'Inter', -apple-system, sans-serif;
-            --font-mono: 'JetBrains Mono', monospace;
+            --bg-canvas: #0d0c0a;
+            --text-high: #ffffff;
+            --text-mid: #b8b3ab;
+            --text-muted: #75716b;
+            --accent-warm: #d97736;
+            --pill-white: #ffffff;
+            --pill-dark: #000000;
+            --border-glass: rgba(255, 255, 255, 0.08);
+            --font-main: 'Plus Jakarta Sans', -apple-system, sans-serif;
+            --font-code: 'JetBrains Mono', monospace;
         }
 
         * {
@@ -55,443 +35,631 @@
             height: 100vh;
             width: 100vw;
             overflow: hidden;
-            font-family: var(--font-sans);
-            color: var(--text-main);
-            background: #e2e8f0;
+            font-family: var(--font-main);
+            background-color: var(--bg-canvas);
+            color: var(--text-high);
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Ambient Multi-Color Mesh Backdrop */
-        .viewport-mesh {
+        /* ========================================================
+           SQUARESPACE-STYLE PICTORIAL FLOATING BACKGROUND
+        ======================================================== */
+        .ambient-stage {
             position: fixed;
             inset: 0;
             z-index: 0;
             overflow: hidden;
             pointer-events: none;
+            background: radial-gradient(circle at 50% 50%, #201a15 0%, #0d0c0a 100%);
         }
 
-        .mesh-orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(90px);
-            -webkit-filter: blur(90px);
-            opacity: 0.85;
-        }
-
-        .orb-peach   { width: 55vw; height: 50vh; background: radial-gradient(circle, #fca5a5 0%, #fb923c 65%, transparent 100%); top: -15%; right: -10%; }
-        .orb-cyan    { width: 65vw; height: 60vh; background: radial-gradient(circle, #38bdf8 0%, #06b6d4 65%, transparent 100%); bottom: -20%; left: -15%; }
-        .orb-blue    { width: 45vw; height: 45vh; background: radial-gradient(circle, #2563eb 0%, #1d4ed8 70%, transparent 100%); bottom: 0%; right: 0%; }
-        .orb-magenta { width: 50vw; height: 50vh; background: radial-gradient(circle, #db2777 0%, #9d174d 70%, transparent 100%); bottom: -15%; right: 20%; }
-        .orb-violet  { width: 55vw; height: 55vh; background: radial-gradient(circle, #a855f7 0%, #818cf8 60%, transparent 100%); top: 0%; left: 10%; opacity: 0.7; }
-
-        .mesh-diffusion {
+        /* Floating Pictorial Silhouette 1: Server Rack Array */
+        .pictorial-layer {
             position: absolute;
             inset: 0;
-            backdrop-filter: blur(50px);
-            -webkit-backdrop-filter: blur(50px);
-            background: rgba(255, 255, 255, 0.2);
+            opacity: 0.35;
+            mix-blend-mode: screen;
         }
 
-        /* Window Frame */
-        .window-frame {
+        .float-art {
+            position: absolute;
+            filter: blur(28px);
+            opacity: 0.7;
+            animation: slowFloat 18s ease-in-out infinite alternate;
+        }
+
+        /* Left warm server silhouette */
+        .art-left {
+            width: 500px;
+            height: 600px;
+            left: -80px;
+            top: 15%;
+            background: linear-gradient(135deg, rgba(217, 119, 54, 0.6) 0%, rgba(94, 43, 22, 0.2) 60%, transparent 100%);
+            border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+        }
+
+        /* Right dark architectural silhouette */
+        .art-right {
+            width: 550px;
+            height: 650px;
+            right: -100px;
+            top: 10%;
+            background: linear-gradient(225deg, rgba(168, 85, 34, 0.5) 0%, rgba(30, 20, 15, 0.4) 70%, transparent 100%);
+            border-radius: 60% 40% 30% 70% / 50% 40% 60% 50%;
+            animation-duration: 24s;
+            animation-direction: alternate-reverse;
+        }
+
+        /* Subtle network fiber beam in the center */
+        .art-center-glow {
+            width: 700px;
+            height: 350px;
+            left: calc(50% - 350px);
+            bottom: -50px;
+            background: radial-gradient(ellipse at center, rgba(235, 140, 75, 0.25) 0%, rgba(13, 12, 10, 0) 70%);
+            filter: blur(50px);
+        }
+
+        @keyframes slowFloat {
+            0% { transform: translate(0, 0) rotate(0deg) scale(1); }
+            50% { transform: translate(25px, -30px) rotate(3deg) scale(1.04); }
+            100% { transform: translate(-20px, 20px) rotate(-2deg) scale(0.98); }
+        }
+
+        /* Frosted Vignette matching reference photo */
+        .film-grain {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at center, transparent 40%, rgba(13, 12, 10, 0.75) 100%);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        /* ========================================================
+           SQUARESPACE TOP NAVIGATION
+        ======================================================== */
+        .sq-viewport {
             position: relative;
-            z-index: 1;
+            z-index: 10;
             height: 100vh;
             display: flex;
             flex-direction: column;
-            padding: 24px 36px 18px;
-            max-width: 1600px;
+            justify-content: space-between;
+            padding: 32px 56px 28px;
+            max-width: 1440px;
             margin: 0 auto;
         }
 
-        /* Top Bar */
-        .window-topbar {
+        .sq-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding-bottom: 14px;
-            border-bottom: 1px solid var(--line-subtle);
-            flex-shrink: 0;
         }
 
-        .nameplate h1 {
-            font-size: 1.6rem;
-            font-weight: 800;
-            letter-spacing: -0.03em;
-            line-height: 1.1;
+        .sq-brand {
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-high);
+            text-decoration: none;
         }
 
-        .nameplate p {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            font-weight: 500;
-            margin-top: 2px;
-        }
-
-        .contact-strip {
+        .sq-nav-items {
             display: flex;
-            gap: 16px;
             align-items: center;
+            gap: 36px;
         }
 
-        .contact-link {
+        .sq-nav-link {
+            color: var(--text-mid);
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            transition: color 0.2s;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+
+        .sq-nav-link:hover {
+            color: var(--text-high);
+        }
+
+        .sq-btn-pill {
+            padding: 10px 24px;
+            border-radius: 9999px;
+            background-color: var(--pill-white);
+            color: var(--pill-dark) !important;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: opacity 0.2s, transform 0.2s;
+        }
+
+        .sq-btn-pill:hover {
+            opacity: 0.92;
+            transform: scale(1.02);
+        }
+
+        /* ========================================================
+           SQUARESPACE CENTER HERO
+        ======================================================== */
+        .sq-center-hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px 0;
+        }
+
+        .sq-sub-kicker {
+            font-family: var(--font-code);
+            font-size: 0.8rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--accent-warm);
+            margin-bottom: 20px;
+        }
+
+        .sq-massive-headline {
+            font-size: clamp(2.6rem, 5.8vw, 4.8rem);
+            font-weight: 700;
+            letter-spacing: -0.04em;
+            line-height: 1.05;
+            color: var(--text-high);
+            margin-bottom: 24px;
+        }
+
+        .sq-cta-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+
+        /* White "GET STARTED" Style Button */
+        .btn-squarespace-action {
+            display: inline-block;
+            background: #ffffff;
+            color: #000000;
+            font-size: 0.9rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 18px 48px;
+            border-radius: 9999px;
+            text-decoration: none;
+            transition: transform 0.2s, background 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .btn-squarespace-action:hover {
+            transform: translateY(-2px);
+            background: #f0ede6;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+        }
+
+        .sq-tagline-sub {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            letter-spacing: 0.02em;
+        }
+
+        /* Contact Details Row */
+        .sq-hero-contact-row {
+            display: flex;
+            gap: 24px;
+            margin-top: 32px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .sq-contact-chip {
             font-size: 0.82rem;
-            color: var(--text-secondary);
+            color: var(--text-mid);
             text-decoration: none;
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            font-weight: 500;
-            padding: 5px 12px;
-            border-radius: 6px;
-            border: 1px solid var(--line-subtle);
-            background: rgba(255, 255, 255, 0.3);
+            padding: 6px 16px;
+            border-radius: 9999px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-glass);
             transition: all 0.2s ease;
         }
 
-        a.contact-link:hover {
-            color: var(--text-main);
-            border-color: var(--line-strong);
-            background: rgba(255, 255, 255, 0.6);
+        a.sq-contact-chip:hover {
+            color: var(--text-high);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
         }
 
-        /* 3-Column Fit Grid */
-        .window-grid {
-            flex: 1;
-            min-height: 0;
+        /* ========================================================
+           SQUARESPACE BOTTOM METRICS STRIP
+        ======================================================== */
+        .sq-bottom-strip {
             display: grid;
-            grid-template-columns: 1.15fr 1.35fr 1fr;
-            gap: 32px;
-            padding: 20px 0 12px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-glass);
         }
 
-        .grid-column {
+        .metric-block {
             display: flex;
             flex-direction: column;
-            gap: 18px;
-            min-height: 0;
-            height: 100%;
+            gap: 4px;
         }
 
-        .pane-section {
+        .metric-num {
+            font-size: 1.6rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: var(--text-high);
+        }
+
+        .metric-desc {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* ========================================================
+           INTERACTIVE DRAWER MODAL (Fits all resume data)
+        ======================================================== */
+        .modal-drawer {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            background: rgba(13, 12, 10, 0.85);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            padding: 24px;
+        }
+
+        .modal-drawer.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .drawer-box {
+            background: #161412;
+            border: 1px solid var(--border-glass);
+            border-radius: 20px;
+            width: 100%;
+            max-width: 900px;
+            max-height: 85vh;
             display: flex;
             flex-direction: column;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8);
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
         }
 
-        .pane-section.scrollable {
-            flex: 1;
-            min-height: 0;
+        .modal-drawer.active .drawer-box {
+            transform: translateY(0);
+        }
+
+        .drawer-header {
+            padding: 24px 32px;
+            border-bottom: 1px solid var(--border-glass);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .drawer-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .btn-close-drawer {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+            line-height: 1;
+            padding: 4px;
+            transition: color 0.2s;
+        }
+
+        .btn-close-drawer:hover {
+            color: var(--text-high);
+        }
+
+        .drawer-body {
+            padding: 32px;
             overflow-y: auto;
-            padding-right: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 36px;
         }
 
-        .pane-section.scrollable::-webkit-scrollbar {
+        .drawer-body::-webkit-scrollbar {
             width: 4px;
         }
-        .pane-section.scrollable::-webkit-scrollbar-thumb {
-            background: var(--line-strong);
+        .drawer-body::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.15);
             border-radius: 4px;
         }
 
-        .section-tag {
-            font-family: var(--font-mono);
-            font-size: 0.72rem;
-            font-weight: 700;
+        .drawer-section-title {
+            font-size: 0.85rem;
             text-transform: uppercase;
             letter-spacing: 0.1em;
-            color: var(--text-muted);
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            color: var(--accent-warm);
+            margin-bottom: 14px;
+            font-weight: 700;
         }
 
-        .section-tag::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: var(--line-subtle);
+        .drawer-text {
+            color: var(--text-mid);
+            font-size: 0.95rem;
+            line-height: 1.7;
         }
 
-        .objective-copy {
-            font-size: 0.88rem;
-            line-height: 1.65;
-            color: var(--text-secondary);
-        }
-
-        .profile-specs {
+        .skills-grid-inner {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px 16px;
-            margin-top: 4px;
+            gap: 24px;
         }
 
-        .spec-item dt {
-            font-family: var(--font-mono);
-            font-size: 0.68rem;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-            color: var(--text-muted);
-            margin-bottom: 2px;
-        }
-
-        .spec-item dd {
-            font-size: 0.86rem;
-            font-weight: 600;
-            color: var(--text-main);
-        }
-
-        .skill-group {
-            margin-bottom: 16px;
-        }
-
-        .group-header {
-            font-size: 0.82rem;
-            font-weight: 700;
-            color: var(--text-main);
-            margin-bottom: 6px;
-        }
-
-        .skill-items {
+        .skill-list-clean {
             list-style: none;
             display: flex;
             flex-direction: column;
-            gap: 5px;
+            gap: 8px;
         }
 
-        .skill-items li {
-            font-size: 0.82rem;
-            color: var(--text-secondary);
-            padding-left: 14px;
+        .skill-list-clean li {
+            font-size: 0.88rem;
+            color: var(--text-mid);
             position: relative;
-            line-height: 1.45;
+            padding-left: 14px;
         }
 
-        .skill-items li::before {
-            content: '•';
+        .skill-list-clean li::before {
+            content: '—';
             position: absolute;
             left: 0;
             color: var(--text-muted);
         }
 
-        .edu-entry {
-            margin-bottom: 16px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid var(--line-subtle);
+        .timeline-entry-box {
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border-glass);
         }
 
-        .edu-entry:last-child {
+        .timeline-entry-box:last-child {
             border-bottom: none;
-            margin-bottom: 0;
             padding-bottom: 0;
         }
 
-        .edu-date {
-            font-family: var(--font-mono);
-            font-size: 0.72rem;
-            color: var(--text-muted);
-            font-weight: 500;
+        .timeline-time-tag {
+            font-family: var(--font-code);
+            font-size: 0.75rem;
+            color: var(--accent-warm);
         }
 
-        .edu-title {
-            font-size: 0.92rem;
-            font-weight: 700;
-            color: var(--text-main);
-            margin: 2px 0;
+        .timeline-main-title {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--text-high);
+            margin: 4px 0 2px;
         }
 
-        .edu-school {
-            font-size: 0.82rem;
-            color: var(--text-secondary);
+        .timeline-school-name {
+            font-size: 0.9rem;
+            color: var(--text-mid);
         }
 
-        .edu-courses {
-            font-size: 0.78rem;
-            color: var(--text-muted);
-            margin-top: 4px;
-            line-height: 1.4;
-        }
-
-        /* Bottom Status Bar */
-        .window-bottombar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-top: 10px;
-            border-top: 1px solid var(--line-subtle);
-            font-size: 0.72rem;
-            color: var(--text-muted);
-            font-family: var(--font-mono);
-            flex-shrink: 0;
-        }
-
-        @media (max-width: 1024px), (max-height: 650px) {
-            html, body {
-                height: auto;
-                overflow: auto;
-            }
-            .window-frame {
-                height: auto;
+        /* Responsive */
+        @media (max-width: 900px) {
+            .sq-viewport {
                 padding: 24px 20px;
             }
-            .window-grid {
+            .sq-nav-items {
+                display: none;
+            }
+            .sq-bottom-strip {
+                grid-template-columns: 1fr 1fr;
+                gap: 16px;
+            }
+            .skills-grid-inner {
                 grid-template-columns: 1fr;
-                gap: 28px;
-            }
-            .contact-strip {
-                flex-wrap: wrap;
-            }
-            .pane-section.scrollable {
-                overflow: visible;
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- Ambient Mesh Layer -->
-    <div class="viewport-mesh" aria-hidden="true">
-        <div class="mesh-orb orb-peach"></div>
-        <div class="mesh-orb orb-cyan"></div>
-        <div class="mesh-orb orb-blue"></div>
-        <div class="mesh-orb orb-magenta"></div>
-        <div class="mesh-orb orb-violet"></div>
-        <div class="mesh-diffusion"></div>
+    <!-- Ambient Pictorial Silhouette Stage -->
+    <div class="ambient-stage" aria-hidden="true">
+        <div class="pictorial-layer">
+            <div class="float-art art-left"></div>
+            <div class="float-art art-right"></div>
+            <div class="float-art art-center-glow"></div>
+        </div>
+        <div class="film-grain"></div>
     </div>
 
-    <div class="window-frame">
+    <!-- Main Viewport Fit Experience -->
+    <div class="sq-viewport">
 
-        <!-- Header -->
-        <header class="window-topbar">
-            <div class="nameplate">
-                <h1>Majid Hussain Mir</h1>
-                <p>Computer Science &bull; Network &amp; Systems Infrastructure</p>
+        <!-- Squarespace Header -->
+        <header class="sq-header">
+            <a href="#" class="sq-brand">Majid Hussain Mir</a>
+            <nav class="sq-nav-items">
+                <button class="sq-nav-link" onclick="openDrawer('about')">Objective</button>
+                <button class="sq-nav-link" onclick="openDrawer('skills')">Capabilities</button>
+                <button class="sq-nav-link" onclick="openDrawer('education')">Education</button>
+                <a href="mailto:majidhussainmir239@gmail.com" class="sq-btn-pill">Contact</a>
+            </nav>
+        </header>
+
+        <!-- Center Hero matching "A website makes it real" -->
+        <main class="sq-center-hero">
+            <span class="sq-sub-kicker">Networking &bull; Systems Infrastructure &bull; Code</span>
+            <h1 class="sq-massive-headline">
+                Robust networks make it resilient.
+            </h1>
+            
+            <div class="sq-cta-group">
+                <button class="btn-squarespace-action" onclick="openDrawer('all')">
+                    EXPLORE RESUME
+                </button>
+                <span class="sq-tagline-sub">B.Tech Computer Science &bull; Available for 2026 Opportunities</span>
             </div>
-            <div class="contact-strip">
-                <a href="mailto:majidhussainmir239@gmail.com" class="contact-link">
+
+            <!-- Direct Contact Links -->
+            <div class="sq-hero-contact-row">
+                <a href="mailto:majidhussainmir239@gmail.com" class="sq-contact-chip">
                     &#9993; majidhussainmir239@gmail.com
                 </a>
-                <a href="tel:+916006495081" class="contact-link">
+                <a href="tel:+916006495081" class="sq-contact-chip">
                     &#9742; (+91) 6006495081
                 </a>
-                <span class="contact-link">
+                <span class="sq-contact-chip">
                     &#9906; Magam, Budgam, J&amp;K, 193401
                 </span>
             </div>
-        </header>
-
-        <!-- 3-Column Layout -->
-        <main class="window-grid">
-
-            <!-- Column 1: Objective & Personal Profile -->
-            <div class="grid-column">
-                <section class="pane-section">
-                    <span class="section-tag">01 // Profile Summary</span>
-                    <p class="objective-copy">
-                        Motivated B.Tech CSE student seeking an entry-level opportunity in Computer Networking and IT infrastructure[cite: 1]. Eager to apply my knowledge of networking, programming, troubleshooting, and problem-solving while gaining practical industry experience[cite: 1]. A quick learner with a strong work ethic, committed to continuously developing technical skills and contributing effectively to organizational goals[cite: 1].
-                    </p>
-                </section>
-
-                <section class="pane-section">
-                    <span class="section-tag">02 // Personal Profile</span>
-                    <dl class="profile-specs">
-                        <div class="spec-item">
-                            <dt>Nationality</dt>
-                            <dd>Indian</dd>
-                        </div>
-                        <div class="spec-item">
-                            <dt>Gender</dt>
-                            <dd>Male</dd>
-                        </div>
-                        <div class="spec-item">
-                            <dt>Date of Birth</dt>
-                            <dd>02/09/2005</dd>
-                        </div>
-                        <div class="spec-item">
-                            <dt>Region</dt>
-                            <dd>Jammu &amp; Kashmir</dd>
-                        </div>
-                    </dl>
-                </section>
-
-                <section class="pane-section">
-                    <span class="section-tag">03 // Core Strengths</span>
-                    <ul class="skill-items">
-                        <li>Analytical Thinking &amp; Technical Problem Solving[cite: 1]</li>
-                        <li>Technical Communication &amp; Team Collaboration[cite: 1]</li>
-                    </ul>
-                </section>
-            </div>
-
-            <!-- Column 2: Skills -->
-            <div class="grid-column">
-                <section class="pane-section scrollable">
-                    <span class="section-tag">04 // Technical Competencies</span>
-                    
-                    <div class="skill-group">
-                        <h2 class="group-header">Networking &amp; Infrastructure</h2>
-                        <ul class="skill-items">
-                            <li>Computer Networking &amp; Network Fundamentals[cite: 1]</li>
-                            <li>TCP/IP, OSI Model &amp; Network Protocols[cite: 1]</li>
-                            <li>IP Addressing, Subnetting &amp; Routing Fundamentals[cite: 1]</li>
-                            <li>LAN, WAN, DNS, DHCP &amp; Network Troubleshooting[cite: 1]</li>
-                            <li>Basic Network Security &amp; Network Monitoring[cite: 1]</li>
-                        </ul>
-                    </div>
-
-                    <div class="skill-group">
-                        <h2 class="group-header">Programming &amp; Runtimes</h2>
-                        <ul class="skill-items">
-                            <li>C, C++ &amp; Python Programming[cite: 1]</li>
-                            <li>Java Programming &amp; Object-Oriented Programming (OOP)[cite: 1]</li>
-                            <li>Data Structures &amp; Algorithms[cite: 1]</li>
-                            <li>Database Management Systems (DBMS) &amp; SQL[cite: 1]</li>
-                            <li>Operating Systems &amp; Computer Architecture[cite: 1]</li>
-                            <li>Machine Learning Fundamentals[cite: 1]</li>
-                        </ul>
-                    </div>
-
-                    <div class="skill-group">
-                        <h2 class="group-header">Software &amp; Web</h2>
-                        <ul class="skill-items">
-                            <li>Web Technologies: HTML, CSS &amp; JavaScript[cite: 1]</li>
-                            <li>Software Engineering &amp; Software Development Life Cycle (SDLC)[cite: 1]</li>
-                        </ul>
-                    </div>
-                </section>
-            </div>
-
-            <!-- Column 3: Education -->
-            <div class="grid-column">
-                <section class="pane-section scrollable">
-                    <span class="section-tag">05 // Academic History</span>
-
-                    <article class="edu-entry">
-                        <span class="edu-date">30/01/2020 &mdash; 01/06/2022</span>
-                        <h3 class="edu-title">Intermediate (10+2)</h3>
-                        <p class="edu-school">Govt. Boys Higher Secondary School, Magam[cite: 1]</p>
-                        <p class="edu-courses">
-                            <strong>Core:</strong> English, Physics, Chemistry, Mathematics, Computer Programming[cite: 1]
-                        </p>
-                    </article>
-
-                    <article class="edu-entry">
-                        <span class="edu-date">01/01/2019 &mdash; 10/01/2020</span>
-                        <h3 class="edu-title">10th Grade Examination</h3>
-                        <p class="edu-school">Green View Public High School, Magam[cite: 1]</p>
-                    </article>
-                </section>
-            </div>
-
         </main>
 
-        <!-- Footer -->
-        <footer class="window-bottombar">
-            <span>RESUME // MAJID HUSSAIN MIR</span>
-            <span>&copy; All Rights Reserved</span>
+        <!-- Bottom Numbers Strip matching Squarespace Footer Row -->
+        <footer class="sq-bottom-strip">
+            <div class="metric-block">
+                <span class="metric-num">B.Tech</span>
+                <span class="metric-desc">Computer Science &amp; Eng</span>
+            </div>
+            <div class="metric-block">
+                <span class="metric-num">TCP/IP</span>
+                <span class="metric-desc">Protocols &amp; Subnetting</span>
+            </div>
+            <div class="metric-block">
+                <span class="metric-num">C/Python/Java</span>
+                <span class="metric-desc">Core Software Stacks</span>
+            </div>
+            <div class="metric-block">
+                <span class="metric-num">Indian</span>
+                <span class="metric-desc">Nationality &bull; Male &bull; 02/09/2005</span>
+            </div>
         </footer>
 
     </div>
 
+    <!-- Modal Drawer with Full Resume Data -->
+    <div class="modal-drawer" id="resumeDrawer" onclick="closeDrawerOnOut(event)">
+        <div class="drawer-box">
+            <div class="drawer-header">
+                <h2 class="drawer-title">Majid Hussain Mir &mdash; Complete Dossier</h2>
+                <button class="btn-close-drawer" onclick="closeDrawer()">&times;</button>
+            </div>
+            <div class="drawer-body">
+                
+                <!-- Objective -->
+                <div id="drawer-about">
+                    <h3 class="drawer-section-title">01 / Career Objective</h3>
+                    <p class="drawer-text">
+                        Motivated B.Tech CSE student seeking an entry-level opportunity in Computer Networking and IT infrastructure. Eager to apply my knowledge of networking, programming, troubleshooting, and problem-solving while gaining practical industry experience. A quick learner with a strong work ethic, committed to continuously developing technical skills and contributing effectively to organizational goals.
+                    </p>
+                </div>
+
+                <!-- Skills -->
+                <div id="drawer-skills">
+                    <h3 class="drawer-section-title">02 / Technical &amp; Professional Skills</h3>
+                    <div class="skills-grid-inner">
+                        <div>
+                            <strong style="display:block; margin-bottom:8px; font-size:0.9rem; color:#fff;">Networking &amp; Infrastructure</strong>
+                            <ul class="skill-list-clean">
+                                <li>Computer Networking &amp; Network Fundamentals</li>
+                                <li>TCP/IP, OSI Model &amp; Network Protocols</li>
+                                <li>IP Addressing, Subnetting &amp; Routing Fundamentals</li>
+                                <li>LAN, WAN, DNS, DHCP &amp; Network Troubleshooting</li>
+                                <li>Basic Network Security &amp; Network Monitoring</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <strong style="display:block; margin-bottom:8px; font-size:0.9rem; color:#fff;">Software, Systems &amp; Web</strong>
+                            <ul class="skill-list-clean">
+                                <li>C, C++ &amp; Python Programming</li>
+                                <li>Java Programming &amp; Object-Oriented Programming (OOP)</li>
+                                <li>Data Structures &amp; Algorithms</li>
+                                <li>Database Management Systems (DBMS) &amp; SQL</li>
+                                <li>Operating Systems &amp; Computer Architecture</li>
+                                <li>Machine Learning Fundamentals</li>
+                                <li>Software Engineering &amp; SDLC</li>
+                                <li>Web Technologies: HTML, CSS &amp; JavaScript</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Education -->
+                <div id="drawer-education">
+                    <h3 class="drawer-section-title">03 / Education History</h3>
+                    <div class="timeline-entry-box">
+                        <span class="timeline-time-tag">30/01/2020 &mdash; 01/06/2022</span>
+                        <h4 class="timeline-main-title">Intermediate (10+2)</h4>
+                        <p class="timeline-school-name">Government Boys Higher Secondary School, Magam</p>
+                        <p style="font-size:0.82rem; color:var(--text-muted); margin-top:4px;">
+                            <strong>Core:</strong> English, Physics, Chemistry, Mathematics, Computer Programming
+                        </p>
+                    </div>
+
+                    <div class="timeline-entry-box">
+                        <span class="timeline-time-tag">01/01/2019 &mdash; 10/01/2020</span>
+                        <h4 class="timeline-main-title">10th Grade Examination</h4>
+                        <p class="timeline-school-name">Green View Public High School, Magam</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openDrawer(section) {
+            const drawer = document.getElementById('resumeDrawer');
+            drawer.classList.add('active');
+            if (section && section !== 'all') {
+                const target = document.getElementById('drawer-' + section);
+                if (target) {
+                    setTimeout(() => target.scrollIntoView({ behavior: 'smooth' }), 100);
+                }
+            }
+        }
+
+        function closeDrawer() {
+            document.getElementById('resumeDrawer').classList.remove('active');
+        }
+
+        function closeDrawerOnOut(e) {
+            if (e.target.id === 'resumeDrawer') {
+                closeDrawer();
+            }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeDrawer();
+        });
+    </script>
 </body>
 </html>
