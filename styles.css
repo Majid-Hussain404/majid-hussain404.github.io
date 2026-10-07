@@ -1,18 +1,13 @@
 :root {
-    --bg-page: #000000; /* Removed deep color, set to pure black base */
-    --bg-card: rgba(22, 27, 34, 0.95); /* Semi-transparent panel for content */
-    --border-subtle: #21262d;
-    --border-strong: #30363d;
-    
     --text-primary: #f0f3f6;
     --text-secondary: #9aa4b2;
     --text-tertiary: #656d76;
-    
-    --accent: #d29922; /* Warm amber subtle accent */
-    --accent-tint: rgba(210, 153, 34, 0.08);
+    --accent: #38bdf8; /* Subtle network/cyan accent */
+    --border-color: rgba(255, 255, 255, 0.08);
+    --surface: rgba(13, 17, 23, 0.72);
 
-    --font-serif: 'Newsreader', Georgia, serif;
-    --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-serif: 'Instrument Serif', Georgia, serif;
+    --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 * {
@@ -21,65 +16,80 @@
     padding: 0;
 }
 
+html, body {
+    min-height: 100%;
+    background-color: #05070a;
+}
+
 body {
-    background-color: var(--bg-page);
     color: var(--text-primary);
     font-family: var(--font-sans);
     line-height: 1.65;
     font-size: 0.95rem;
     -webkit-font-smoothing: antialiased;
-    position: relative; /* Context for the fixed background */
+    position: relative;
     overflow-x: hidden;
 }
 
-/* Fixed abstract network background */
-.network-bg {
+/* Background Network Canvas */
+#network-canvas {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    /* High density network nodes visualization - abstract & blurred */
-    background-image: url('data:image/svg+xml,%3Csvg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/svg"%3E%3Cg fill-rule="evenodd"%3E%3Cg fill="%2321262d" fill-opacity="0.2"%3E%3Cpath d="M9 15c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm0-6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm20 20c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm0-6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm20 20c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm0-6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm20 20c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm0-6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM9 55c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm0-6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm20 20c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm0-6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm20 20c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm0-6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm20 20c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm0-6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM9 95c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm0-6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm20 20c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm0-6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm20 20c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm0-6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm20 20c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm0-6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" /%3E%3C/g%3E%3C/g%3E%3C/svg%3E');
-    opacity: 0.8;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+    pointer-events: none;
 }
 
+/* Abstract Blur & Depth Filter */
+.blur-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 2;
+    pointer-events: none;
+    backdrop-filter: blur(48px);
+    -webkit-backdrop-filter: blur(48px);
+    background: radial-gradient(circle at 50% 10%, rgba(5, 7, 10, 0.3) 0%, rgba(5, 7, 10, 0.85) 100%);
+}
+
+/* Main Content Wrapper */
 .site-wrapper {
+    position: relative;
+    z-index: 3;
     max-width: 860px;
-    margin: 60px auto; /* Margin to top/bottom */
-    padding: 60px 24px;
-    
-    /* Content panel blur and opacity for depth */
-    background-color: var(--bg-card);
-    border: 1px solid var(--border-subtle);
-    border-radius: 12px;
-    -webkit-backdrop-filter: blur(80px); /* Heavy abstract blur */
-    backdrop-filter: blur(80px);
+    margin: 40px auto;
+    padding: 56px 40px;
+    background-color: var(--surface);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
 }
 
 /* Header */
 .resume-header {
-    border-bottom: 1px solid var(--border-subtle);
+    border-bottom: 1px solid var(--border-color);
     padding-bottom: 32px;
-    margin-bottom: 40px;
+    margin-bottom: 36px;
 }
 
 .candidate-name {
     font-family: var(--font-serif);
-    font-size: 2.75rem;
-    font-weight: 500;
-    letter-spacing: -0.02em;
-    color: var(--text-primary);
-    line-height: 1.15;
-    margin-bottom: 8px;
+    font-size: 3.2rem;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    color: #ffffff;
+    line-height: 1.1;
+    margin-bottom: 6px;
 }
 
 .role-tagline {
-    font-size: 1.05rem;
+    font-size: 1rem;
     color: var(--text-secondary);
-    margin-bottom: 24px;
-    font-weight: 400;
+    margin-bottom: 20px;
 }
 
 .contact-strip {
@@ -99,7 +109,7 @@ body {
 }
 
 a.contact-link:hover {
-    color: var(--text-primary);
+    color: var(--accent);
 }
 
 .contact-link svg {
@@ -108,17 +118,16 @@ a.contact-link:hover {
 
 /* Section Blocks */
 .section-block {
-    margin-bottom: 44px;
+    margin-bottom: 40px;
 }
 
 .section-label {
     font-family: var(--font-serif);
-    font-size: 1.35rem;
-    font-weight: 500;
+    font-size: 1.6rem;
+    font-weight: 400;
     font-style: italic;
-    color: var(--text-primary);
-    margin-bottom: 16px;
-    position: relative;
+    color: #ffffff;
+    margin-bottom: 14px;
     display: flex;
     align-items: center;
     gap: 12px;
@@ -128,12 +137,12 @@ a.contact-link:hover {
     content: '';
     flex-grow: 1;
     height: 1px;
-    background-color: var(--border-subtle);
+    background-color: var(--border-color);
 }
 
 .summary-text {
     color: var(--text-secondary);
-    font-size: 0.975rem;
+    font-size: 0.95rem;
     line-height: 1.75;
 }
 
@@ -141,7 +150,7 @@ a.contact-link:hover {
 .two-column-group {
     display: grid;
     grid-template-columns: 2fr 1fr;
-    gap: 40px;
+    gap: 36px;
     align-items: start;
 }
 
@@ -149,12 +158,12 @@ a.contact-link:hover {
 .skills-grid {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 18px;
 }
 
 .group-title {
     display: block;
-    font-size: 0.78rem;
+    font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     color: var(--accent);
@@ -180,30 +189,24 @@ a.contact-link:hover {
     color: var(--text-tertiary);
 }
 
-/* Profile Metadata */
+/* Profile Details */
 .profile-details {
-    background-color: rgba(13, 17, 23, 0.6); /* Slightly darker profile panel for contrast */
-    border: 1px solid var(--border-subtle);
-    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
     padding: 20px;
 }
 
 .detail-row {
-    padding: 10px 0;
-    border-bottom: 1px solid var(--border-subtle);
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border-color);
 }
 
-.detail-row:first-child {
-    padding-top: 0;
-}
-
-.detail-row:last-child {
-    border-bottom: none;
-    padding-bottom: 0;
-}
+.detail-row:first-child { padding-top: 0; }
+.detail-row:last-child { border-bottom: none; padding-bottom: 0; }
 
 .detail-row dt {
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     color: var(--text-tertiary);
@@ -221,12 +224,12 @@ a.contact-link:hover {
 .timeline-list {
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 22px;
 }
 
 .timeline-entry {
     padding-left: 18px;
-    border-left: 1px solid var(--border-strong);
+    border-left: 1px solid rgba(255, 255, 255, 0.15);
     position: relative;
 }
 
@@ -238,7 +241,7 @@ a.contact-link:hover {
     width: 7px;
     height: 7px;
     border-radius: 50%;
-    background-color: var(--border-strong);
+    background-color: var(--accent);
 }
 
 .timeline-header {
@@ -279,9 +282,9 @@ a.contact-link:hover {
 
 /* Footer */
 .site-footer {
-    border-top: 1px solid var(--border-subtle);
+    border-top: 1px solid var(--border-color);
     padding-top: 24px;
-    margin-top: 60px;
+    margin-top: 50px;
     font-size: 0.8rem;
     color: var(--text-tertiary);
     text-align: center;
@@ -290,8 +293,8 @@ a.contact-link:hover {
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .site-wrapper {
-        padding: 40px 18px;
-        margin: 20px auto;
+        padding: 32px 20px;
+        margin: 16px;
     }
 
     .two-column-group {
@@ -300,7 +303,7 @@ a.contact-link:hover {
     }
 
     .candidate-name {
-        font-size: 2.25rem;
+        font-size: 2.4rem;
     }
 
     .contact-strip {
