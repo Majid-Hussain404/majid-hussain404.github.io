@@ -125,7 +125,7 @@
         }
 
         /* ========================================================
-           PORTFOLIO FOREGROUND (Preserved Completely)
+           PORTFOLIO FOREGROUND
         ======================================================== */
         .sq-viewport {
             position: relative;
@@ -513,7 +513,7 @@
         <div class="film-vignette"></div>
     </div>
 
-    <!-- Main Viewport Experience (Preserved completely) -->
+    <!-- Main Viewport Experience -->
     <div class="sq-viewport">
 
         <header class="sq-header">
@@ -682,7 +682,6 @@
             let height = 0;
             let dpr = window.devicePixelRatio || 1;
 
-            // Physics state tracking with smooth linear interpolation (LERP)
             const state = {
                 mouseX: window.innerWidth * 0.5,
                 mouseY: window.innerHeight * 0.5,
@@ -708,12 +707,10 @@
             window.addEventListener('resize', resize);
             resize();
 
-            // Track scroll position seamlessly
             window.addEventListener('scroll', () => {
                 state.targetScrollY = window.scrollY || window.pageYOffset;
             }, { passive: true });
 
-            // Generate Depth Layer Elements
             const ELEMENT_COUNT = Math.min(Math.floor((width * height) / 22000), 52);
             const elements = [];
 
@@ -727,62 +724,50 @@
                     this.baseY = randomSpawn ? Math.random() * (height + 200) - 100 : height + 30;
                     this.y = this.baseY;
 
-                    // Depth planes: 0.15 (deep/distant) to 1.0 (foreground)
                     this.z = 0.15 + Math.random() * 0.85;
 
-                    // Visual attributes mapped directly to optical depth
                     this.size = (1.4 + this.z * 3.8);
                     this.alpha = 0.07 + this.z * 0.28;
 
-                    // 75% soft orbs, 25% subtle floating geometric node plates
                     this.isPlate = Math.random() > 0.75;
                     this.plateWidth = (6 + this.z * 18);
                     this.plateHeight = this.plateWidth * (0.35 + Math.random() * 0.3);
                     this.rotation = Math.random() * Math.PI * 2;
                     this.rotSpeed = (Math.random() - 0.5) * 0.005;
 
-                    // Continuous Natural Drift
                     this.idleSpeedY = 0.12 + (1 - this.z) * 0.22;
                     this.driftPhaseX = Math.random() * Math.PI * 2;
                     this.driftSpeedX = 0.0006 + Math.random() * 0.001;
                     this.driftAmpX = 14 + (1 - this.z) * 22;
 
-                    // Scroll parallax sensitivity multiplier
-                    // Deep elements move slower than scroll, foreground elements move faster
                     this.scrollFactor = (this.z - 0.45) * 0.42;
 
-                    // Warm subtle palette
                     const roll = Math.random();
                     if (roll > 0.6) {
-                        this.color = '217, 119, 54'; // Amber
+                        this.color = '217, 119, 54';
                     } else if (roll > 0.3) {
-                        this.color = '245, 158, 86'; // Warm Bronze
+                        this.color = '245, 158, 86';
                     } else {
-                        this.color = '240, 237, 230'; // Soft diffused light
+                        this.color = '240, 237, 230';
                     }
                 }
 
                 update(timestamp, cursorNdcX, cursorNdcY, scrollDelta) {
-                    // 1. Natural idle floating path
                     this.baseY -= this.idleSpeedY;
                     const idleOffsetX = Math.sin(timestamp * this.driftSpeedX + this.driftPhaseX) * this.driftAmpX;
 
-                    // Wrap elements continuously
                     if (this.baseY < -50) {
                         this.init(false);
                     }
 
-                    // 2. 3D Cursor Parallax
                     const cursorParallaxX = cursorNdcX * (this.z * 38);
                     const cursorParallaxY = cursorNdcY * (this.z * 38);
 
-                    // 3. Scroll-based Parallax Displacement
                     const scrollDisplacementY = scrollDelta * this.scrollFactor;
 
                     const screenX = this.x + idleOffsetX + cursorParallaxX;
                     const screenY = this.baseY + cursorParallaxY + scrollDisplacementY;
 
-                    // 4. Cursor Proximity Physics
                     let pushX = 0;
                     let pushY = 0;
                     if (state.isMouseActive) {
@@ -803,7 +788,6 @@
                 }
 
                 draw(renderX, renderY) {
-                    // Culling: avoid rendering elements outside visible screen
                     if (renderX < -30 || renderX > width + 30 || renderY < -30 || renderY > height + 30) {
                         return;
                     }
@@ -836,7 +820,6 @@
                 elements.push(new DepthEntity());
             }
 
-            // Pointer Event Handlers
             window.addEventListener('mousemove', (e) => {
                 state.targetMouseX = e.clientX;
                 state.targetMouseY = e.clientY;
@@ -859,41 +842,33 @@
                 torch.classList.remove('active');
             });
 
-            // 60FPS RAF Engine combining Cursor + Scroll + Drift
             function renderLoop(timestamp) {
                 ctx.clearRect(0, 0, width, height);
 
                 if (!prefersReducedMotion) {
-                    // Smooth Linear Interpolation (LERP) for mouse inertia (factor: 0.055)
                     const lerpFactor = 0.055;
                     state.mouseX += (state.targetMouseX - state.mouseX) * lerpFactor;
                     state.mouseY += (state.targetMouseY - state.mouseY) * lerpFactor;
 
-                    // Smooth Scroll interpolation
                     state.scrollY += (state.targetScrollY - state.scrollY) * 0.08;
 
-                    // Torch position easing
                     state.torchX += (state.targetMouseX - state.torchX) * 0.085;
                     state.torchY += (state.targetMouseY - state.torchY) * 0.085;
                     torch.style.transform = `translate3d(${state.torchX}px, ${state.torchY}px, 0)`;
 
-                    // Normalized device coordinates (-1 to +1)
                     const cursorNdcX = (state.mouseX / width - 0.5) * 2;
                     const cursorNdcY = (state.mouseY / height - 0.5) * 2;
 
-                    // Multi-layer deep atmospheric background parallax
                     const bgParallaxScroll1 = -state.scrollY * 0.12;
                     const bgParallaxScroll2 = -state.scrollY * 0.18;
 
                     sil1.style.transform = `translate3d(${cursorNdcX * 24}px, ${cursorNdcY * 20 + bgParallaxScroll1}px, 0)`;
                     sil2.style.transform = `translate3d(${-cursorNdcX * 28}px, ${-cursorNdcY * 24 + bgParallaxScroll2}px, 0)`;
 
-                    // Render depth elements with cursor & scroll fusion
                     for (let i = 0; i < elements.length; i++) {
                         elements[i].update(timestamp, cursorNdcX, cursorNdcY, state.scrollY);
                     }
                 } else {
-                    // Static fallback for reduced motion preference
                     for (let i = 0; i < elements.length; i++) {
                         elements[i].draw(elements[i].x, elements[i].baseY);
                     }
