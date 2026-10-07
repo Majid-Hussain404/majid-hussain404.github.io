@@ -1,473 +1,873 @@
-/* ========================================================
-   SQUARESPACE AESTHETIC DESIGN SYSTEM
-======================================================== */
-:root {
-    --text-primary: #12151a;
-    --text-secondary: #4a5568;
-    --text-muted: #718096;
-    
-    --border-hairline: rgba(18, 21, 26, 0.1);
-    --border-hover: rgba(18, 21, 26, 0.28);
-    
-    --card-surface: rgba(255, 255, 255, 0.45);
-    --card-hover: rgba(255, 255, 255, 0.65);
-    
-    --font-serif: 'Playfair Display', Georgia, serif;
-    --font-sans: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Majid Hussain Mir | Programmer &amp; Problem Solver</title>
+    <meta name="description" content="Official portfolio and resume of Majid Hussain Mir. Seeking opportunities in computer networking, infrastructure, and software development.">
 
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
+    <!-- Google Fonts: Editorial Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-html {
-    scroll-behavior: smooth;
-}
+    <style>
+        :root {
+            --bg-canvas: #0c0b09;
+            --text-high: #ffffff;
+            --text-mid: #b8b3ab;
+            --text-muted: #75716b;
+            --accent-warm: #d97736;
+            --pill-white: #ffffff;
+            --pill-dark: #000000;
+            --border-glass: rgba(255, 255, 255, 0.08);
+            --font-main: 'Plus Jakarta Sans', -apple-system, sans-serif;
+            --font-code: 'JetBrains Mono', monospace;
+        }
 
-body {
-    min-height: 100vh;
-    font-family: var(--font-sans);
-    color: var(--text-primary);
-    background-color: #f6f7fb;
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
-    position: relative;
-}
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-/* ========================================================
-   FULL-BLEED BLURRED MESH BACKDROP (Exact Image Matching)
-======================================================== */
-.mesh-backdrop {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: -1;
-    overflow: hidden;
-    pointer-events: none;
-    background: #edf2f7;
-}
+        html {
+            scroll-behavior: smooth;
+        }
 
-.blob {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(95px);
-    -webkit-filter: blur(95px);
-    opacity: 0.85;
-}
+        body {
+            min-height: 100vh;
+            font-family: var(--font-main);
+            background-color: var(--bg-canvas);
+            color: var(--text-high);
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+            position: relative;
+        }
 
-.blob.peach {
-    width: 60vw;
-    height: 55vh;
-    background: radial-gradient(circle, #fca5a5 0%, #fb923c 60%, transparent 100%);
-    top: -15%;
-    right: -10%;
-}
+        /* ========================================================
+           MULTI-LAYER 3D PARALLAX & DEPTH STAGE
+        ======================================================== */
+        .stage-container {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            overflow: hidden;
+            pointer-events: none;
+            background: radial-gradient(circle at 50% 40%, #1a1612 0%, #0c0b09 100%);
+        }
 
-.blob.cyan {
-    width: 65vw;
-    height: 60vh;
-    background: radial-gradient(circle, #38bdf8 0%, #67e8f9 50%, transparent 100%);
-    bottom: -15%;
-    left: -15%;
-}
+        .ambient-silhouette {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(85px);
+            opacity: 0.38;
+            will-change: transform;
+            pointer-events: none;
+        }
 
-.blob.blue {
-    width: 48vw;
-    height: 48vh;
-    background: radial-gradient(circle, #2563eb 0%, #1d4ed8 70%, transparent 100%);
-    bottom: 5%;
-    right: 5%;
-}
+        .sil-1 {
+            width: 70vw;
+            height: 65vh;
+            background: radial-gradient(circle, rgba(217, 119, 54, 0.45) 0%, rgba(94, 43, 22, 0.1) 70%, transparent 100%);
+            top: -10%;
+            left: -10%;
+        }
 
-.blob.magenta {
-    width: 45vw;
-    height: 45vh;
-    background: radial-gradient(circle, #e11d48 0%, #be185d 65%, transparent 100%);
-    bottom: -10%;
-    right: 25%;
-}
+        .sil-2 {
+            width: 65vw;
+            height: 65vh;
+            background: radial-gradient(circle, rgba(168, 85, 34, 0.38) 0%, rgba(20, 15, 12, 0.1) 70%, transparent 100%);
+            bottom: -15%;
+            right: -10%;
+        }
 
-.blob.lavender {
-    width: 55vw;
-    height: 55vh;
-    background: radial-gradient(circle, #a855f7 0%, #818cf8 60%, transparent 100%);
-    top: 5%;
-    left: 15%;
-    opacity: 0.6;
-}
+        #depth-canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
 
-.mesh-glass {
-    position: absolute;
-    inset: 0;
-    backdrop-filter: blur(75px);
-    -webkit-backdrop-filter: blur(75px);
-    background: rgba(255, 255, 255, 0.2);
-}
+        .cursor-torch {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 520px;
+            height: 520px;
+            margin-left: -260px;
+            margin-top: -260px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(235, 140, 75, 0.09) 0%, rgba(217, 119, 54, 0.035) 45%, transparent 70%);
+            pointer-events: none;
+            z-index: 2;
+            opacity: 0;
+            transition: opacity 0.5s ease-out;
+            will-change: transform;
+        }
 
-/* ========================================================
-   SQUARESPACE EDITORIAL NAVIGATION
-======================================================== */
-.sq-navbar {
-    position: sticky;
-    top: 0;
-    z-index: 50;
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    background: rgba(255, 255, 255, 0.45);
-    border-bottom: 1px solid var(--border-hairline);
-}
+        .cursor-torch.active {
+            opacity: 1;
+        }
 
-.sq-nav-inner {
-    max-width: 1240px;
-    margin: 0 auto;
-    padding: 20px 32px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
+        .film-vignette {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at center, transparent 35%, rgba(12, 11, 9, 0.78) 100%);
+            pointer-events: none;
+            z-index: 3;
+        }
 
-.sq-brand {
-    font-size: 1.15rem;
-    font-weight: 600;
-    letter-spacing: -0.01em;
-    color: var(--text-primary);
-    text-decoration: none;
-}
+        /* ========================================================
+           PORTFOLIO FOREGROUND
+        ======================================================== */
+        .sq-viewport {
+            position: relative;
+            z-index: 10;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 32px 56px 28px;
+            max-width: 1440px;
+            margin: 0 auto;
+        }
 
-.sq-links {
-    display: flex;
-    align-items: center;
-    gap: 32px;
-}
+        .sq-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-.sq-links a {
-    color: var(--text-secondary);
-    text-decoration: none;
-    font-size: 0.92rem;
-    font-weight: 500;
-    transition: color 0.2s ease;
-}
+        .sq-brand {
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-high);
+            text-decoration: none;
+        }
 
-.sq-links a:hover {
-    color: var(--text-primary);
-}
+        .sq-nav-items {
+            display: flex;
+            align-items: center;
+            gap: 36px;
+        }
 
-.sq-btn-pill {
-    padding: 9px 20px !important;
-    border-radius: 9999px;
-    background: var(--text-primary) !important;
-    color: #ffffff !important;
-    font-weight: 500;
-    transition: transform 0.2s ease, opacity 0.2s ease !important;
-}
+        .sq-nav-link {
+            color: var(--text-mid);
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            transition: color 0.2s;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
 
-.sq-btn-pill:hover {
-    opacity: 0.9;
-    transform: translateY(-1px);
-}
+        .sq-nav-link:hover {
+            color: var(--text-high);
+        }
 
-/* ========================================================
-   PAGE LAYOUT
-======================================================== */
-.sq-page-container {
-    max-width: 1240px;
-    margin: 0 auto;
-    padding: 0 32px;
-}
+        .sq-btn-pill {
+            padding: 10px 24px;
+            border-radius: 9999px;
+            background-color: var(--pill-white);
+            color: var(--pill-dark) !important;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: opacity 0.2s, transform 0.2s;
+        }
 
-/* ========================================================
-   HERO EDITORIAL SECTION
-======================================================== */
-.sq-hero {
-    padding: 96px 0 64px;
-    max-width: 900px;
-}
+        .sq-btn-pill:hover {
+            opacity: 0.92;
+            transform: scale(1.02);
+        }
 
-.sq-kicker {
-    display: inline-block;
-    font-size: 0.82rem;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    font-weight: 600;
-    color: var(--text-muted);
-    margin-bottom: 20px;
-}
+        .sq-center-hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 60px 0;
+        }
 
-.sq-display-title {
-    font-family: var(--font-serif);
-    font-size: clamp(2.4rem, 5.5vw, 4.4rem);
-    font-weight: 400;
-    line-height: 1.12;
-    letter-spacing: -0.02em;
-    color: var(--text-primary);
-    margin-bottom: 28px;
-}
+        .sq-sub-kicker {
+            font-family: var(--font-code);
+            font-size: 0.8rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--accent-warm);
+            margin-bottom: 20px;
+        }
 
-.sq-lead-paragraph {
-    font-size: 1.15rem;
-    line-height: 1.8;
-    color: var(--text-secondary);
-    margin-bottom: 36px;
-    font-weight: 400;
-}
+        .sq-massive-headline {
+            font-size: clamp(2.6rem, 5.8vw, 4.8rem);
+            font-weight: 700;
+            letter-spacing: -0.04em;
+            line-height: 1.05;
+            color: var(--text-high);
+            margin-bottom: 24px;
+        }
 
-.sq-contact-bar {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-}
+        .sq-cta-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
 
-.sq-contact-item {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.9rem;
-    color: var(--text-secondary);
-    text-decoration: none;
-    padding: 8px 18px;
-    border-radius: 9999px;
-    background: rgba(255, 255, 255, 0.45);
-    border: 1px solid var(--border-hairline);
-    transition: all 0.2s ease;
-}
+        .btn-squarespace-action {
+            display: inline-block;
+            background: #ffffff;
+            color: #000000;
+            font-size: 0.9rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 18px 48px;
+            border-radius: 9999px;
+            text-decoration: none;
+            transition: transform 0.2s, background 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
 
-a.sq-contact-item:hover {
-    color: var(--text-primary);
-    border-color: var(--border-hover);
-    background: rgba(255, 255, 255, 0.8);
-}
+        .btn-squarespace-action:hover {
+            transform: translateY(-2px);
+            background: #f0ede6;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+        }
 
-.sq-icon {
-    font-size: 1.05rem;
-}
+        .sq-tagline-sub {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            letter-spacing: 0.02em;
+        }
 
-/* ========================================================
-   STATS STRIP
-======================================================== */
-.sq-stats-row {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 24px;
-    padding: 36px 0;
-    border-top: 1px solid var(--border-hairline);
-    border-bottom: 1px solid var(--border-hairline);
-    margin-bottom: 80px;
-}
+        .sq-hero-contact-row {
+            display: flex;
+            gap: 24px;
+            margin-top: 32px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
 
-.sq-stat-col {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
+        .sq-contact-chip {
+            font-size: 0.82rem;
+            color: var(--text-mid);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 16px;
+            border-radius: 9999px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-glass);
+            transition: all 0.2s ease;
+        }
 
-.sq-label {
-    font-size: 0.78rem;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--text-muted);
-    font-weight: 600;
-}
+        a.sq-contact-chip:hover {
+            color: var(--text-high);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
 
-.sq-value {
-    font-size: 1.05rem;
-    font-weight: 500;
-    color: var(--text-primary);
-}
+        .sq-bottom-strip {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border-glass);
+        }
 
-/* ========================================================
-   CONTENT SECTIONS & CARDS
-======================================================== */
-.sq-section {
-    padding-bottom: 80px;
-}
+        .metric-block {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
 
-.sq-section-header {
-    margin-bottom: 40px;
-}
+        .metric-num {
+            font-size: 1.6rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: var(--text-high);
+        }
 
-.sq-section-title {
-    font-family: var(--font-serif);
-    font-size: 2.2rem;
-    font-weight: 400;
-    color: var(--text-primary);
-    letter-spacing: -0.01em;
-}
+        .metric-desc {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
 
-.sq-skills-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-}
+        /* Modal Drawer */
+        .modal-drawer {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            background: rgba(12, 11, 9, 0.85);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            padding: 24px;
+        }
 
-.sq-skill-card {
-    background: var(--card-surface);
-    border: 1px solid var(--border-hairline);
-    border-radius: 16px;
-    padding: 36px 28px;
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease;
-}
+        .modal-drawer.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
 
-.sq-skill-card:hover {
-    background: var(--card-hover);
-    border-color: var(--border-hover);
-    transform: translateY(-3px);
-}
+        .drawer-box {
+            background: #161412;
+            border: 1px solid var(--border-glass);
+            border-radius: 20px;
+            width: 100%;
+            max-width: 900px;
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8);
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
 
-.sq-card-num {
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: var(--text-muted);
-    margin-bottom: 16px;
-    display: block;
-}
+        .modal-drawer.active .drawer-box {
+            transform: translateY(0);
+        }
 
-.sq-card-heading {
-    font-size: 1.25rem;
-    font-weight: 600;
-    margin-bottom: 18px;
-    letter-spacing: -0.01em;
-}
+        .drawer-header {
+            padding: 24px 32px;
+            border-bottom: 1px solid var(--border-glass);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-.sq-bullet-list {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
+        .drawer-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
 
-.sq-bullet-list li {
-    font-size: 0.92rem;
-    color: var(--text-secondary);
-    position: relative;
-    padding-left: 16px;
-    line-height: 1.55;
-}
+        .btn-close-drawer {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+            line-height: 1;
+            padding: 4px;
+            transition: color 0.2s;
+        }
 
-.sq-bullet-list li::before {
-    content: '—';
-    position: absolute;
-    left: 0;
-    color: var(--text-muted);
-}
+        .btn-close-drawer:hover {
+            color: var(--text-high);
+        }
 
-/* ========================================================
-   EDUCATION TIMELINE
-======================================================== */
-.sq-timeline-container {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-}
+        .drawer-body {
+            padding: 32px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 36px;
+        }
 
-.sq-timeline-row {
-    display: grid;
-    grid-template-columns: 200px 1fr;
-    gap: 32px;
-    padding: 28px;
-    background: var(--card-surface);
-    border: 1px solid var(--border-hairline);
-    border-radius: 16px;
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-}
+        .drawer-body::-webkit-scrollbar {
+            width: 4px;
+        }
+        .drawer-body::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 4px;
+        }
 
-.sq-time-badge {
-    font-size: 0.88rem;
-    font-weight: 600;
-    color: var(--text-muted);
-}
+        .drawer-section-title {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent-warm);
+            margin-bottom: 14px;
+            font-weight: 700;
+        }
 
-.sq-degree-title {
-    font-size: 1.2rem;
-    font-weight: 600;
-    margin-bottom: 6px;
-}
+        .drawer-text {
+            color: var(--text-mid);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
 
-.sq-institution {
-    font-size: 0.98rem;
-    color: var(--text-secondary);
-    margin-bottom: 8px;
-}
+        .skills-grid-inner {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
 
-.sq-coursework {
-    font-size: 0.9rem;
-    color: var(--text-muted);
-}
+        .skill-list-clean {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
 
-.sq-coursework strong {
-    color: var(--text-secondary);
-}
+        .skill-list-clean li {
+            font-size: 0.88rem;
+            color: var(--text-mid);
+            position: relative;
+            padding-left: 14px;
+        }
 
-/* ========================================================
-   FOOTER
-======================================================== */
-.sq-footer {
-    border-top: 1px solid var(--border-hairline);
-    padding: 48px 0;
-    margin-top: 40px;
-}
+        .skill-list-clean li::before {
+            content: '—';
+            position: absolute;
+            left: 0;
+            color: var(--text-muted);
+        }
 
-.sq-footer-inner {
-    max-width: 1240px;
-    margin: 0 auto;
-    padding: 0 32px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 0.88rem;
-    color: var(--text-muted);
-}
+        .timeline-entry-box {
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border-glass);
+        }
 
-/* ========================================================
-   RESPONSIVE
-======================================================== */
-@media (max-width: 960px) {
-    .sq-skills-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .sq-stats-row {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 20px;
-    }
+        .timeline-entry-box:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
 
-    .sq-timeline-row {
-        grid-template-columns: 1fr;
-        gap: 12px;
-    }
-}
+        .timeline-time-tag {
+            font-family: var(--font-code);
+            font-size: 0.75rem;
+            color: var(--accent-warm);
+        }
 
-@media (max-width: 640px) {
-    .sq-page-container {
-        padding: 0 20px;
-    }
+        .timeline-main-title {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--text-high);
+            margin: 4px 0 2px;
+        }
 
-    .sq-hero {
-        padding: 48px 0 36px;
-    }
+        .timeline-school-name {
+            font-size: 0.9rem;
+            color: var(--text-mid);
+        }
 
-    .sq-nav-inner {
-        padding: 16px 20px;
-    }
+        @media (max-width: 900px) {
+            .sq-viewport {
+                padding: 24px 20px;
+            }
+            .sq-nav-items {
+                display: none;
+            }
+            .sq-bottom-strip {
+                grid-template-columns: 1fr 1fr;
+                gap: 16px;
+            }
+            .skills-grid-inner {
+                grid-template-columns: 1fr;
+            }
+        }
 
-    .sq-links {
-        display: none;
-    }
+        @media (prefers-reduced-motion: reduce) {
+            .cursor-torch {
+                display: none !important;
+            }
+            #depth-canvas {
+                opacity: 0.35;
+            }
+        }
+    </style>
+</head>
+<body>
 
-    .sq-stats-row {
-        grid-template-columns: 1fr;
-    }
+    <!-- Unified 3D Parallax & Depth Stage -->
+    <div class="stage-container" aria-hidden="true">
+        <div class="ambient-silhouette sil-1" id="sil1"></div>
+        <div class="ambient-silhouette sil-2" id="sil2"></div>
+        
+        <canvas id="depth-canvas"></canvas>
+        <div class="cursor-torch" id="cursorTorch"></div>
+        <div class="film-vignette"></div>
+    </div>
 
-    .sq-footer-inner {
-        flex-direction: column;
-        gap: 8px;
-        text-align: center;
-    }
-}
+    <!-- Main Viewport Experience -->
+    <div class="sq-viewport">
+
+        <header class="sq-header">
+            <a href="#" class="sq-brand">Majid Hussain Mir</a>
+            <nav class="sq-nav-items">
+                <button class="sq-nav-link" onclick="openDrawer('about')">Objective</button>
+                <button class="sq-nav-link" onclick="openDrawer('skills')">Capabilities</button>
+                <button class="sq-nav-link" onclick="openDrawer('education')">Education</button>
+                <a href="mailto:majidhussainmir239@gmail.com" class="sq-btn-pill">Contact</a>
+            </nav>
+        </header>
+
+        <main class="sq-center-hero">
+            <span class="sq-sub-kicker">Networking &bull; Systems Infrastructure &bull; Code</span>
+            <h1 class="sq-massive-headline">
+                Robust networks make it resilient.
+            </h1>
+            
+            <div class="sq-cta-group">
+                <button class="btn-squarespace-action" onclick="openDrawer('all')">
+                    EXPLORE RESUME
+                </button>
+                <span class="sq-tagline-sub">B.Tech Computer Science &bull; Available for 2026 Opportunities</span>
+            </div>
+
+            <div class="sq-hero-contact-row">
+                <a href="mailto:majidhussainmir239@gmail.com" class="sq-contact-chip">
+                    &#9993; majidhussainmir239@gmail.com
+                </a>
+                <a href="tel:+916006495081" class="sq-contact-chip">
+                    &#9742; (+91) 6006495081
+                </a>
+                <span class="sq-contact-chip">
+                    &#9906; Magam, Budgam, J&amp;K, 193401
+                </span>
+            </div>
+        </main>
+
+        <footer class="sq-bottom-strip">
+            <div class="metric-block">
+                <span class="metric-num">B.Tech</span>
+                <span class="metric-desc">Computer Science &amp; Eng</span>
+            </div>
+            <div class="metric-block">
+                <span class="metric-num">TCP/IP</span>
+                <span class="metric-desc">Protocols &amp; Subnetting</span>
+            </div>
+            <div class="metric-block">
+                <span class="metric-num">C/Python/Java</span>
+                <span class="metric-desc">Core Software Stacks</span>
+            </div>
+            <div class="metric-block">
+                <span class="metric-num">Indian</span>
+                <span class="metric-desc">Nationality &bull; Male &bull; 02/09/2005</span>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Modal Drawer with Full Resume Data -->
+    <div class="modal-drawer" id="resumeDrawer" onclick="closeDrawerOnOut(event)">
+        <div class="drawer-box">
+            <div class="drawer-header">
+                <h2 class="drawer-title">Majid Hussain Mir &mdash; Complete Dossier</h2>
+                <button class="btn-close-drawer" onclick="closeDrawer()">&times;</button>
+            </div>
+            <div class="drawer-body">
+                
+                <div id="drawer-about">
+                    <h3 class="drawer-section-title">01 / Career Objective</h3>
+                    <p class="drawer-text">
+                        Motivated B.Tech CSE student seeking an entry-level opportunity in Computer Networking and IT infrastructure. Eager to apply my knowledge of networking, programming, troubleshooting, and problem-solving while gaining practical industry experience. A quick learner with a strong work ethic, committed to continuously developing technical skills and contributing effectively to organizational goals.
+                    </p>
+                </div>
+
+                <div id="drawer-skills">
+                    <h3 class="drawer-section-title">02 / Technical &amp; Professional Skills</h3>
+                    <div class="skills-grid-inner">
+                        <div>
+                            <strong style="display:block; margin-bottom:8px; font-size:0.9rem; color:#fff;">Networking &amp; Infrastructure</strong>
+                            <ul class="skill-list-clean">
+                                <li>Computer Networking &amp; Network Fundamentals</li>
+                                <li>TCP/IP, OSI Model &amp; Network Protocols</li>
+                                <li>IP Addressing, Subnetting &amp; Routing Fundamentals</li>
+                                <li>LAN, WAN, DNS, DHCP &amp; Network Troubleshooting</li>
+                                <li>Basic Network Security &amp; Network Monitoring</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <strong style="display:block; margin-bottom:8px; font-size:0.9rem; color:#fff;">Software, Systems &amp; Web</strong>
+                            <ul class="skill-list-clean">
+                                <li>C, C++ &amp; Python Programming</li>
+                                <li>Java Programming &amp; Object-Oriented Programming (OOP)</li>
+                                <li>Data Structures &amp; Algorithms</li>
+                                <li>Database Management Systems (DBMS) &amp; SQL</li>
+                                <li>Operating Systems &amp; Computer Architecture</li>
+                                <li>Machine Learning Fundamentals</li>
+                                <li>Software Engineering &amp; SDLC</li>
+                                <li>Web Technologies: HTML, CSS &amp; JavaScript</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="drawer-education">
+                    <h3 class="drawer-section-title">03 / Education History</h3>
+                    <div class="timeline-entry-box">
+                        <span class="timeline-time-tag">30/01/2020 &mdash; 01/06/2022</span>
+                        <h4 class="timeline-main-title">Intermediate (10+2)</h4>
+                        <p class="timeline-school-name">Government Boys Higher Secondary School, Magam</p>
+                        <p style="font-size:0.82rem; color:var(--text-muted); margin-top:4px;">
+                            <strong>Core:</strong> English, Physics, Chemistry, Mathematics, Computer Programming
+                        </p>
+                    </div>
+
+                    <div class="timeline-entry-box">
+                        <span class="timeline-time-tag">01/01/2019 &mdash; 10/01/2020</span>
+                        <h4 class="timeline-main-title">10th Grade Examination</h4>
+                        <p class="timeline-school-name">Green View Public High School, Magam</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================
+         COMBINED 3D CURSOR & SCROLL PARALLAX ENGINE
+    ======================================================== -->
+    <script>
+        function openDrawer(section) {
+            const drawer = document.getElementById('resumeDrawer');
+            drawer.classList.add('active');
+            if (section && section !== 'all') {
+                const target = document.getElementById('drawer-' + section);
+                if (target) {
+                    setTimeout(() => target.scrollIntoView({ behavior: 'smooth' }), 100);
+                }
+            }
+        }
+
+        function closeDrawer() {
+            document.getElementById('resumeDrawer').classList.remove('active');
+        }
+
+        function closeDrawerOnOut(e) {
+            if (e.target.id === 'resumeDrawer') closeDrawer();
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeDrawer();
+        });
+
+        (function() {
+            const canvas = document.getElementById('depth-canvas');
+            const ctx = canvas.getContext('2d');
+            const torch = document.getElementById('cursorTorch');
+            const sil1 = document.getElementById('sil1');
+            const sil2 = document.getElementById('sil2');
+
+            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            let width = 0;
+            let height = 0;
+            let dpr = window.devicePixelRatio || 1;
+
+            const state = {
+                mouseX: window.innerWidth * 0.5,
+                mouseY: window.innerHeight * 0.5,
+                targetMouseX: window.innerWidth * 0.5,
+                targetMouseY: window.innerHeight * 0.5,
+                torchX: window.innerWidth * 0.5,
+                torchY: window.innerHeight * 0.5,
+                scrollY: window.scrollY || 0,
+                targetScrollY: window.scrollY || 0,
+                isMouseActive: false,
+                isTouch: false
+            };
+
+            function resize() {
+                width = window.innerWidth;
+                height = window.innerHeight;
+                dpr = Math.min(window.devicePixelRatio || 1, 2);
+                canvas.width = width * dpr;
+                canvas.height = height * dpr;
+                ctx.scale(dpr, dpr);
+            }
+
+            window.addEventListener('resize', resize);
+            resize();
+
+            window.addEventListener('scroll', () => {
+                state.targetScrollY = window.scrollY || window.pageYOffset;
+            }, { passive: true });
+
+            const ELEMENT_COUNT = Math.min(Math.floor((width * height) / 22000), 52);
+            const elements = [];
+
+            class DepthEntity {
+                constructor() {
+                    this.init(true);
+                }
+
+                init(randomSpawn = false) {
+                    this.x = Math.random() * width;
+                    this.baseY = randomSpawn ? Math.random() * (height + 200) - 100 : height + 30;
+                    this.y = this.baseY;
+
+                    this.z = 0.15 + Math.random() * 0.85;
+
+                    this.size = (1.4 + this.z * 3.8);
+                    this.alpha = 0.07 + this.z * 0.28;
+
+                    this.isPlate = Math.random() > 0.75;
+                    this.plateWidth = (6 + this.z * 18);
+                    this.plateHeight = this.plateWidth * (0.35 + Math.random() * 0.3);
+                    this.rotation = Math.random() * Math.PI * 2;
+                    this.rotSpeed = (Math.random() - 0.5) * 0.005;
+
+                    this.idleSpeedY = 0.12 + (1 - this.z) * 0.22;
+                    this.driftPhaseX = Math.random() * Math.PI * 2;
+                    this.driftSpeedX = 0.0006 + Math.random() * 0.001;
+                    this.driftAmpX = 14 + (1 - this.z) * 22;
+
+                    this.scrollFactor = (this.z - 0.45) * 0.42;
+
+                    const roll = Math.random();
+                    if (roll > 0.6) {
+                        this.color = '217, 119, 54';
+                    } else if (roll > 0.3) {
+                        this.color = '245, 158, 86';
+                    } else {
+                        this.color = '240, 237, 230';
+                    }
+                }
+
+                update(timestamp, cursorNdcX, cursorNdcY, scrollDelta) {
+                    this.baseY -= this.idleSpeedY;
+                    const idleOffsetX = Math.sin(timestamp * this.driftSpeedX + this.driftPhaseX) * this.driftAmpX;
+
+                    if (this.baseY < -50) {
+                        this.init(false);
+                    }
+
+                    const cursorParallaxX = cursorNdcX * (this.z * 38);
+                    const cursorParallaxY = cursorNdcY * (this.z * 38);
+
+                    const scrollDisplacementY = scrollDelta * this.scrollFactor;
+
+                    const screenX = this.x + idleOffsetX + cursorParallaxX;
+                    const screenY = this.baseY + cursorParallaxY + scrollDisplacementY;
+
+                    let pushX = 0;
+                    let pushY = 0;
+                    if (state.isMouseActive) {
+                        const dx = screenX - state.mouseX;
+                        const dy = screenY - state.mouseY;
+                        const distSq = dx * dx + dy * dy;
+                        const maxDist = 300;
+
+                        if (distSq < maxDist * maxDist) {
+                            const dist = Math.sqrt(distSq);
+                            const proximityFactor = (1 - dist / maxDist) * this.z * 20;
+                            pushX = (dx / dist) * proximityFactor;
+                            pushY = (dy / dist) * proximityFactor;
+                        }
+                    }
+
+                    this.draw(screenX + pushX, screenY + pushY);
+                }
+
+                draw(renderX, renderY) {
+                    if (renderX < -30 || renderX > width + 30 || renderY < -30 || renderY > height + 30) {
+                        return;
+                    }
+
+                    ctx.save();
+                    ctx.translate(renderX, renderY);
+
+                    if (this.isPlate) {
+                        this.rotation += this.rotSpeed;
+                        ctx.rotate(this.rotation);
+                        ctx.fillStyle = `rgba(${this.color}, ${this.alpha * 0.6})`;
+                        ctx.fillRect(-this.plateWidth * 0.5, -this.plateHeight * 0.5, this.plateWidth, this.plateHeight);
+                    } else {
+                        const gradient = ctx.createRadialGradient(0, 0, 0, 0, 0, this.size * 2);
+                        gradient.addColorStop(0, `rgba(${this.color}, ${this.alpha})`);
+                        gradient.addColorStop(0.45, `rgba(${this.color}, ${this.alpha * 0.45})`);
+                        gradient.addColorStop(1, `rgba(${this.color}, 0)`);
+
+                        ctx.fillStyle = gradient;
+                        ctx.beginPath();
+                        ctx.arc(0, 0, this.size * 2, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+
+                    ctx.restore();
+                }
+            }
+
+            for (let i = 0; i < ELEMENT_COUNT; i++) {
+                elements.push(new DepthEntity());
+            }
+
+            window.addEventListener('mousemove', (e) => {
+                state.targetMouseX = e.clientX;
+                state.targetMouseY = e.clientY;
+                if (!state.isMouseActive) {
+                    state.isMouseActive = true;
+                    torch.classList.add('active');
+                }
+            }, { passive: true });
+
+            window.addEventListener('touchstart', () => {
+                state.isTouch = true;
+                state.isMouseActive = false;
+                torch.classList.remove('active');
+            }, { passive: true });
+
+            document.addEventListener('mouseleave', () => {
+                state.targetMouseX = width * 0.5;
+                state.targetMouseY = height * 0.5;
+                state.isMouseActive = false;
+                torch.classList.remove('active');
+            });
+
+            function renderLoop(timestamp) {
+                ctx.clearRect(0, 0, width, height);
+
+                if (!prefersReducedMotion) {
+                    const lerpFactor = 0.055;
+                    state.mouseX += (state.targetMouseX - state.mouseX) * lerpFactor;
+                    state.mouseY += (state.targetMouseY - state.mouseY) * lerpFactor;
+
+                    state.scrollY += (state.targetScrollY - state.scrollY) * 0.08;
+
+                    state.torchX += (state.targetMouseX - state.torchX) * 0.085;
+                    state.torchY += (state.targetMouseY - state.torchY) * 0.085;
+                    torch.style.transform = `translate3d(${state.torchX}px, ${state.torchY}px, 0)`;
+
+                    const cursorNdcX = (state.mouseX / width - 0.5) * 2;
+                    const cursorNdcY = (state.mouseY / height - 0.5) * 2;
+
+                    const bgParallaxScroll1 = -state.scrollY * 0.12;
+                    const bgParallaxScroll2 = -state.scrollY * 0.18;
+
+                    sil1.style.transform = `translate3d(${cursorNdcX * 24}px, ${cursorNdcY * 20 + bgParallaxScroll1}px, 0)`;
+                    sil2.style.transform = `translate3d(${-cursorNdcX * 28}px, ${-cursorNdcY * 24 + bgParallaxScroll2}px, 0)`;
+
+                    for (let i = 0; i < elements.length; i++) {
+                        elements[i].update(timestamp, cursorNdcX, cursorNdcY, state.scrollY);
+                    }
+                } else {
+                    for (let i = 0; i < elements.length; i++) {
+                        elements[i].draw(elements[i].x, elements[i].baseY);
+                    }
+                }
+
+                requestAnimationFrame(renderLoop);
+            }
+
+            requestAnimationFrame(renderLoop);
+        })();
+    </script>
+</body>
+</html>
