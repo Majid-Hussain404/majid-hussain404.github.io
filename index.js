@@ -3,7 +3,7 @@ const modalHeaders = {
     all: "Majid Hussain Mir — Complete Dossier",
     objective: "01 // Career Objective",
     capabilities: "02 // Technical & Professional Skills",
-    education: "03 // Academic History"
+    education: "03 // Education History"
 };
 
 function openModal(sectionKey) {
