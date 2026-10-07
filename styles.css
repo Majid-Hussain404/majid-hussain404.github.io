@@ -26,7 +26,7 @@
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 18px;
     width: 100%;
-    max-width: 900px;
+    max-width: 860px;
     box-shadow: 0 30px 60px rgba(0, 0, 0, 0.85);
     transform: translateY(16px);
     transition: transform 0.25s ease, max-width 0.25s ease;
@@ -40,7 +40,7 @@
     transform: translateY(0);
 }
 
-/* Slimmer layout for single-column sections (Objective, Education) */
+/* Dynamic width adaptation based on content scope */
 .modal-card.narrow {
     max-width: 580px;
 }
@@ -93,7 +93,7 @@
     border-radius: 4px;
 }
 
-/* Dynamic Section Filtering State */
+/* Dynamic Content Section Visibility */
 .dossier-section {
     display: block;
 }
