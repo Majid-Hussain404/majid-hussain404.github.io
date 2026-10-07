@@ -21,7 +21,7 @@
             --pill-white: #ffffff;
             --pill-dark: #000000;
             --border-glass: rgba(255, 255, 255, 0.08);
-            --dropdown-bg: #141210;
+            --modal-bg: #151310;
             --font-main: 'Plus Jakarta Sans', -apple-system, sans-serif;
             --font-code: 'JetBrains Mono', monospace;
         }
@@ -46,7 +46,7 @@
             position: relative;
         }
 
-        /* 3D Depth Canvas and Atmospheric Elements */
+        /* 3D Depth Stage & Canvas */
         .stage-container {
             position: fixed;
             inset: 0;
@@ -119,7 +119,7 @@
             z-index: 3;
         }
 
-        /* Viewport Layout */
+        /* Portfolio Foreground Viewport */
         .sq-viewport {
             position: relative;
             z-index: 10;
@@ -136,7 +136,6 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: relative;
         }
 
         .sq-brand {
@@ -151,12 +150,7 @@
         .sq-nav-items {
             display: flex;
             align-items: center;
-            gap: 20px;
-        }
-
-        /* Nav Dropdown Wrappers */
-        .nav-item-dropdown {
-            position: relative;
+            gap: 28px;
         }
 
         .sq-nav-btn {
@@ -167,181 +161,15 @@
             font-weight: 500;
             letter-spacing: 0.04em;
             text-transform: uppercase;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
             cursor: pointer;
             padding: 8px 12px;
             border-radius: 6px;
-            transition: all 0.2s ease;
+            transition: color 0.2s, background 0.2s;
         }
 
-        .sq-nav-btn:hover,
-        .sq-nav-btn.active {
+        .sq-nav-btn:hover {
             color: var(--text-high);
             background: rgba(255, 255, 255, 0.05);
-        }
-
-        .dropdown-chevron {
-            font-size: 0.65rem;
-            transition: transform 0.25s ease;
-        }
-
-        .sq-nav-btn.active .dropdown-chevron {
-            transform: rotate(180deg);
-        }
-
-        /* Isolated Floating Dropdown Panels */
-        .dropdown-panel {
-            display: none;
-            position: absolute;
-            top: calc(100% + 12px);
-            right: 0;
-            background: var(--dropdown-bg);
-            border: 1px solid var(--border-glass);
-            border-radius: 16px;
-            padding: 24px;
-            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.85), 0 0 1px rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(28px);
-            -webkit-backdrop-filter: blur(28px);
-            z-index: 1000;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-
-        .dropdown-panel.active {
-            display: block;
-            animation: panelFade 0.2s ease-out forwards;
-        }
-
-        @keyframes panelFade {
-            from {
-                opacity: 0;
-                transform: translateY(8px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .dropdown-panel::-webkit-scrollbar {
-            width: 4px;
-        }
-        .dropdown-panel::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 4px;
-        }
-
-        /* Widths strictly tuned for each isolated component */
-        .panel-objective {
-            width: 400px;
-        }
-
-        .panel-capabilities {
-            width: 640px;
-        }
-
-        .panel-education {
-            width: 440px;
-        }
-
-        .panel-title {
-            font-size: 0.78rem;
-            font-family: var(--font-code);
-            text-transform: uppercase;
-            letter-spacing: 0.12em;
-            color: var(--accent-warm);
-            margin-bottom: 14px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .panel-text {
-            color: var(--text-mid);
-            font-size: 0.9rem;
-            line-height: 1.75;
-        }
-
-        .skills-dropdown-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 22px;
-        }
-
-        .skills-group-block {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .skills-group-block h4 {
-            font-size: 0.82rem;
-            font-weight: 600;
-            color: #ffffff;
-            margin-bottom: 4px;
-        }
-
-        .skill-list-clean {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .skill-list-clean li {
-            font-size: 0.82rem;
-            color: var(--text-mid);
-            position: relative;
-            padding-left: 14px;
-            line-height: 1.45;
-        }
-
-        .skill-list-clean li::before {
-            content: '—';
-            position: absolute;
-            left: 0;
-            color: var(--text-muted);
-        }
-
-        .edu-item {
-            padding: 14px 0;
-            border-bottom: 1px solid var(--border-glass);
-        }
-
-        .edu-item:first-child {
-            padding-top: 0;
-        }
-
-        .edu-item:last-child {
-            border-bottom: none;
-            padding-bottom: 0;
-        }
-
-        .edu-date-tag {
-            font-family: var(--font-code);
-            font-size: 0.72rem;
-            color: var(--accent-warm);
-        }
-
-        .edu-degree {
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: #ffffff;
-            margin: 2px 0;
-        }
-
-        .edu-school {
-            font-size: 0.84rem;
-            color: var(--text-mid);
-        }
-
-        .edu-desc {
-            font-size: 0.78rem;
-            color: var(--text-muted);
-            margin-top: 4px;
-            line-height: 1.45;
         }
 
         .sq-btn-pill {
@@ -425,7 +253,7 @@
             border-color: rgba(255, 255, 255, 0.2);
         }
 
-        /* Footer specs row */
+        /* Bottom Status Row */
         .sq-bottom-strip {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -455,29 +283,201 @@
             font-weight: 500;
         }
 
+        /* ========================================================
+           SEPARATE INDIVIDUAL POPUP MODALS
+        ======================================================== */
+        .popup-backdrop {
+            position: fixed;
+            inset: 0;
+            z-index: 200;
+            background: rgba(8, 7, 6, 0.82);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+        }
+
+        .popup-backdrop.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .popup-card {
+            background: var(--modal-bg);
+            border: 1px solid var(--border-glass);
+            border-radius: 18px;
+            width: 100%;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.85);
+            transform: translateY(16px);
+            transition: transform 0.25s ease;
+            overflow: hidden;
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .popup-backdrop.active .popup-card {
+            transform: translateY(0);
+        }
+
+        /* Sizing variants for strictly separated cards */
+        .card-objective { max-width: 580px; }
+        .card-capabilities { max-width: 860px; }
+        .card-education { max-width: 580px; }
+
+        .popup-header {
+            padding: 22px 28px;
+            border-bottom: 1px solid var(--border-glass);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .popup-title {
+            font-family: var(--font-code);
+            font-size: 0.82rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--accent-warm);
+        }
+
+        .popup-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.6rem;
+            cursor: pointer;
+            line-height: 1;
+            padding: 0;
+            transition: color 0.2s;
+        }
+
+        .popup-close:hover {
+            color: var(--text-high);
+        }
+
+        .popup-body {
+            padding: 28px;
+            overflow-y: auto;
+        }
+
+        .popup-body::-webkit-scrollbar {
+            width: 4px;
+        }
+        .popup-body::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 4px;
+        }
+
+        .objective-text {
+            color: var(--text-mid);
+            font-size: 0.96rem;
+            line-height: 1.8;
+        }
+
+        /* Capabilities layout */
+        .skills-grid-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 28px;
+        }
+
+        .skill-column {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .skill-column h4 {
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 8px;
+        }
+
+        .skill-list-clean {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .skill-list-clean li {
+            font-size: 0.84rem;
+            color: var(--text-mid);
+            position: relative;
+            padding-left: 14px;
+            line-height: 1.45;
+        }
+
+        .skill-list-clean li::before {
+            content: '—';
+            position: absolute;
+            left: 0;
+            color: var(--text-muted);
+        }
+
+        /* Education layout */
+        .edu-entry-box {
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border-glass);
+        }
+
+        .edu-entry-box:first-child {
+            padding-top: 0;
+        }
+
+        .edu-entry-box:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .edu-date {
+            font-family: var(--font-code);
+            font-size: 0.74rem;
+            color: var(--accent-warm);
+        }
+
+        .edu-title {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin: 4px 0 2px;
+        }
+
+        .edu-school {
+            font-size: 0.9rem;
+            color: var(--text-mid);
+        }
+
+        .edu-notes {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            margin-top: 6px;
+            line-height: 1.45;
+        }
+
         @media (max-width: 900px) {
             .sq-viewport {
                 padding: 24px 20px;
             }
             .sq-nav-items {
-                gap: 8px;
+                gap: 12px;
             }
             .sq-nav-btn {
-                font-size: 0.78rem;
+                font-size: 0.8rem;
                 padding: 6px 8px;
             }
             .sq-bottom-strip {
                 grid-template-columns: 1fr 1fr;
                 gap: 16px;
             }
-            .panel-objective,
-            .panel-capabilities,
-            .panel-education {
-                width: 88vw;
-                max-width: 360px;
-                right: -20px;
-            }
-            .skills-dropdown-grid {
+            .skills-grid-layout {
                 grid-template-columns: 1fr;
             }
         }
@@ -509,100 +509,9 @@
         <header class="sq-header">
             <a href="#" class="sq-brand">Majid Hussain Mir</a>
             <nav class="sq-nav-items">
-                
-                <!-- 1. OBJECTIVE ISOLATED DROPDOWN (ONLY Objective details) -->
-                <div class="nav-item-dropdown">
-                    <button class="sq-nav-btn" onclick="toggleDropdown('objective', event)">
-                        Objective <span class="dropdown-chevron">▼</span>
-                    </button>
-                    <div class="dropdown-panel panel-objective" id="dropdown-objective">
-                        <span class="panel-title">// Career Objective</span>
-                        <p class="panel-text">
-                            Motivated B.Tech CSE student seeking an entry-level opportunity in Computer Networking and IT infrastructure[cite: 1]. Eager to apply my knowledge of networking, programming, troubleshooting, and problem-solving while gaining practical industry experience[cite: 1]. A quick learner with a strong work ethic, committed to continuously developing technical skills and contributing effectively to organizational goals[cite: 1].
-                        </p>
-                    </div>
-                </div>
-
-                <!-- 2. CAPABILITIES ISOLATED DROPDOWN (ONLY Capabilities details) -->
-                <div class="nav-item-dropdown">
-                    <button class="sq-nav-btn" onclick="toggleDropdown('capabilities', event)">
-                        Capabilities <span class="dropdown-chevron">▼</span>
-                    </button>
-                    <div class="dropdown-panel panel-capabilities" id="dropdown-capabilities">
-                        <span class="panel-title">// Technical &amp; Professional Skills</span>
-                        <div class="skills-dropdown-grid">
-                            
-                            <div class="skills-group-block">
-                                <h4>Machine Learning &amp; AI</h4>
-                                <ul class="skill-list-clean">
-                                    <li>Machine Learning Fundamentals (Supervised &amp; Unsupervised)</li>
-                                    <li>Python for Data Science (NumPy, Pandas, Scikit-Learn)</li>
-                                    <li>Deep Learning &amp; Neural Network Architectures</li>
-                                    <li>LLMs, Generative AI &amp; Prompt Engineering</li>
-                                    <li>Model Evaluation &amp; Feature Engineering</li>
-                                </ul>
-
-                                <h4 style="margin-top: 14px;">Networking &amp; Infrastructure</h4>
-                                <ul class="skill-list-clean">
-                                    <li>Computer Networking &amp; Network Fundamentals[cite: 1]</li>
-                                    <li>TCP/IP, OSI Model &amp; Network Protocols[cite: 1]</li>
-                                    <li>IP Addressing, Subnetting &amp; Routing Fundamentals[cite: 1]</li>
-                                    <li>LAN, WAN, DNS, DHCP &amp; Network Troubleshooting[cite: 1]</li>
-                                    <li>Basic Network Security &amp; Network Monitoring[cite: 1]</li>
-                                </ul>
-                            </div>
-
-                            <div class="skills-group-block">
-                                <h4>Cloud &amp; Modern Systems</h4>
-                                <ul class="skill-list-clean">
-                                    <li>Linux Command Line, Shell Scripting &amp; Bash</li>
-                                    <li>Git, GitHub &amp; Version Control Workflows</li>
-                                    <li>Containerization Fundamentals (Docker)</li>
-                                    <li>Cloud Computing Concepts (AWS / Infrastructure)</li>
-                                    <li>RESTful APIs, Client-Server Architectures</li>
-                                </ul>
-
-                                <h4 style="margin-top: 14px;">Programming &amp; Software</h4>
-                                <ul class="skill-list-clean">
-                                    <li>C, C++ &amp; Python Programming[cite: 1]</li>
-                                    <li>Java &amp; Object-Oriented Programming (OOP)[cite: 1]</li>
-                                    <li>Data Structures &amp; Algorithms[cite: 1]</li>
-                                    <li>Database Management Systems (DBMS) &amp; SQL[cite: 1]</li>
-                                    <li>Operating Systems &amp; Computer Architecture[cite: 1]</li>
-                                    <li>Software Engineering &amp; SDLC[cite: 1]</li>
-                                    <li>Web Technologies: HTML, CSS &amp; JavaScript[cite: 1]</li>
-                                </ul>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 3. EDUCATION ISOLATED DROPDOWN (ONLY Education details) -->
-                <div class="nav-item-dropdown">
-                    <button class="sq-nav-btn" onclick="toggleDropdown('education', event)">
-                        Education <span class="dropdown-chevron">▼</span>
-                    </button>
-                    <div class="dropdown-panel panel-education" id="dropdown-education">
-                        <span class="panel-title">// Academic Background</span>
-                        
-                        <div class="edu-item">
-                            <span class="edu-date-tag">30/01/2020 — 01/06/2022</span>
-                            <h4 class="edu-degree">Intermediate (10+2)[cite: 1]</h4>
-                            <p class="edu-school">Government Boys Higher Secondary School, Magam[cite: 1]</p>
-                            <p class="edu-desc">
-                                <strong>Core Focus:</strong> English, Physics, Chemistry, Mathematics, Computer Programming[cite: 1]
-                            </p>
-                        </div>
-
-                        <div class="edu-item">
-                            <span class="edu-date-tag">01/01/2019 — 10/01/2020</span>
-                            <h4 class="edu-degree">10th Grade Examination[cite: 1]</h4>
-                            <p class="edu-school">Green View Public High School, Magam[cite: 1]</p>
-                        </div>
-                    </div>
-                </div>
-
+                <button class="sq-nav-btn" onclick="openSectionModal('objective')">Objective</button>
+                <button class="sq-nav-btn" onclick="openSectionModal('capabilities')">Capabilities</button>
+                <button class="sq-nav-btn" onclick="openSectionModal('education')">Education</button>
                 <a href="mailto:majidhussainmir239@gmail.com" class="sq-btn-pill">Contact</a>
             </nav>
         </header>
@@ -645,45 +554,154 @@
             </div>
             <div class="metric-block">
                 <span class="metric-num">Indian</span>
-                <span class="metric-desc">Nationality &bull; Male &bull; 02/09/2005[cite: 1]</span>
+                <span class="metric-desc">Nationality &bull; Male &bull; 02/09/2005</span>
             </div>
         </footer>
 
     </div>
 
-    <!-- Dropdown Control Script (Ensures complete isolation) -->
+    <!-- 1. ONLY OBJECTIVE MODAL -->
+    <div class="popup-backdrop" id="modal-objective" onclick="closeOnBackdrop(event, 'modal-objective')">
+        <div class="popup-card card-objective">
+            <div class="popup-header">
+                <span class="popup-title">01 // Career Objective</span>
+                <button class="popup-close" onclick="closeSectionModal('objective')">&times;</button>
+            </div>
+            <div class="popup-body">
+                <p class="objective-text">
+                    Motivated B.Tech CSE student seeking an entry-level opportunity in Computer Networking and IT infrastructure[cite: 1, 8]. Eager to apply my knowledge of networking, programming, troubleshooting, and problem-solving while gaining practical industry experience[cite: 1, 8]. A quick learner with a strong work ethic, committed to continuously developing technical skills and contributing effectively to organizational goals[cite: 1, 8].
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. ONLY CAPABILITIES MODAL -->
+    <div class="popup-backdrop" id="modal-capabilities" onclick="closeOnBackdrop(event, 'modal-capabilities')">
+        <div class="popup-card card-capabilities">
+            <div class="popup-header">
+                <span class="popup-title">02 // Technical &amp; Professional Skills</span>
+                <button class="popup-close" onclick="closeSectionModal('capabilities')">&times;</button>
+            </div>
+            <div class="popup-body">
+                <div class="skills-grid-layout">
+                    
+                    <div class="skill-column">
+                        <div>
+                            <h4>Machine Learning &amp; AI</h4>
+                            <ul class="skill-list-clean">
+                                <li>Machine Learning Fundamentals (Supervised &amp; Unsupervised)</li>
+                                <li>Python for Data Science (NumPy, Pandas, Scikit-Learn)</li>
+                                <li>Deep Learning &amp; Neural Network Architectures</li>
+                                <li>LLMs, Generative AI &amp; Prompt Engineering</li>
+                                <li>Model Evaluation, Data Preprocessing &amp; Feature Engineering</li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h4>Networking &amp; Infrastructure</h4>
+                            <ul class="skill-list-clean">
+                                <li>Computer Networking &amp; Network Fundamentals[cite: 1, 8]</li>
+                                <li>TCP/IP, OSI Model &amp; Network Protocols[cite: 1, 8]</li>
+                                <li>IP Addressing, Subnetting &amp; Routing Fundamentals[cite: 1, 8]</li>
+                                <li>LAN, WAN, DNS, DHCP &amp; Network Troubleshooting[cite: 1, 8]</li>
+                                <li>Basic Network Security &amp; Network Monitoring[cite: 1, 8]</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="skill-column">
+                        <div>
+                            <h4>Cloud &amp; Modern Systems</h4>
+                            <ul class="skill-list-clean">
+                                <li>Linux Command Line, Shell Scripting &amp; Bash</li>
+                                <li>Git, GitHub &amp; Version Control Workflows</li>
+                                <li>Containerization Fundamentals (Docker)</li>
+                                <li>Cloud Computing Concepts (AWS / Cloud Architecture)</li>
+                                <li>RESTful APIs, Client-Server Architectures &amp; Webhooks</li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h4>Programming &amp; Software</h4>
+                            <ul class="skill-list-clean">
+                                <li>C, C++ &amp; Python Programming[cite: 1, 8]</li>
+                                <li>Java Programming &amp; Object-Oriented Programming (OOP)[cite: 1, 8]</li>
+                                <li>Data Structures &amp; Algorithms[cite: 1, 8]</li>
+                                <li>Database Management Systems (DBMS) &amp; SQL[cite: 1, 8]</li>
+                                <li>Operating Systems &amp; Computer Architecture[cite: 1, 8]</li>
+                                <li>Software Engineering &amp; SDLC[cite: 1, 8]</li>
+                                <li>Web Technologies: HTML, CSS &amp; JavaScript[cite: 1, 8]</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. ONLY EDUCATION MODAL -->
+    <div class="popup-backdrop" id="modal-education" onclick="closeOnBackdrop(event, 'modal-education')">
+        <div class="popup-card card-education">
+            <div class="popup-header">
+                <span class="popup-title">03 // Academic History</span>
+                <button class="popup-close" onclick="closeSectionModal('education')">&times;</button>
+            </div>
+            <div class="popup-body">
+                <div class="edu-entry-box">
+                    <span class="edu-date">30/01/2020 &mdash; 01/06/2022</span>
+                    <h3 class="edu-title">Intermediate (10+2)[cite: 1]</h3>
+                    <p class="edu-school">Government Boys Higher Secondary School, Magam[cite: 1]</p>
+                    <p class="edu-notes">
+                        <strong>Core Subjects:</strong> English, Physics, Chemistry, Mathematics, Computer Programming[cite: 1]
+                    </p>
+                </div>
+
+                <div class="edu-entry-box">
+                    <span class="edu-date">01/01/2019 &mdash; 10/01/2020</span>
+                    <h3 class="edu-title">10th Grade Examination[cite: 1]</h3>
+                    <p class="edu-school">Green View Public High School, Magam[cite: 1]</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dedicated Modal Switch Script -->
     <script>
-        function toggleDropdown(name, event) {
-            event.stopPropagation();
-            const panel = document.getElementById('dropdown-' + name);
-            const button = event.currentTarget;
-            const isAlreadyOpen = panel.classList.contains('active');
+        function openSectionModal(id) {
+            // Close any currently active modal first
+            closeAllModals();
 
-            // Close every open dropdown first
-            closeAllDropdowns();
-
-            // Toggle only the clicked panel
-            if (!isAlreadyOpen) {
-                panel.classList.add('active');
-                button.classList.add('active');
+            // Open strictly the requested modal
+            const target = document.getElementById('modal-' + id);
+            if (target) {
+                target.classList.add('active');
             }
         }
 
-        function closeAllDropdowns() {
-            document.querySelectorAll('.dropdown-panel').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('.sq-nav-btn').forEach(b => b.classList.remove('active'));
+        function closeSectionModal(id) {
+            const target = document.getElementById('modal-' + id);
+            if (target) {
+                target.classList.remove('active');
+            }
         }
 
-        // Close on clicking outside
-        document.addEventListener('click', (e) => {
-            if (!e.target.closest('.nav-item-dropdown')) {
-                closeAllDropdowns();
-            }
-        });
+        function closeAllModals() {
+            document.querySelectorAll('.popup-backdrop').forEach(modal => {
+                modal.classList.remove('active');
+            });
+        }
 
-        // Close on ESC
+        function closeOnBackdrop(event, id) {
+            if (event.target.id === id) {
+                document.getElementById(id).classList.remove('active');
+            }
+        }
+
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') closeAllDropdowns();
+            if (e.key === 'Escape') {
+                closeAllModals();
+            }
         });
     </script>
 
