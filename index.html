@@ -51,7 +51,6 @@
             padding: 0;
         }
 
-        /* Lock full viewport layout */
         html, body {
             height: 100vh;
             width: 100vw;
@@ -62,9 +61,7 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* ========================================================
-           MULTI-COLOR MESH BACKGROUND
-        ======================================================== */
+        /* Ambient Multi-Color Mesh Backdrop */
         .viewport-mesh {
             position: fixed;
             inset: 0;
@@ -95,9 +92,7 @@
             background: rgba(255, 255, 255, 0.2);
         }
 
-        /* ========================================================
-           FIT-TO-WINDOW DESKTOP SHELL
-        ======================================================== */
+        /* Window Frame */
         .window-frame {
             position: relative;
             z-index: 1;
@@ -160,10 +155,10 @@
             background: rgba(255, 255, 255, 0.6);
         }
 
-        /* Three-Column Viewport Fit Grid */
+        /* 3-Column Fit Grid */
         .window-grid {
             flex: 1;
-            min-height: 0; /* Critical for inner scrolling */
+            min-height: 0;
             display: grid;
             grid-template-columns: 1.15fr 1.35fr 1fr;
             gap: 32px;
@@ -178,7 +173,6 @@
             height: 100%;
         }
 
-        /* Section Styling Without Boxes */
         .pane-section {
             display: flex;
             flex-direction: column;
@@ -191,7 +185,6 @@
             padding-right: 8px;
         }
 
-        /* Custom Sleek Scrollbar */
         .pane-section.scrollable::-webkit-scrollbar {
             width: 4px;
         }
@@ -220,14 +213,12 @@
             background: var(--line-subtle);
         }
 
-        /* Typography Inside Panes */
         .objective-copy {
             font-size: 0.88rem;
             line-height: 1.65;
             color: var(--text-secondary);
         }
 
-        /* Profile Data List */
         .profile-specs {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -250,7 +241,6 @@
             color: var(--text-main);
         }
 
-        /* Skills Layout */
         .skill-group {
             margin-bottom: 16px;
         }
@@ -284,7 +274,6 @@
             color: var(--text-muted);
         }
 
-        /* Education Stack */
         .edu-entry {
             margin-bottom: 16px;
             padding-bottom: 12px;
@@ -323,7 +312,7 @@
             line-height: 1.4;
         }
 
-        /* Bottom Bar */
+        /* Bottom Status Bar */
         .window-bottombar {
             display: flex;
             justify-content: space-between;
@@ -336,7 +325,6 @@
             flex-shrink: 0;
         }
 
-        /* Mobile fallback: Allows clean scrolling if screen height is too small */
         @media (max-width: 1024px), (max-height: 650px) {
             html, body {
                 height: auto;
@@ -361,7 +349,7 @@
 </head>
 <body>
 
-    <!-- Ambient Mesh Gradient Layer -->
+    <!-- Ambient Mesh Layer -->
     <div class="viewport-mesh" aria-hidden="true">
         <div class="mesh-orb orb-peach"></div>
         <div class="mesh-orb orb-cyan"></div>
@@ -371,10 +359,9 @@
         <div class="mesh-diffusion"></div>
     </div>
 
-    <!-- Main Viewport-Fitting Workspace -->
     <div class="window-frame">
 
-        <!-- Top Header Bar -->
+        <!-- Header -->
         <header class="window-topbar">
             <div class="nameplate">
                 <h1>Majid Hussain Mir</h1>
@@ -393,10 +380,10 @@
             </div>
         </header>
 
-        <!-- 3-Column Fit-to-Window Dashboard -->
+        <!-- 3-Column Layout -->
         <main class="window-grid">
 
-            <!-- Column 1: Objective & Personal Metrics -->
+            <!-- Column 1: Objective & Personal Profile -->
             <div class="grid-column">
                 <section class="pane-section">
                     <span class="section-tag">01 // Profile Summary</span>
@@ -410,15 +397,15 @@
                     <dl class="profile-specs">
                         <div class="spec-item">
                             <dt>Nationality</dt>
-                            <dd>Indian[cite: 1]</dd>
+                            <dd>Indian</dd>
                         </div>
                         <div class="spec-item">
                             <dt>Gender</dt>
-                            <dd>Male[cite: 1]</dd>
+                            <dd>Male</dd>
                         </div>
                         <div class="spec-item">
                             <dt>Date of Birth</dt>
-                            <dd>02/09/2005[cite: 1]</dd>
+                            <dd>02/09/2005</dd>
                         </div>
                         <div class="spec-item">
                             <dt>Region</dt>
@@ -436,7 +423,7 @@
                 </section>
             </div>
 
-            <!-- Column 2: Technical Competencies (Internally Scrollable If Needed) -->
+            <!-- Column 2: Skills -->
             <div class="grid-column">
                 <section class="pane-section scrollable">
                     <span class="section-tag">04 // Technical Competencies</span>
@@ -474,31 +461,31 @@
                 </section>
             </div>
 
-            <!-- Column 3: Education History -->
+            <!-- Column 3: Education -->
             <div class="grid-column">
                 <section class="pane-section scrollable">
                     <span class="section-tag">05 // Academic History</span>
 
                     <article class="edu-entry">
-                        <span class="edu-date">30/01/2020 &mdash; 01/06/2022</span>[cite: 1]
-                        <h3 class="edu-title">Intermediate (10+2)</h3>[cite: 1]
-                        <p class="edu-school">Govt. Boys Higher Secondary School, Magam</p>[cite: 1]
+                        <span class="edu-date">30/01/2020 &mdash; 01/06/2022</span>
+                        <h3 class="edu-title">Intermediate (10+2)</h3>
+                        <p class="edu-school">Govt. Boys Higher Secondary School, Magam[cite: 1]</p>
                         <p class="edu-courses">
                             <strong>Core:</strong> English, Physics, Chemistry, Mathematics, Computer Programming[cite: 1]
                         </p>
                     </article>
 
                     <article class="edu-entry">
-                        <span class="edu-date">01/01/2019 &mdash; 10/01/2020</span>[cite: 1]
-                        <h3 class="edu-title">10th Grade Examination</h3>[cite: 1]
-                        <p class="edu-school">Green View Public High School, Magam</p>[cite: 1]
+                        <span class="edu-date">01/01/2019 &mdash; 10/01/2020</span>
+                        <h3 class="edu-title">10th Grade Examination</h3>
+                        <p class="edu-school">Green View Public High School, Magam[cite: 1]</p>
                     </article>
                 </section>
             </div>
 
         </main>
 
-        <!-- Fixed Bottom Status Bar -->
+        <!-- Footer -->
         <footer class="window-bottombar">
             <span>RESUME // MAJID HUSSAIN MIR</span>
             <span>&copy; All Rights Reserved</span>
