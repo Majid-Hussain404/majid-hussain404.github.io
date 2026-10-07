@@ -1,4 +1,4 @@
-// Clean entry fade-in
+ // Clean entry fade-in
 document.addEventListener('DOMContentLoaded', () => {
     const wrapper = document.querySelector('.site-wrapper');
     if (wrapper) {
