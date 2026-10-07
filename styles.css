@@ -339,7 +339,7 @@
             border: 1px solid var(--border-glass);
             border-radius: 20px;
             width: 100%;
-            max-width: 900px;
+            max-width: 980px;
             max-height: 85vh;
             display: flex;
             flex-direction: column;
@@ -413,8 +413,14 @@
 
         .skills-grid-inner {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 28px;
+        }
+
+        .skills-col {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
 
         .skill-list-clean {
@@ -576,36 +582,66 @@
                 <div id="drawer-about">
                     <h3 class="drawer-section-title">01 / Career Objective</h3>
                     <p class="drawer-text">
-                        Motivated B.Tech CSE student seeking an entry-level opportunity in Computer Networking and IT infrastructure. Eager to apply my knowledge of networking, programming, troubleshooting, and problem-solving while gaining practical industry experience. A quick learner with a strong work ethic, committed to continuously developing technical skills and contributing effectively to organizational goals.
+                        Motivated B.Tech CSE student seeking an entry-level opportunity in Computer Networking and IT infrastructure[cite: 1]. Eager to apply my knowledge of networking, programming, troubleshooting, and problem-solving while gaining practical industry experience[cite: 1]. A quick learner with a strong work ethic, committed to continuously developing technical skills and contributing effectively to organizational goals[cite: 1].
                     </p>
                 </div>
 
                 <div id="drawer-skills">
                     <h3 class="drawer-section-title">02 / Technical &amp; Professional Skills</h3>
                     <div class="skills-grid-inner">
-                        <div>
-                            <strong style="display:block; margin-bottom:8px; font-size:0.9rem; color:#fff;">Networking &amp; Infrastructure</strong>
-                            <ul class="skill-list-clean">
-                                <li>Computer Networking &amp; Network Fundamentals</li>
-                                <li>TCP/IP, OSI Model &amp; Network Protocols</li>
-                                <li>IP Addressing, Subnetting &amp; Routing Fundamentals</li>
-                                <li>LAN, WAN, DNS, DHCP &amp; Network Troubleshooting</li>
-                                <li>Basic Network Security &amp; Network Monitoring</li>
-                            </ul>
+                        
+                        <!-- Column 1 -->
+                        <div class="skills-col">
+                            <div>
+                                <strong style="display:block; margin-bottom:8px; font-size:0.9rem; color:#fff;">Machine Learning &amp; Modern AI</strong>
+                                <ul class="skill-list-clean">
+                                    <li>Machine Learning Fundamentals (Supervised &amp; Unsupervised Learning)</li>
+                                    <li>Python for Data Science (NumPy, Pandas &amp; Scikit-Learn)</li>
+                                    <li>Deep Learning &amp; Neural Network Architectures</li>
+                                    <li>LLMs, Generative AI &amp; Prompt Engineering</li>
+                                    <li>Model Evaluation, Data Preprocessing &amp; Feature Engineering</li>
+                                </ul>
+                            </div>
+
+                            <div>
+                                <strong style="display:block; margin-bottom:8px; font-size:0.9rem; color:#fff;">Networking &amp; Infrastructure</strong>
+                                <ul class="skill-list-clean">
+                                    <li>Computer Networking &amp; Network Fundamentals[cite: 1]</li>
+                                    <li>TCP/IP, OSI Model &amp; Network Protocols[cite: 1]</li>
+                                    <li>IP Addressing, Subnetting &amp; Routing Fundamentals[cite: 1]</li>
+                                    <li>LAN, WAN, DNS, DHCP &amp; Network Troubleshooting[cite: 1]</li>
+                                    <li>Basic Network Security &amp; Network Monitoring[cite: 1]</li>
+                                </ul>
+                            </div>
                         </div>
-                        <div>
-                            <strong style="display:block; margin-bottom:8px; font-size:0.9rem; color:#fff;">Software, Systems &amp; Web</strong>
-                            <ul class="skill-list-clean">
-                                <li>C, C++ &amp; Python Programming</li>
-                                <li>Java Programming &amp; Object-Oriented Programming (OOP)</li>
-                                <li>Data Structures &amp; Algorithms</li>
-                                <li>Database Management Systems (DBMS) &amp; SQL</li>
-                                <li>Operating Systems &amp; Computer Architecture</li>
-                                <li>Machine Learning Fundamentals</li>
-                                <li>Software Engineering &amp; SDLC</li>
-                                <li>Web Technologies: HTML, CSS &amp; JavaScript</li>
-                            </ul>
+
+                        <!-- Column 2 -->
+                        <div class="skills-col">
+                            <div>
+                                <strong style="display:block; margin-bottom:8px; font-size:0.9rem; color:#fff;">Cloud, DevOps &amp; Modern Systems</strong>
+                                <ul class="skill-list-clean">
+                                    <li>Linux Command Line, Shell Scripting &amp; Bash</li>
+                                    <li>Git, GitHub &amp; Version Control Workflows</li>
+                                    <li>Containerization Fundamentals (Docker)</li>
+                                    <li>Cloud Computing Concepts (AWS / Cloud Infrastructure)</li>
+                                    <li>RESTful APIs, Client-Server Architectures &amp; Webhooks</li>
+                                </ul>
+                            </div>
+
+                            <div>
+                                <strong style="display:block; margin-bottom:8px; font-size:0.9rem; color:#fff;">Core Programming &amp; Systems</strong>
+                                <ul class="skill-list-clean">
+                                    <li>C, C++ &amp; Python Programming[cite: 1]</li>
+                                    <li>Java Programming &amp; Object-Oriented Programming (OOP)[cite: 1]</li>
+                                    <li>Data Structures &amp; Algorithms[cite: 1]</li>
+                                    <li>Database Management Systems (DBMS) &amp; SQL[cite: 1]</li>
+                                    <li>Operating Systems &amp; Computer Architecture[cite: 1]</li>
+                                    <li>Software Engineering &amp; SDLC[cite: 1]</li>
+                                    <li>Web Technologies: HTML, CSS &amp; JavaScript[cite: 1]</li>
+                                </ul>
+                            </div>
                         </div>
+
                     </div>
                 </div>
 
@@ -613,17 +649,17 @@
                     <h3 class="drawer-section-title">03 / Education History</h3>
                     <div class="timeline-entry-box">
                         <span class="timeline-time-tag">30/01/2020 &mdash; 01/06/2022</span>
-                        <h4 class="timeline-main-title">Intermediate (10+2)</h4>
-                        <p class="timeline-school-name">Government Boys Higher Secondary School, Magam</p>
+                        <h4 class="timeline-main-title">Intermediate (10+2)[cite: 1]</h4>
+                        <p class="timeline-school-name">Government Boys Higher Secondary School, Magam[cite: 1]</p>
                         <p style="font-size:0.82rem; color:var(--text-muted); margin-top:4px;">
-                            <strong>Core:</strong> English, Physics, Chemistry, Mathematics, Computer Programming
+                            <strong>Core:</strong> English, Physics, Chemistry, Mathematics, Computer Programming[cite: 1]
                         </p>
                     </div>
 
                     <div class="timeline-entry-box">
                         <span class="timeline-time-tag">01/01/2019 &mdash; 10/01/2020</span>
-                        <h4 class="timeline-main-title">10th Grade Examination</h4>
-                        <p class="timeline-school-name">Green View Public High School, Magam</p>
+                        <h4 class="timeline-main-title">10th Grade Examination[cite: 1]</h4>
+                        <p class="timeline-school-name">Green View Public High School, Magam[cite: 1]</p>
                     </div>
                 </div>
 
