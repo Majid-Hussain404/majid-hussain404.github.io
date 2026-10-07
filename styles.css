@@ -1,11 +1,14 @@
 :root {
-    --text-primary: #f8fafc;
-    --text-secondary: #cbd5e1;
-    --text-tertiary: #94a3b8;
-    --accent: #38bdf8;
-    --card-surface: rgba(15, 23, 42, 0.78);
-    --border-subtle: rgba(255, 255, 255, 0.12);
-    --font-base: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    --text-primary: #0f172a;
+    --text-secondary: #334155;
+    --text-tertiary: #64748b;
+    --border-subtle: rgba(15, 23, 42, 0.08);
+    --border-card: rgba(255, 255, 255, 0.65);
+    --card-surface: rgba(255, 255, 255, 0.78);
+    --accent-blue: #0284c7;
+
+    --font-serif: 'Instrument Serif', Georgia, serif;
+    --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 * {
@@ -16,16 +19,19 @@
 
 body {
     min-height: 100vh;
-    font-family: var(--font-base);
     color: var(--text-primary);
+    font-family: var(--font-sans);
     line-height: 1.65;
-    background-color: #0b0f19;
+    font-size: 0.95rem;
+    -webkit-font-smoothing: antialiased;
     position: relative;
     overflow-x: hidden;
-    -webkit-font-smoothing: antialiased;
+    background-color: #f8fafc;
 }
 
-/* Atmospheric Multi-Point Blurred Gradient matching image */
+/* ========================================================
+   ABSTRACT MESH GRADIENT (Matches Sample Image)
+======================================================== */
 .mesh-background {
     position: fixed;
     top: 0;
@@ -33,54 +39,114 @@ body {
     width: 100vw;
     height: 100vh;
     z-index: 1;
+    overflow: hidden;
     pointer-events: none;
-    background: 
-        radial-gradient(circle at 18% 28%, rgba(67, 56, 202, 0.85) 0%, transparent 48%),
-        radial-gradient(circle at 82% 64%, rgba(2, 132, 199, 0.9) 0%, transparent 45%),
-        radial-gradient(circle at 62% 78%, rgba(217, 70, 239, 0.75) 0%, transparent 40%),
-        radial-gradient(circle at 74% 22%, rgba(251, 146, 60, 0.55) 0%, transparent 42%),
-        radial-gradient(circle at 20% 88%, rgba(56, 189, 248, 0.6) 0%, transparent 45%),
-        radial-gradient(circle at 45% 45%, rgba(192, 132, 252, 0.4) 0%, transparent 50%),
-        linear-gradient(135deg, #1e1b4b 0%, #030712 100%);
-    filter: blur(60px);
-    transform: scale(1.15); /* Eliminates edge clipping caused by heavy blur */
+    background: #e0e7ff;
 }
 
-/* Foreground Container */
+.mesh-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(110px);
+    -webkit-filter: blur(110px);
+    opacity: 0.85;
+}
+
+/* Warm Peach / Salmon (Top Right) */
+.orb-peach {
+    width: 65vw;
+    height: 60vh;
+    background: radial-gradient(circle, #fba186 0%, #f67280 60%, transparent 100%);
+    top: -15%;
+    right: -10%;
+}
+
+/* Sky Cyan (Bottom Left) */
+.orb-cyan {
+    width: 70vw;
+    height: 65vh;
+    background: radial-gradient(circle, #38bdf8 0%, #67e8f9 50%, transparent 100%);
+    bottom: -20%;
+    left: -15%;
+}
+
+/* Vibrant Royal Blue (Lower Right Focal Area) */
+.orb-blue {
+    width: 45vw;
+    height: 45vh;
+    background: radial-gradient(circle, #0077ff 0%, #2563eb 60%, transparent 100%);
+    bottom: 8%;
+    right: 5%;
+}
+
+/* Vivid Fuchsia / Magenta (Bottom Edge) */
+.orb-magenta {
+    width: 50vw;
+    height: 50vh;
+    background: radial-gradient(circle, #d9008f 0%, #70003c 70%, transparent 100%);
+    bottom: -15%;
+    right: 15%;
+}
+
+/* Lavender / Soft Purple (Center & Top Left) */
+.orb-violet {
+    width: 60vw;
+    height: 60vh;
+    background: radial-gradient(circle, #818cf8 0%, #4f46e5 70%, transparent 100%);
+    top: 5%;
+    left: 10%;
+    opacity: 0.6;
+}
+
+/* Blur Unification Overlay */
+.mesh-overlay {
+    position: absolute;
+    inset: 0;
+    backdrop-filter: blur(60px);
+    -webkit-backdrop-filter: blur(60px);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+/* ========================================================
+   CONTENT CONTAINER
+======================================================== */
 .site-wrapper {
     position: relative;
     z-index: 2;
-    max-width: 880px;
-    margin: 50px auto;
-    padding: 48px 40px;
+    max-width: 860px;
+    margin: 48px auto;
+    padding: 56px 44px;
     background: var(--card-surface);
-    backdrop-filter: blur(28px);
-    -webkit-backdrop-filter: blur(28px);
-    border: 1px solid var(--border-subtle);
+    backdrop-filter: blur(36px);
+    -webkit-backdrop-filter: blur(36px);
+    border: 1px solid var(--border-card);
     border-radius: 20px;
-    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+    box-shadow: 
+        0 20px 45px -10px rgba(15, 23, 42, 0.12),
+        0 8px 16px -6px rgba(15, 23, 42, 0.06);
 }
 
 /* Header */
 .resume-header {
     border-bottom: 1px solid var(--border-subtle);
-    padding-bottom: 28px;
-    margin-bottom: 34px;
+    padding-bottom: 30px;
+    margin-bottom: 36px;
 }
 
 .candidate-name {
-    font-size: 2.35rem;
-    font-weight: 700;
-    letter-spacing: -0.025em;
-    color: #ffffff;
+    font-family: var(--font-serif);
+    font-size: 3.4rem;
+    font-weight: 400;
+    letter-spacing: -0.015em;
+    color: var(--text-primary);
+    line-height: 1.05;
     margin-bottom: 6px;
 }
 
 .role-tagline {
-    font-size: 0.98rem;
+    font-size: 1.05rem;
     color: var(--text-secondary);
-    margin-bottom: 20px;
-    font-weight: 400;
+    margin-bottom: 22px;
 }
 
 .contact-strip {
@@ -95,38 +161,39 @@ body {
     gap: 8px;
     font-size: 0.85rem;
     color: var(--text-secondary);
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid var(--border-subtle);
-    padding: 6px 14px;
-    border-radius: 8px;
     text-decoration: none;
+    background: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    padding: 6px 14px;
+    border-radius: 9999px;
     transition: all 0.2s ease;
 }
 
 a.contact-link:hover {
-    color: #ffffff;
-    background: rgba(255, 255, 255, 0.09);
-    border-color: rgba(255, 255, 255, 0.25);
+    color: var(--accent-blue);
+    background: #ffffff;
+    border-color: rgba(2, 132, 199, 0.3);
 }
 
 .contact-link svg {
-    color: var(--accent);
+    color: var(--text-tertiary);
 }
 
 /* Sections */
 .section-block {
-    margin-bottom: 38px;
+    margin-bottom: 40px;
 }
 
 .section-label {
-    font-size: 1.15rem;
-    font-weight: 600;
-    letter-spacing: -0.01em;
-    color: #ffffff;
+    font-family: var(--font-serif);
+    font-size: 1.65rem;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--text-primary);
     margin-bottom: 14px;
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 14px;
 }
 
 .section-label::after {
@@ -138,19 +205,19 @@ a.contact-link:hover {
 
 .summary-text {
     color: var(--text-secondary);
-    font-size: 0.95rem;
-    line-height: 1.7;
+    font-size: 0.975rem;
+    line-height: 1.8;
 }
 
-/* Layout Split */
+/* Grid Layout */
 .two-column-group {
     display: grid;
-    grid-template-columns: 1.75fr 1fr;
-    gap: 32px;
+    grid-template-columns: 2fr 1fr;
+    gap: 36px;
     align-items: start;
 }
 
-/* Skill Categories */
+/* Skills */
 .skills-grid {
     display: flex;
     flex-direction: column;
@@ -162,8 +229,8 @@ a.contact-link:hover {
     font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    color: var(--accent);
-    font-weight: 600;
+    color: var(--accent-blue);
+    font-weight: 700;
     margin-bottom: 8px;
 }
 
@@ -172,7 +239,7 @@ a.contact-link:hover {
 }
 
 .clean-list li {
-    font-size: 0.88rem;
+    font-size: 0.92rem;
     color: var(--text-secondary);
     padding: 3px 0 3px 14px;
     position: relative;
@@ -187,7 +254,7 @@ a.contact-link:hover {
 
 /* Profile Panel */
 .profile-details {
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba(255, 255, 255, 0.55);
     border: 1px solid var(--border-subtle);
     border-radius: 12px;
     padding: 20px;
@@ -204,40 +271,41 @@ a.contact-link:hover {
 .detail-row dt {
     font-size: 0.72rem;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.06em;
     color: var(--text-tertiary);
-    font-weight: 600;
+    font-weight: 700;
     margin-bottom: 2px;
 }
 
 .detail-row dd {
-    font-size: 0.9rem;
+    font-size: 0.92rem;
     color: var(--text-primary);
-    font-weight: 500;
+    font-weight: 600;
 }
 
 /* Timeline */
 .timeline-list {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 22px;
 }
 
 .timeline-entry {
     padding-left: 18px;
-    border-left: 1px solid var(--border-subtle);
+    border-left: 2px solid rgba(15, 23, 42, 0.12);
     position: relative;
 }
 
 .timeline-entry::before {
     content: '';
     position: absolute;
-    left: -4px;
+    left: -6px;
     top: 6px;
-    width: 7px;
-    height: 7px;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
-    background-color: var(--accent);
+    background-color: var(--accent-blue);
+    border: 2px solid #ffffff;
 }
 
 .timeline-header {
@@ -249,39 +317,40 @@ a.contact-link:hover {
 }
 
 .entry-title {
-    font-size: 1rem;
+    font-size: 1.05rem;
     font-weight: 600;
-    color: #ffffff;
+    color: var(--text-primary);
 }
 
 .entry-date {
-    font-size: 0.8rem;
+    font-size: 0.82rem;
     color: var(--text-tertiary);
     font-variant-numeric: tabular-nums;
+    font-weight: 500;
 }
 
 .entry-sub {
-    font-size: 0.88rem;
+    font-size: 0.92rem;
     color: var(--text-secondary);
     margin: 2px 0 6px;
 }
 
 .coursework-detail {
-    font-size: 0.84rem;
-    color: var(--text-tertiary);
+    font-size: 0.88rem;
+    color: var(--text-secondary);
 }
 
 .accent-text {
-    color: var(--text-secondary);
+    color: var(--text-primary);
     font-weight: 600;
 }
 
 /* Footer */
 .site-footer {
     border-top: 1px solid var(--border-subtle);
-    padding-top: 20px;
-    margin-top: 44px;
-    font-size: 0.8rem;
+    padding-top: 24px;
+    margin-top: 50px;
+    font-size: 0.82rem;
     color: var(--text-tertiary);
     text-align: center;
 }
@@ -289,20 +358,21 @@ a.contact-link:hover {
 /* Responsive */
 @media (max-width: 768px) {
     .site-wrapper {
+        padding: 32px 20px;
         margin: 16px;
-        padding: 30px 20px;
-    }
-
-    .candidate-name {
-        font-size: 1.9rem;
     }
 
     .two-column-group {
         grid-template-columns: 1fr;
-        gap: 26px;
+        gap: 28px;
+    }
+
+    .candidate-name {
+        font-size: 2.5rem;
     }
 
     .contact-strip {
         flex-direction: column;
+        gap: 8px;
     }
 }
