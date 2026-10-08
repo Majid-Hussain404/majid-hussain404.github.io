@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import resumePdf from './My resume.pdf';
+import resumePdf from './My resume .pdf';
 
 const sectionTitles = {
   objective: 'Majid Hussain Mir — Career Objective',
