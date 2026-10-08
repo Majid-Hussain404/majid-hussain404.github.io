@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import resumePdf from './My resume.pdf';
 
 const sectionTitles = {
   objective: 'Majid Hussain Mir — Career Objective',
@@ -175,11 +176,10 @@ export default function ResumeDrawer({ section, onClose }) {
             {sectionTitles[section] ?? sectionTitles.all}
           </h2>
           <div className="drawer-header-actions">
-            <button
+            <a
               className="resume-download"
-              disabled
-              title="Resume download will be available soon"
-              type="button"
+              download="Majid-Hussain-Mir-Resume.pdf"
+              href={resumePdf}
             >
               <svg
                 aria-hidden="true"
@@ -197,7 +197,7 @@ export default function ResumeDrawer({ section, onClose }) {
                 />
               </svg>
               Download resume
-            </button>
+            </a>
             <button
               aria-label="Close resume"
               className="drawer-close"
