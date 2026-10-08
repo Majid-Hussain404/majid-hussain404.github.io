@@ -52,7 +52,13 @@ a {
   position: fixed;
   z-index: -1;
   inset: 0;
-  background: var(--color-background);
+  background-color: var(--color-background);
+  background-image:
+    linear-gradient(rgb(17 19 21 / 30%), rgb(17 19 21 / 30%)),
+    url('./components/use-svg-as-background-image-particle-strokes.svg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .site-viewport {
