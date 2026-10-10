@@ -14,9 +14,10 @@ import {
 } from './Icons';
 import OwnerAuthModal from './OwnerAuthModal';
 import resumePdf from './My resume .pdf';
+import profileJpg from './profile.jpg';
 
 const rotatingWords = ['Networks', 'WebApps', 'Security', 'Systems', 'Software'];
-const GITHUB_AVATAR = 'https://avatars.githubusercontent.com/u/161548404?v=4';
+const DEFAULT_AVATAR = profileJpg;
 
 export default function HeroSection() {
   const { theme, toggleTheme } = useTheme();
@@ -35,18 +36,18 @@ export default function HeroSection() {
 
   const fileInputRef = useRef(null);
   const [avatarImage, setAvatarImage] = useState(() => {
-    return localStorage.getItem('majid_portfolio_avatar') || GITHUB_AVATAR;
+    return localStorage.getItem('majid_portfolio_avatar') || DEFAULT_AVATAR;
   });
   const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
     const handleStorageChange = (e) => {
       if (e.key === 'majid_portfolio_avatar') {
-        setAvatarImage(e.newValue || GITHUB_AVATAR);
+        setAvatarImage(e.newValue || DEFAULT_AVATAR);
       }
     };
     const handleCustomUpdate = () => {
-      setAvatarImage(localStorage.getItem('majid_portfolio_avatar') || GITHUB_AVATAR);
+      setAvatarImage(localStorage.getItem('majid_portfolio_avatar') || DEFAULT_AVATAR);
     };
 
     window.addEventListener('storage', handleStorageChange);
@@ -77,7 +78,7 @@ export default function HeroSection() {
 
   const handleRemovePhoto = (e) => {
     e.stopPropagation();
-    setAvatarImage(GITHUB_AVATAR);
+    setAvatarImage(DEFAULT_AVATAR);
     localStorage.removeItem('majid_portfolio_avatar');
     window.dispatchEvent(new Event('avatar-updated'));
     if (fileInputRef.current) fileInputRef.current.value = '';
@@ -187,7 +188,7 @@ export default function HeroSection() {
                   <img
                     src={avatarImage}
                     alt="Majid Hussain"
-                    onError={() => setAvatarImage(GITHUB_AVATAR)}
+                    onError={() => setAvatarImage(DEFAULT_AVATAR)}
                     style={{
                       width: '100%',
                       height: '100%',
