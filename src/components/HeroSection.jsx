@@ -16,6 +16,7 @@ import OwnerAuthModal from './OwnerAuthModal';
 import resumePdf from './My resume .pdf';
 
 const rotatingWords = ['Networks', 'WebApps', 'Security', 'Systems', 'Software'];
+const GITHUB_AVATAR = 'https://avatars.githubusercontent.com/u/161548404?v=4';
 
 export default function HeroSection() {
   const { theme, toggleTheme } = useTheme();
@@ -34,9 +35,27 @@ export default function HeroSection() {
 
   const fileInputRef = useRef(null);
   const [avatarImage, setAvatarImage] = useState(() => {
-    return localStorage.getItem('majid_portfolio_avatar') || null;
+    return localStorage.getItem('majid_portfolio_avatar') || GITHUB_AVATAR;
   });
   const [isHovered, setIsHovered] = useState(false);
+
+  useEffect(() => {
+    const handleStorageChange = (e) => {
+      if (e.key === 'majid_portfolio_avatar') {
+        setAvatarImage(e.newValue || GITHUB_AVATAR);
+      }
+    };
+    const handleCustomUpdate = () => {
+      setAvatarImage(localStorage.getItem('majid_portfolio_avatar') || GITHUB_AVATAR);
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    window.addEventListener('avatar-updated', handleCustomUpdate);
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('avatar-updated', handleCustomUpdate);
+    };
+  }, []);
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
@@ -50,6 +69,7 @@ export default function HeroSection() {
         const result = reader.result;
         setAvatarImage(result);
         localStorage.setItem('majid_portfolio_avatar', result);
+        window.dispatchEvent(new Event('avatar-updated'));
       };
       reader.readAsDataURL(file);
     }
@@ -57,8 +77,9 @@ export default function HeroSection() {
 
   const handleRemovePhoto = (e) => {
     e.stopPropagation();
-    setAvatarImage(null);
+    setAvatarImage(GITHUB_AVATAR);
     localStorage.removeItem('majid_portfolio_avatar');
+    window.dispatchEvent(new Event('avatar-updated'));
     if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
@@ -166,6 +187,7 @@ export default function HeroSection() {
                   <img
                     src={avatarImage}
                     alt="Majid Hussain"
+                    onError={() => setAvatarImage(GITHUB_AVATAR)}
                     style={{
                       width: '100%',
                       height: '100%',
