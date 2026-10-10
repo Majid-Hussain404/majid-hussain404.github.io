@@ -1,25 +1,17 @@
-import { useState } from 'react';
-import Background from './components/Background.jsx';
-import Footer from './components/Footer.jsx';
-import Header from './components/Header.jsx';
-import Hero from './components/Hero.jsx';
-import ResumeDrawer from './components/ResumeDrawer.jsx';
+import HeroSection from './components/HeroSection.jsx';
+import ProjectsSection from './components/ProjectsSection.jsx';
+import ToolsSection from './components/ToolsSection.jsx';
+import ExperienceSection from './components/ExperienceSection.jsx';
+import ContactSection from './components/ContactSection.jsx';
 
 export default function App() {
-  const [activeSection, setActiveSection] = useState(null);
-
-  const openResume = (section) => setActiveSection(section);
-  const closeResume = () => setActiveSection(null);
-
   return (
-    <>
-      <Background />
-      <div className="site-viewport">
-        <Header onOpenSection={openResume} />
-        <Hero onOpenResume={openResume} />
-        <Footer />
-      </div>
-      <ResumeDrawer section={activeSection} onClose={closeResume} />
-    </>
+    <main>
+      <HeroSection />
+      <ProjectsSection />
+      <ToolsSection />
+      <ExperienceSection />
+      <ContactSection />
+    </main>
   );
 }
