@@ -158,13 +158,11 @@ export default function HeroSection() {
                 onClick={() => {
                   if (isAdmin) {
                     fileInputRef.current?.click();
-                  } else {
-                    toggleAdmin();
                   }
                 }}
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
-                title={isAdmin ? 'Click to upload or update profile photo' : 'Click to unlock owner controls & upload photo'}
+                title={isAdmin ? 'Click to upload or update profile photo' : 'Majid Hussain'}
                 style={{
                   position: 'relative',
                   width: '80px',
@@ -173,7 +171,7 @@ export default function HeroSection() {
                   border: isAdmin ? '2.5px solid var(--accent)' : '2px solid var(--border)',
                   overflow: 'hidden',
                   flexShrink: 0,
-                  cursor: 'pointer',
+                  cursor: isAdmin ? 'pointer' : 'default',
                   background: avatarImage
                     ? 'none'
                     : 'linear-gradient(135deg, var(--accent), #8b5cf6)',
@@ -208,28 +206,30 @@ export default function HeroSection() {
                   </span>
                 )}
 
-                {/* Hover overlay with camera icon */}
-                <div
-                  style={{
-                    position: 'absolute',
-                    inset: 0,
-                    background: 'rgba(0,0,0,0.6)',
-                    color: '#ffffff',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '2px',
-                    opacity: isHovered ? 1 : 0,
-                    transition: 'opacity 0.2s ease',
-                    backdropFilter: 'blur(2px)',
-                  }}
-                >
-                  <CameraIcon size={20} />
-                  <span style={{ fontSize: '0.55rem', fontWeight: 700, textTransform: 'uppercase', textAlign: 'center' }}>
-                    {isAdmin ? (avatarImage ? 'Change Photo' : 'Upload Photo') : 'Unlock & Upload'}
-                  </span>
-                </div>
+                {/* Hover overlay with camera icon (Owner only) */}
+                {isAdmin && (
+                  <div
+                    style={{
+                      position: 'absolute',
+                      inset: 0,
+                      background: 'rgba(0,0,0,0.6)',
+                      color: '#ffffff',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '2px',
+                      opacity: isHovered ? 1 : 0,
+                      transition: 'opacity 0.2s ease',
+                      backdropFilter: 'blur(2px)',
+                    }}
+                  >
+                    <CameraIcon size={20} />
+                    <span style={{ fontSize: '0.55rem', fontWeight: 700, textTransform: 'uppercase', textAlign: 'center' }}>
+                      {avatarImage ? 'Change Photo' : 'Upload Photo'}
+                    </span>
+                  </div>
+                )}
               </div>
               <div>
                 <h1
@@ -253,51 +253,47 @@ export default function HeroSection() {
                 >
                   @majid-hussain404
                 </p>
-                {/* Photo controls */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '6px' }}>
-                  <button
-                    onClick={() => {
-                      if (isAdmin) {
-                        fileInputRef.current?.click();
-                      } else {
-                        toggleAdmin();
-                      }
-                    }}
-                    style={{
-                      background: 'var(--accent-bg)',
-                      border: '1px solid var(--border)',
-                      padding: '4px 10px',
-                      borderRadius: '8px',
-                      fontSize: '0.75rem',
-                      fontWeight: 600,
-                      color: 'var(--accent)',
-                      cursor: 'pointer',
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '5px',
-                      transition: 'all 0.2s ease',
-                    }}
-                  >
-                    <CameraIcon size={12} />
-                    {isAdmin ? (avatarImage ? 'Update photo' : 'Upload photo') : 'Update photo'}
-                  </button>
-                  {isAdmin && avatarImage && (
+                {/* Photo controls (Owner only) */}
+                {isAdmin && (
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '6px' }}>
                     <button
-                      onClick={handleRemovePhoto}
+                      onClick={() => fileInputRef.current?.click()}
                       style={{
-                        background: 'none',
-                        border: 'none',
-                        padding: '4px 6px',
-                        fontSize: '0.72rem',
-                        fontWeight: 500,
-                        color: 'var(--text-muted)',
+                        background: 'var(--accent-bg)',
+                        border: '1px solid var(--border)',
+                        padding: '4px 10px',
+                        borderRadius: '8px',
+                        fontSize: '0.75rem',
+                        fontWeight: 600,
+                        color: 'var(--accent)',
                         cursor: 'pointer',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '5px',
+                        transition: 'all 0.2s ease',
                       }}
                     >
-                      Remove
+                      <CameraIcon size={12} />
+                      {avatarImage ? 'Update photo' : 'Upload photo'}
                     </button>
-                  )}
-                </div>
+                    {avatarImage && (
+                      <button
+                        onClick={handleRemovePhoto}
+                        style={{
+                          background: 'none',
+                          border: 'none',
+                          padding: '4px 6px',
+                          fontSize: '0.72rem',
+                          fontWeight: 500,
+                          color: 'var(--text-muted)',
+                          cursor: 'pointer',
+                        }}
+                      >
+                        Remove
+                      </button>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
 

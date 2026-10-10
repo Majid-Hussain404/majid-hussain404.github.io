@@ -387,62 +387,58 @@ export default function ProjectsSection() {
             </p>
           </div>
 
-          {/* Top Right Header Controls */}
-          <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-            <button
-              onClick={() => {
-                if (isAdmin) {
-                  setIsManageReposModalOpen(true);
-                } else {
-                  toggleAdmin();
-                }
-              }}
-              title={isAdmin ? 'Select which repositories to display' : 'Owner lock (Click to unlock & select repos)'}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '8px',
-                padding: '12px 20px',
-                borderRadius: '1rem',
-                fontWeight: 600,
-                fontSize: '0.875rem',
-                background: 'var(--bg-card)',
-                color: 'var(--text)',
-                border: '1px solid var(--border)',
-                cursor: 'pointer',
-                boxShadow: 'var(--shadow)',
-                transition: 'all 0.2s ease',
-              }}
-            >
-              <FilterIcon />
-              Select Repos
-            </button>
+          {/* Top Right Header Controls (Owner Only) */}
+          {isAdmin && (
+            <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+              <button
+                onClick={() => setIsManageReposModalOpen(true)}
+                title="Select which repositories to display"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  padding: '12px 20px',
+                  borderRadius: '1rem',
+                  fontWeight: 600,
+                  fontSize: '0.875rem',
+                  background: 'var(--bg-card)',
+                  color: 'var(--text)',
+                  border: '1px solid var(--border)',
+                  cursor: 'pointer',
+                  boxShadow: 'var(--shadow)',
+                  transition: 'all 0.2s ease',
+                }}
+              >
+                <FilterIcon />
+                Select Repos
+              </button>
 
-            <button
-              onClick={handleUploadButtonClick}
-              title={isAdmin ? 'Upload new custom project' : 'Owner lock (Click to unlock & upload)'}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '8px',
-                padding: '12px 24px',
-                borderRadius: '1rem',
-                fontWeight: 600,
-                fontSize: '0.875rem',
-                background: 'var(--accent)',
-                color: '#ffffff',
-                border: 'none',
-                cursor: 'pointer',
-                boxShadow: 'var(--shadow)',
-                transition: 'all 0.2s ease',
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.9')}
-              onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
-            >
-              <PlusIcon />
-              Upload Project
-            </button>
-          </div>
+              <button
+                onClick={() => setIsModalOpen(true)}
+                title="Upload new custom project"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  padding: '12px 24px',
+                  borderRadius: '1rem',
+                  fontWeight: 600,
+                  fontSize: '0.875rem',
+                  background: 'var(--accent)',
+                  color: '#ffffff',
+                  border: 'none',
+                  cursor: 'pointer',
+                  boxShadow: 'var(--shadow)',
+                  transition: 'all 0.2s ease',
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.9')}
+                onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
+              >
+                <PlusIcon />
+                Upload Project
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Project Cards Grid */}
