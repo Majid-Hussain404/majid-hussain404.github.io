@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useScrollAnimation, useAdminMode } from '../hooks';
 import { PlusIcon, CloseIcon, GitHubIcon, FilterIcon, EyeIcon, EyeOffIcon } from './Icons';
 import hiddenReposConfig from '../config/hiddenRepos.json';
+import { getCentralHiddenRepoIds, saveCentralHiddenRepoIds } from '../lib/db';
 
 export function isRepoHidden(project, hiddenList) {
   if (!project || !hiddenList || !Array.isArray(hiddenList) || hiddenList.length === 0) return false;
@@ -135,6 +136,7 @@ export default function ProjectsSection() {
 
   const [githubProjects, setGithubProjects] = useState([]);
   const [isFetchingGithub, setIsFetchingGithub] = useState(true);
+  const [isLoadingVisibility, setIsLoadingVisibility] = useState(true);
   const [hiddenRepoIds, setHiddenRepoIds] = useState(() => {
     const defaultHidden = hiddenReposConfig?.hiddenRepoIds || [];
     if (typeof window !== 'undefined') {
@@ -150,6 +152,23 @@ export default function ProjectsSection() {
     }
     return defaultHidden;
   });
+
+  useEffect(() => {
+    async function syncCentralVisibility() {
+      setIsLoadingVisibility(true);
+      try {
+        const dbIds = await getCentralHiddenRepoIds();
+        if (dbIds && Array.isArray(dbIds)) {
+          setHiddenRepoIds(dbIds);
+        }
+      } catch (err) {
+        console.warn('Could not sync central database visibility:', err);
+      } finally {
+        setIsLoadingVisibility(false);
+      }
+    }
+    syncCentralVisibility();
+  }, []);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isManageReposModalOpen, setIsManageReposModalOpen] = useState(false);
@@ -167,10 +186,20 @@ export default function ProjectsSection() {
     localStorage.setItem('majid_portfolio_hidden_repos', JSON.stringify(hiddenRepoIds));
   }, [hiddenRepoIds]);
 
-  const toggleRepoVisibility = (id) => {
-    setHiddenRepoIds((prev) =>
-      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
-    );
+  const toggleRepoVisibility = async (idOrTitle) => {
+    const isCurrentlyHidden = isRepoHidden({ id: idOrTitle, title: idOrTitle }, hiddenRepoIds);
+    let updated;
+    if (isCurrentlyHidden) {
+      updated = hiddenRepoIds.filter((item) => {
+        const s = String(item).toLowerCase();
+        const target = String(idOrTitle).toLowerCase();
+        return s !== target && !s.includes(target) && !target.includes(s);
+      });
+    } else {
+      updated = [...hiddenRepoIds, idOrTitle];
+    }
+    setHiddenRepoIds(updated);
+    await saveCentralHiddenRepoIds(updated);
   };
 
   const formatTimeAgo = (dateStr) => {
@@ -236,7 +265,9 @@ export default function ProjectsSection() {
     ...(githubProjects.length > 0 ? githubProjects : DEFAULT_PROJECTS),
   ];
 
-  const displayProjects = isAdmin
+  const displayProjects = (isLoadingVisibility && !isAdmin)
+    ? []
+    : isAdmin
     ? allProjectsList
     : allProjectsList.filter((p) => !isRepoHidden(p, hiddenRepoIds));
 
@@ -470,7 +501,7 @@ export default function ProjectsSection() {
             marginTop: '48px',
           }}
         >
-          {displayProjects.map((project, idx) => {
+            {displayProjects.map((project, idx) => {
             const isHidden = isRepoHidden(project, hiddenRepoIds);
             return (
               <div
@@ -706,8 +737,8 @@ export default function ProjectsSection() {
                 </a>
               </div>
             </div>
-            );
-          })}
+          );
+        })}
         </div>
       </div>
 
