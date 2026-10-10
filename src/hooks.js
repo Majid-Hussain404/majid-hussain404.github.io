@@ -98,14 +98,18 @@ export function useAdminMode() {
     if (isAdmin) {
       setIsAdmin(false);
       localStorage.setItem('majid_portfolio_is_admin', 'false');
+      return false;
     } else {
-      const pin = prompt('Enter Owner Passcode to unlock editing tools (Default: majid123):');
+      const pin = prompt('Enter Owner Passcode to unlock editing & upload tools (Default: majid123):');
       if (pin === 'majid123' || pin === '404' || pin === 'majid') {
         setIsAdmin(true);
         localStorage.setItem('majid_portfolio_is_admin', 'true');
+        return true;
       } else if (pin !== null) {
-        alert('Incorrect passcode!');
+        alert('Access denied. Only the owner (Majid) can update profile pictures or upload new projects.');
+        return false;
       }
+      return false;
     }
   };
 

@@ -66,6 +66,7 @@ export default function ProjectsSection() {
   });
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [projectImage, setProjectImage] = useState(null);
   const [formData, setFormData] = useState({
     title: '',
     subtitle: '',
@@ -84,6 +85,21 @@ export default function ProjectsSection() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleImageFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) {
+        alert('Image size should be less than 5MB');
+        return;
+      }
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProjectImage(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleAddProject = (e) => {
     e.preventDefault();
     if (!formData.title.trim() || !formData.description.trim()) return;
@@ -94,6 +110,7 @@ export default function ProjectsSection() {
       subtitle: formData.subtitle.trim() || 'Custom Project',
       description: formData.description.trim(),
       gradient: formData.gradient,
+      image: projectImage || null,
       textColor: '#ffffff',
       link: formData.link.trim() || 'https://github.com/Majid-Hussain404',
       tags: formData.tags
@@ -111,11 +128,25 @@ export default function ProjectsSection() {
       tags: '',
       gradient: PRESET_GRADIENTS[0].value,
     });
+    setProjectImage(null);
     setIsModalOpen(false);
   };
 
   const handleDeleteProject = (id) => {
-    setProjects(projects.filter((p) => p.id !== id));
+    if (window.confirm('Are you sure you want to remove this project?')) {
+      setProjects(projects.filter((p) => p.id !== id));
+    }
+  };
+
+  const handleUploadButtonClick = () => {
+    if (isAdmin) {
+      setIsModalOpen(true);
+    } else {
+      const unlocked = toggleAdmin();
+      if (unlocked) {
+        setIsModalOpen(true);
+      }
+    }
   };
 
   return (
@@ -185,32 +216,31 @@ export default function ProjectsSection() {
             </p>
           </div>
 
-          {/* Upload / Add Project Button - Only for Owner */}
-          {isAdmin && (
-            <button
-              onClick={() => setIsModalOpen(true)}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '8px',
-                padding: '12px 24px',
-                borderRadius: '1rem',
-                fontWeight: 600,
-                fontSize: '0.875rem',
-                background: 'var(--accent)',
-                color: '#ffffff',
-                border: 'none',
-                cursor: 'pointer',
-                boxShadow: 'var(--shadow)',
-                transition: 'all 0.2s ease',
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.9')}
-              onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
-            >
-              <PlusIcon />
-              Upload Project
-            </button>
-          )}
+          {/* Upload / Add Project Button */}
+          <button
+            onClick={handleUploadButtonClick}
+            title={isAdmin ? 'Upload new project' : 'Owner lock (Click to unlock & upload)'}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px',
+              padding: '12px 24px',
+              borderRadius: '1rem',
+              fontWeight: 600,
+              fontSize: '0.875rem',
+              background: 'var(--accent)',
+              color: '#ffffff',
+              border: 'none',
+              cursor: 'pointer',
+              boxShadow: 'var(--shadow)',
+              transition: 'all 0.2s ease',
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.9')}
+            onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
+          >
+            <PlusIcon />
+            Upload Project
+          </button>
         </div>
 
         {/* Project Cards Grid */}
@@ -247,8 +277,8 @@ export default function ProjectsSection() {
                 e.currentTarget.style.boxShadow = 'var(--shadow)';
               }}
             >
-              {/* Delete button if custom and Admin */}
-              {isAdmin && project.isCustom && (
+              {/* Delete button if Admin */}
+              {isAdmin && (
                 <button
                   title="Remove project"
                   onClick={() => handleDeleteProject(project.id)}
@@ -260,7 +290,7 @@ export default function ProjectsSection() {
                     width: '32px',
                     height: '32px',
                     borderRadius: '50%',
-                    background: 'rgba(0,0,0,0.5)',
+                    background: 'rgba(0,0,0,0.65)',
                     color: '#fff',
                     border: 'none',
                     display: 'flex',
@@ -283,7 +313,9 @@ export default function ProjectsSection() {
                   alignItems: 'center',
                   justifyContent: 'center',
                   gap: '8px',
-                  background: project.gradient,
+                  background: project.image
+                    ? `url(${project.image}) center/cover no-repeat`
+                    : project.gradient,
                   color: project.textColor || '#ffffff',
                   position: 'relative',
                   overflow: 'hidden',
@@ -291,21 +323,38 @@ export default function ProjectsSection() {
                   textAlign: 'center',
                 }}
               >
+                {project.image && (
+                  <div
+                    style={{
+                      position: 'absolute',
+                      inset: 0,
+                      background: 'rgba(0,0,0,0.45)',
+                      backdropFilter: 'blur(1px)',
+                      zIndex: 1,
+                    }}
+                  />
+                )}
                 <span
                   style={{
+                    position: 'relative',
+                    zIndex: 2,
                     fontSize: '1.2rem',
                     fontWeight: 700,
                     letterSpacing: '0.08em',
                     textTransform: 'uppercase',
+                    textShadow: project.image ? '0 2px 4px rgba(0,0,0,0.7)' : 'none',
                   }}
                 >
                   {project.title}
                 </span>
                 <span
                   style={{
+                    position: 'relative',
+                    zIndex: 2,
                     fontSize: '0.75rem',
                     fontWeight: 600,
-                    opacity: 0.85,
+                    opacity: 0.9,
+                    textShadow: project.image ? '0 1px 3px rgba(0,0,0,0.7)' : 'none',
                   }}
                 >
                   {project.subtitle}
@@ -397,7 +446,7 @@ export default function ProjectsSection() {
             alignItems: 'center',
             justifyContent: 'center',
             padding: '20px',
-            background: 'rgba(0,0,0,0.6)',
+            background: 'rgba(0,0,0,0.65)',
             backdropFilter: 'blur(8px)',
             WebkitBackdropFilter: 'blur(8px)',
           }}
@@ -408,7 +457,7 @@ export default function ProjectsSection() {
           <div
             style={{
               width: '100%',
-              maxWidth: '540px',
+              maxWidth: '560px',
               borderRadius: '2rem',
               padding: '32px',
               background: 'var(--bg-card)',
@@ -567,35 +616,78 @@ export default function ProjectsSection() {
                 />
               </div>
 
+              {/* Cover Image Upload Option */}
               <div>
-                <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, marginBottom: '8px', color: 'var(--text-secondary)' }}>
-                  Banner Gradient Theme
+                <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, marginBottom: '6px', color: 'var(--text-secondary)' }}>
+                  Project Cover Image (Optional)
                 </label>
-                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                  {PRESET_GRADIENTS.map((preset) => (
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageFileChange}
+                  style={{
+                    width: '100%',
+                    padding: '8px',
+                    fontSize: '0.85rem',
+                    color: 'var(--text)',
+                  }}
+                />
+                {projectImage && (
+                  <div style={{ marginTop: '8px', position: 'relative', width: '100%', height: '120px', borderRadius: '0.75rem', overflow: 'hidden', border: '1px solid var(--border)' }}>
+                    <img src={projectImage} alt="Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                     <button
-                      key={preset.id}
                       type="button"
-                      onClick={() => setFormData((prev) => ({ ...prev, gradient: preset.value }))}
+                      onClick={() => setProjectImage(null)}
                       style={{
-                        padding: '8px 14px',
-                        borderRadius: '0.75rem',
-                        border:
-                          formData.gradient === preset.value
-                            ? '2px solid var(--text)'
-                            : '1px solid var(--border)',
-                        background: preset.value,
-                        color: '#ffffff',
-                        fontSize: '0.75rem',
-                        fontWeight: 700,
+                        position: 'absolute',
+                        top: '6px',
+                        right: '6px',
+                        background: 'rgba(0,0,0,0.7)',
+                        color: '#fff',
+                        border: 'none',
+                        borderRadius: '50%',
+                        width: '24px',
+                        height: '24px',
                         cursor: 'pointer',
                       }}
                     >
-                      {preset.label}
+                      ×
                     </button>
-                  ))}
-                </div>
+                  </div>
+                )}
               </div>
+
+              {!projectImage && (
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, marginBottom: '8px', color: 'var(--text-secondary)' }}>
+                    Or Choose Banner Gradient Theme
+                  </label>
+                  <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                    {PRESET_GRADIENTS.map((preset) => (
+                      <button
+                        key={preset.id}
+                        type="button"
+                        onClick={() => setFormData((prev) => ({ ...prev, gradient: preset.value }))}
+                        style={{
+                          padding: '8px 14px',
+                          borderRadius: '0.75rem',
+                          border:
+                            formData.gradient === preset.value
+                              ? '2px solid var(--text)'
+                              : '1px solid var(--border)',
+                          background: preset.value,
+                          color: '#ffffff',
+                          fontSize: '0.75rem',
+                          fontWeight: 700,
+                          cursor: 'pointer',
+                        }}
+                      >
+                        {preset.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               {/* Form Buttons */}
               <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', marginTop: '12px' }}>

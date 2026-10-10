@@ -121,19 +121,28 @@ export default function HeroSection() {
             <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
               {/* Profile Avatar Container */}
               <div
-                onClick={() => isAdmin && fileInputRef.current?.click()}
+                onClick={() => {
+                  if (isAdmin) {
+                    fileInputRef.current?.click();
+                  } else {
+                    const unlocked = toggleAdmin();
+                    if (unlocked) {
+                      setTimeout(() => fileInputRef.current?.click(), 100);
+                    }
+                  }
+                }}
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
-                title={isAdmin ? 'Click to upload profile photo' : 'Majid Hussain'}
+                title={isAdmin ? 'Click to upload or update profile photo' : 'Click to unlock owner controls & upload photo'}
                 style={{
                   position: 'relative',
-                  width: '76px',
-                  height: '76px',
+                  width: '80px',
+                  height: '80px',
                   borderRadius: '50%',
-                  border: '2px solid var(--border)',
+                  border: isAdmin ? '2.5px solid var(--accent)' : '2px solid var(--border)',
                   overflow: 'hidden',
                   flexShrink: 0,
-                  cursor: isAdmin ? 'pointer' : 'default',
+                  cursor: 'pointer',
                   background: avatarImage
                     ? 'none'
                     : 'linear-gradient(135deg, var(--accent), #8b5cf6)',
@@ -159,7 +168,7 @@ export default function HeroSection() {
                     style={{
                       color: '#fff',
                       fontWeight: 800,
-                      fontSize: '1.5rem',
+                      fontSize: '1.6rem',
                       fontFamily: 'var(--font-sans)',
                     }}
                   >
@@ -167,30 +176,28 @@ export default function HeroSection() {
                   </span>
                 )}
 
-                {/* Hover overlay with camera icon only if Admin */}
-                {isAdmin && (
-                  <div
-                    style={{
-                      position: 'absolute',
-                      inset: 0,
-                      background: 'rgba(0,0,0,0.55)',
-                      color: '#ffffff',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      gap: '2px',
-                      opacity: isHovered ? 1 : 0,
-                      transition: 'opacity 0.2s ease',
-                      backdropFilter: 'blur(2px)',
-                    }}
-                  >
-                    <CameraIcon size={18} />
-                    <span style={{ fontSize: '0.55rem', fontWeight: 700, textTransform: 'uppercase' }}>
-                      {avatarImage ? 'Change' : 'Upload'}
-                    </span>
-                  </div>
-                )}
+                {/* Hover overlay with camera icon */}
+                <div
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    background: 'rgba(0,0,0,0.6)',
+                    color: '#ffffff',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '2px',
+                    opacity: isHovered ? 1 : 0,
+                    transition: 'opacity 0.2s ease',
+                    backdropFilter: 'blur(2px)',
+                  }}
+                >
+                  <CameraIcon size={20} />
+                  <span style={{ fontSize: '0.55rem', fontWeight: 700, textTransform: 'uppercase', textAlign: 'center' }}>
+                    {isAdmin ? (avatarImage ? 'Change Photo' : 'Upload Photo') : 'Unlock & Upload'}
+                  </span>
+                </div>
               </div>
               <div>
                 <h1
@@ -214,48 +221,54 @@ export default function HeroSection() {
                 >
                   @majid-hussain404
                 </p>
-                {/* Show photo controls only if Admin Mode is active */}
-                {isAdmin && (
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '4px' }}>
+                {/* Photo controls */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '6px' }}>
+                  <button
+                    onClick={() => {
+                      if (isAdmin) {
+                        fileInputRef.current?.click();
+                      } else {
+                        const unlocked = toggleAdmin();
+                        if (unlocked) {
+                          setTimeout(() => fileInputRef.current?.click(), 100);
+                        }
+                      }
+                    }}
+                    style={{
+                      background: 'var(--accent-bg)',
+                      border: '1px solid var(--border)',
+                      padding: '4px 10px',
+                      borderRadius: '8px',
+                      fontSize: '0.75rem',
+                      fontWeight: 600,
+                      color: 'var(--accent)',
+                      cursor: 'pointer',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '5px',
+                      transition: 'all 0.2s ease',
+                    }}
+                  >
+                    <CameraIcon size={12} />
+                    {isAdmin ? (avatarImage ? 'Update photo' : 'Upload photo') : 'Update photo'}
+                  </button>
+                  {isAdmin && avatarImage && (
                     <button
-                      onClick={() => fileInputRef.current?.click()}
+                      onClick={handleRemovePhoto}
                       style={{
                         background: 'none',
                         border: 'none',
-                        padding: 0,
+                        padding: '4px 6px',
                         fontSize: '0.72rem',
-                        fontWeight: 600,
-                        color: 'var(--accent)',
+                        fontWeight: 500,
+                        color: 'var(--text-muted)',
                         cursor: 'pointer',
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '4px',
                       }}
                     >
-                      <CameraIcon size={12} />
-                      {avatarImage ? 'Change photo' : 'Upload photo'}
+                      Remove
                     </button>
-                    {avatarImage && (
-                      <>
-                        <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>•</span>
-                        <button
-                          onClick={handleRemovePhoto}
-                          style={{
-                            background: 'none',
-                            border: 'none',
-                            padding: 0,
-                            fontSize: '0.72rem',
-                            fontWeight: 500,
-                            color: 'var(--text-muted)',
-                            cursor: 'pointer',
-                          }}
-                        >
-                          Remove
-                        </button>
-                      </>
-                    )}
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
             </div>
 
