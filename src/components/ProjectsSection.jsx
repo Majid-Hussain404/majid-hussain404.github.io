@@ -11,13 +11,7 @@ export function isRepoHidden(project, hiddenList) {
   const pGithubTitle = `github-${pTitle}`;
   return hiddenList.some((item) => {
     const s = String(item).toLowerCase();
-    return (
-      s === pId ||
-      s === pTitle ||
-      s === pGithubTitle ||
-      (pTitle && s.includes(pTitle)) ||
-      (pTitle && pTitle.includes(s))
-    );
+    return s === pId || s === pTitle || s === pGithubTitle;
   });
 }
 
@@ -144,7 +138,7 @@ export default function ProjectsSection() {
       if (saved) {
         try {
           const parsed = JSON.parse(saved);
-          return Array.from(new Set([...defaultHidden, ...parsed]));
+          if (Array.isArray(parsed)) return parsed;
         } catch {
           return defaultHidden;
         }
@@ -187,13 +181,13 @@ export default function ProjectsSection() {
   }, [hiddenRepoIds]);
 
   const toggleRepoVisibility = async (idOrTitle) => {
+    const target = String(idOrTitle).toLowerCase();
     const isCurrentlyHidden = isRepoHidden({ id: idOrTitle, title: idOrTitle }, hiddenRepoIds);
     let updated;
     if (isCurrentlyHidden) {
       updated = hiddenRepoIds.filter((item) => {
         const s = String(item).toLowerCase();
-        const target = String(idOrTitle).toLowerCase();
-        return s !== target && !s.includes(target) && !target.includes(s);
+        return s !== target && s !== `github-${target}` && `github-${s}` !== target;
       });
     } else {
       updated = [...hiddenRepoIds, idOrTitle];
