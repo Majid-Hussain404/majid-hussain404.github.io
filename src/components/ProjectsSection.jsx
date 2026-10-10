@@ -132,19 +132,7 @@ export default function ProjectsSection() {
   const [isFetchingGithub, setIsFetchingGithub] = useState(true);
   const [isLoadingVisibility, setIsLoadingVisibility] = useState(true);
   const [hiddenRepoIds, setHiddenRepoIds] = useState(() => {
-    const defaultHidden = hiddenReposConfig?.hiddenRepoIds || [];
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('majid_portfolio_hidden_repos');
-      if (saved) {
-        try {
-          const parsed = JSON.parse(saved);
-          if (Array.isArray(parsed)) return parsed;
-        } catch {
-          return defaultHidden;
-        }
-      }
-    }
-    return defaultHidden;
+    return hiddenReposConfig?.hiddenRepoIds || [];
   });
 
   useEffect(() => {
