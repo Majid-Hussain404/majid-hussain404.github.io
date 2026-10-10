@@ -76,3 +76,39 @@ export function useScrollAnimation() {
 
   return ref;
 }
+
+/* ===============================================
+   useAdminMode — Owner passcode authentication
+   =============================================== */
+export function useAdminMode() {
+  const [isAdmin, setIsAdmin] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const stored = localStorage.getItem('majid_portfolio_is_admin');
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('admin') === 'true' || urlParams.get('owner') === 'true') {
+        localStorage.setItem('majid_portfolio_is_admin', 'true');
+        return true;
+      }
+      return stored === 'true';
+    }
+    return false;
+  });
+
+  const toggleAdmin = () => {
+    if (isAdmin) {
+      setIsAdmin(false);
+      localStorage.setItem('majid_portfolio_is_admin', 'false');
+    } else {
+      const pin = prompt('Enter Owner Passcode to unlock editing tools (Default: majid123):');
+      if (pin === 'majid123' || pin === '404' || pin === 'majid') {
+        setIsAdmin(true);
+        localStorage.setItem('majid_portfolio_is_admin', 'true');
+      } else if (pin !== null) {
+        alert('Incorrect passcode!');
+      }
+    }
+  };
+
+  return { isAdmin, toggleAdmin, setIsAdmin };
+}
+

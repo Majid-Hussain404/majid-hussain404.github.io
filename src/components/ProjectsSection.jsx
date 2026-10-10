@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useScrollAnimation } from '../hooks';
+import { useScrollAnimation, useAdminMode } from '../hooks';
 import { PlusIcon, CloseIcon } from './Icons';
 
 const DEFAULT_PROJECTS = [
@@ -52,6 +52,7 @@ const PRESET_GRADIENTS = [
 
 export default function ProjectsSection() {
   const sectionRef = useScrollAnimation();
+  const { isAdmin } = useAdminMode();
   const [projects, setProjects] = useState(() => {
     const saved = localStorage.getItem('majid_portfolio_projects');
     if (saved) {
@@ -184,30 +185,32 @@ export default function ProjectsSection() {
             </p>
           </div>
 
-          {/* Upload / Add Project Button */}
-          <button
-            onClick={() => setIsModalOpen(true)}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '8px',
-              padding: '12px 24px',
-              borderRadius: '1rem',
-              fontWeight: 600,
-              fontSize: '0.875rem',
-              background: 'var(--accent)',
-              color: '#ffffff',
-              border: 'none',
-              cursor: 'pointer',
-              boxShadow: 'var(--shadow)',
-              transition: 'all 0.2s ease',
-            }}
-            onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.9')}
-            onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
-          >
-            <PlusIcon />
-            Upload Project
-          </button>
+          {/* Upload / Add Project Button - Only for Owner */}
+          {isAdmin && (
+            <button
+              onClick={() => setIsModalOpen(true)}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '12px 24px',
+                borderRadius: '1rem',
+                fontWeight: 600,
+                fontSize: '0.875rem',
+                background: 'var(--accent)',
+                color: '#ffffff',
+                border: 'none',
+                cursor: 'pointer',
+                boxShadow: 'var(--shadow)',
+                transition: 'all 0.2s ease',
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.9')}
+              onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
+            >
+              <PlusIcon />
+              Upload Project
+            </button>
+          )}
         </div>
 
         {/* Project Cards Grid */}
@@ -244,8 +247,8 @@ export default function ProjectsSection() {
                 e.currentTarget.style.boxShadow = 'var(--shadow)';
               }}
             >
-              {/* Delete button if custom */}
-              {project.isCustom && (
+              {/* Delete button if custom and Admin */}
+              {isAdmin && project.isCustom && (
                 <button
                   title="Remove project"
                   onClick={() => handleDeleteProject(project.id)}
