@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useScrollAnimation, useAdminMode } from '../hooks';
 import { PlusIcon, CloseIcon, GitHubIcon, FilterIcon, EyeIcon, EyeOffIcon } from './Icons';
+import hiddenReposConfig from '../config/hiddenRepos.json';
 
 const DEFAULT_PROJECTS = [
   {
@@ -118,17 +119,19 @@ export default function ProjectsSection() {
   const [githubProjects, setGithubProjects] = useState([]);
   const [isFetchingGithub, setIsFetchingGithub] = useState(true);
   const [hiddenRepoIds, setHiddenRepoIds] = useState(() => {
+    const defaultHidden = hiddenReposConfig?.hiddenRepoIds || [];
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('majid_portfolio_hidden_repos');
       if (saved) {
         try {
-          return JSON.parse(saved);
+          const parsed = JSON.parse(saved);
+          return Array.from(new Set([...defaultHidden, ...parsed]));
         } catch {
-          return [];
+          return defaultHidden;
         }
       }
     }
-    return [];
+    return defaultHidden;
   });
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -1163,7 +1166,38 @@ export default function ProjectsSection() {
             </div>
 
             {/* Modal Footer */}
-            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
+              <button
+                type="button"
+                onClick={() => {
+                  const configData = {
+                    hiddenRepoIds: hiddenRepoIds,
+                    customProjects: customProjects,
+                  };
+                  const jsonStr = JSON.stringify(configData, null, 2);
+                  const blob = new Blob([jsonStr], { type: 'application/json' });
+                  const url = URL.createObjectURL(blob);
+                  const a = document.createElement('a');
+                  a.href = url;
+                  a.download = 'hiddenRepos.json';
+                  a.click();
+                  URL.revokeObjectURL(url);
+                }}
+                title="Download hiddenRepos.json file to save permanently for all devices"
+                style={{
+                  padding: '8px 16px',
+                  borderRadius: '0.75rem',
+                  border: '1px solid var(--accent)',
+                  background: 'var(--accent-bg)',
+                  color: 'var(--accent)',
+                  fontSize: '0.8rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                }}
+              >
+                📥 Save & Export hiddenRepos.json
+              </button>
+
               <button
                 type="button"
                 onClick={() => setIsManageReposModalOpen(false)}
