@@ -4,42 +4,87 @@ import { PlusIcon, CloseIcon, GitHubIcon } from './Icons';
 
 const DEFAULT_PROJECTS = [
   {
-    id: 'default-1',
-    title: 'Network Monitor',
-    subtitle: 'Real-Time Dashboard',
+    id: 'github-netpulse',
+    title: 'NetPulse-Network-Monitoring-Dashboard',
+    subtitle: 'CSS / Python Project',
     description:
-      'A real-time network monitoring dashboard that tracks bandwidth usage, latency, and device health across local and wide area networks. Built with live data visualizations.',
+      'A real-time network monitoring dashboard built with Python, Flask, HTML, CSS, and JavaScript.',
     gradient: 'linear-gradient(135deg, #10b981, #059669)',
     textColor: '#ffffff',
-    link: 'https://github.com/Majid-Hussain404',
-    tags: ['Networking', 'Real-Time', 'Dashboard'],
-    updatedAtFormatted: 'Recently Updated',
+    link: 'https://github.com/Majid-Hussain404/NetPulse-Network-Monitoring-Dashboard',
+    tags: ['CSS', 'Python', 'Flask', 'JavaScript', 'Networking'],
+    updatedAtFormatted: 'Updated Oct 9, 2026',
+    isGitHub: true,
     isCustom: false,
   },
   {
-    id: 'default-2',
-    title: 'SecureVault',
-    subtitle: 'Password Manager',
+    id: 'github-study-planner',
+    title: 'study-planner',
+    subtitle: 'TypeScript Project',
     description:
-      'A secure, encrypted password manager with AES-256 encryption, auto-fill capabilities, and cross-platform sync. Designed with zero-knowledge architecture.',
+      'Interactive study planner and productivity application built with TypeScript and React.',
     gradient: 'linear-gradient(135deg, #6366f1, #4f46e5)',
     textColor: '#ffffff',
-    link: 'https://github.com/Majid-Hussain404',
-    tags: ['Cybersecurity', 'AES-256', 'Crypto'],
-    updatedAtFormatted: 'Recently Updated',
+    link: 'https://github.com/Majid-Hussain404/study-planner',
+    tags: ['TypeScript', 'React', 'Study Tools'],
+    updatedAtFormatted: 'Updated Oct 8, 2026',
+    isGitHub: true,
     isCustom: false,
   },
   {
-    id: 'default-3',
-    title: 'DevFolio',
-    subtitle: 'Portfolio Builder',
+    id: 'github-photo-portfolio',
+    title: 'photo-portfolio',
+    subtitle: 'TypeScript Project',
     description:
-      'A modern portfolio website template for developers featuring dark/light themes, animated sections, and responsive design. Built with React and vanilla CSS.',
+      'Creative photo portfolio builder and visual presentation app built with TypeScript.',
     gradient: 'linear-gradient(135deg, #f59e0b, #d97706)',
     textColor: '#ffffff',
-    link: 'https://github.com/Majid-Hussain404',
-    tags: ['React', 'CSS3', 'Portfolio'],
-    updatedAtFormatted: 'Recently Updated',
+    link: 'https://github.com/Majid-Hussain404/photo-portfolio',
+    tags: ['TypeScript', 'Portfolio', 'UI/UX'],
+    updatedAtFormatted: 'Updated Oct 9, 2026',
+    isGitHub: true,
+    isCustom: false,
+  },
+  {
+    id: 'github-cloud-monitor',
+    title: 'cloud-network-moniter',
+    subtitle: 'Python Project',
+    description:
+      'Cloud network monitoring and traffic analysis utility developed in Python.',
+    gradient: 'linear-gradient(135deg, #06b6d4, #0284c7)',
+    textColor: '#ffffff',
+    link: 'https://github.com/Majid-Hussain404/cloud-network-moniter',
+    tags: ['Python', 'Cloud', 'Networking'],
+    updatedAtFormatted: 'Updated Oct 8, 2026',
+    isGitHub: true,
+    isCustom: false,
+  },
+  {
+    id: 'github-network-monitor',
+    title: 'network-monitor',
+    subtitle: 'Python Project',
+    description:
+      'Lightweight Python network monitoring script and socket analysis system.',
+    gradient: 'linear-gradient(135deg, #a855f7, #7e22ce)',
+    textColor: '#ffffff',
+    link: 'https://github.com/Majid-Hussain404/network-monitor',
+    tags: ['Python', 'Networking', 'Sockets'],
+    updatedAtFormatted: 'Updated Oct 7, 2026',
+    isGitHub: true,
+    isCustom: false,
+  },
+  {
+    id: 'github-majid404',
+    title: 'majid404',
+    subtitle: 'JavaScript Project',
+    description:
+      'Personal developer portfolio showcase & web application.',
+    gradient: 'linear-gradient(135deg, #f43f5e, #e11d48)',
+    textColor: '#ffffff',
+    link: 'https://github.com/Majid-Hussain404/majid404',
+    tags: ['JavaScript', 'React', 'Vite', 'Portfolio'],
+    updatedAtFormatted: 'Updated Oct 10, 2026',
+    isGitHub: true,
     isCustom: false,
   },
 ];
@@ -72,7 +117,6 @@ export default function ProjectsSection() {
 
   const [githubProjects, setGithubProjects] = useState([]);
   const [isFetchingGithub, setIsFetchingGithub] = useState(true);
-  const [lastSyncedTime, setLastSyncedTime] = useState('');
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [projectImage, setProjectImage] = useState(null);
@@ -109,7 +153,7 @@ export default function ProjectsSection() {
       if (res.ok) {
         const data = await res.json();
         const formatted = data
-          .filter((repo) => !repo.fork)
+          .filter((repo) => !repo.fork && repo.name !== 'test')
           .map((repo, idx) => ({
             id: `github-${repo.id}`,
             title: repo.name,
@@ -127,7 +171,6 @@ export default function ProjectsSection() {
             isCustom: false,
           }));
         setGithubProjects(formatted);
-        setLastSyncedTime(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
       }
     } catch (err) {
       console.error('Error fetching GitHub repos:', err);
