@@ -1,9 +1,4 @@
 {
-  "hiddenRepoIds": [
-    "NetPulse-Network-Monitoring-Dashboard",
-    "network-monitor",
-    "cloud-network-moniter",
-    "study-planner"
-  ],
+  "hiddenRepoIds": [],
   "customProjects": []
 }
