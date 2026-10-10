@@ -10,7 +10,9 @@ import {
   CameraIcon,
   LockIcon,
   UnlockIcon,
+  SettingsIcon,
 } from './Icons';
+import OwnerAuthModal from './OwnerAuthModal';
 import resumePdf from './My resume .pdf';
 
 const rotatingWords = ['Networks', 'WebApps', 'Security', 'Systems', 'Software'];
@@ -18,7 +20,17 @@ const rotatingWords = ['Networks', 'WebApps', 'Security', 'Systems', 'Software']
 export default function HeroSection() {
   const { theme, toggleTheme } = useTheme();
   const { word, visible } = useRotatingWords(rotatingWords);
-  const { isAdmin, toggleAdmin } = useAdminMode();
+  const {
+    isAdmin,
+    toggleAdmin,
+    getPasscode,
+    updatePasscode,
+    loginWithPasscode,
+    isAuthModalOpen,
+    setIsAuthModalOpen,
+    isSettingsModalOpen,
+    setIsSettingsModalOpen,
+  } = useAdminMode();
 
   const fileInputRef = useRef(null);
   const [avatarImage, setAvatarImage] = useState(() => {
@@ -125,10 +137,7 @@ export default function HeroSection() {
                   if (isAdmin) {
                     fileInputRef.current?.click();
                   } else {
-                    const unlocked = toggleAdmin();
-                    if (unlocked) {
-                      setTimeout(() => fileInputRef.current?.click(), 100);
-                    }
+                    toggleAdmin();
                   }
                 }}
                 onMouseEnter={() => setIsHovered(true)}
@@ -228,10 +237,7 @@ export default function HeroSection() {
                       if (isAdmin) {
                         fileInputRef.current?.click();
                       } else {
-                        const unlocked = toggleAdmin();
-                        if (unlocked) {
-                          setTimeout(() => fileInputRef.current?.click(), 100);
-                        }
+                        toggleAdmin();
                       }
                     }}
                     style={{
@@ -272,8 +278,31 @@ export default function HeroSection() {
               </div>
             </div>
 
-            {/* Top Right Buttons: Admin Lock Toggle + Theme Toggle */}
+            {/* Top Right Buttons: Passcode Settings (if Admin) + Admin Lock Toggle + Theme Toggle */}
             <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+              {isAdmin && (
+                <button
+                  aria-label="Passcode Settings"
+                  onClick={() => setIsSettingsModalOpen(true)}
+                  title="Owner Passcode Settings (Update Passcode)"
+                  style={{
+                    padding: '10px',
+                    borderRadius: '1rem',
+                    border: '1px solid var(--accent)',
+                    background: 'var(--accent-bg)',
+                    color: 'var(--accent)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    transition: 'all 0.2s ease',
+                    flexShrink: 0,
+                    cursor: 'pointer',
+                  }}
+                >
+                  <SettingsIcon />
+                </button>
+              )}
+
               <button
                 aria-label="Owner Mode"
                 onClick={toggleAdmin}
@@ -500,6 +529,17 @@ export default function HeroSection() {
           />
         </div>
       </div>
+
+      {/* Owner Authentication & Passcode Settings Modal */}
+      <OwnerAuthModal
+        isAuthModalOpen={isAuthModalOpen}
+        setIsAuthModalOpen={setIsAuthModalOpen}
+        isSettingsModalOpen={isSettingsModalOpen}
+        setIsSettingsModalOpen={setIsSettingsModalOpen}
+        loginWithPasscode={loginWithPasscode}
+        getPasscode={getPasscode}
+        updatePasscode={updatePasscode}
+      />
     </section>
   );
 }

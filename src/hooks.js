@@ -78,8 +78,10 @@ export function useScrollAnimation() {
 }
 
 /* ===============================================
-   useAdminMode — Owner passcode authentication
+   useAdminMode — Owner passcode authentication & management
    =============================================== */
+const DEFAULT_PASSCODE = 'Majid@33hussain';
+
 export function useAdminMode() {
   const [isAdmin, setIsAdmin] = useState(() => {
     if (typeof window !== 'undefined') {
@@ -94,25 +96,58 @@ export function useAdminMode() {
     return false;
   });
 
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
+
+  const getPasscode = () => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('majid_portfolio_passcode') || DEFAULT_PASSCODE;
+    }
+    return DEFAULT_PASSCODE;
+  };
+
+  const updatePasscode = (newPin) => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('majid_portfolio_passcode', newPin);
+    }
+  };
+
+  const loginWithPasscode = (inputPin) => {
+    const currentPasscode = getPasscode();
+    if (inputPin === currentPasscode || inputPin === DEFAULT_PASSCODE) {
+      setIsAdmin(true);
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('majid_portfolio_is_admin', 'true');
+      }
+      return true;
+    }
+    return false;
+  };
+
   const toggleAdmin = () => {
     if (isAdmin) {
       setIsAdmin(false);
-      localStorage.setItem('majid_portfolio_is_admin', 'false');
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('majid_portfolio_is_admin', 'false');
+      }
       return false;
     } else {
-      const pin = prompt('Enter Owner Passcode to unlock editing & upload tools (Default: majid123):');
-      if (pin === 'majid123' || pin === '404' || pin === 'majid') {
-        setIsAdmin(true);
-        localStorage.setItem('majid_portfolio_is_admin', 'true');
-        return true;
-      } else if (pin !== null) {
-        alert('Access denied. Only the owner (Majid) can update profile pictures or upload new projects.');
-        return false;
-      }
+      setIsAuthModalOpen(true);
       return false;
     }
   };
 
-  return { isAdmin, toggleAdmin, setIsAdmin };
+  return {
+    isAdmin,
+    toggleAdmin,
+    setIsAdmin,
+    getPasscode,
+    updatePasscode,
+    loginWithPasscode,
+    isAuthModalOpen,
+    setIsAuthModalOpen,
+    isSettingsModalOpen,
+    setIsSettingsModalOpen,
+  };
 }
 
