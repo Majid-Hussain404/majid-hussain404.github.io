@@ -4,7 +4,7 @@ import { PlusIcon, CloseIcon, GitHubIcon, FilterIcon, EyeIcon, EyeOffIcon } from
 import hiddenReposConfig from '../config/hiddenRepos.json';
 import { getCentralHiddenRepoIds, saveCentralHiddenRepoIds } from '../lib/db';
 
-export function isRepoHidden(project, hiddenList) {
+function isRepoHidden(project, hiddenList) {
   if (!project || !hiddenList || !Array.isArray(hiddenList) || hiddenList.length === 0) return false;
   const pId = String(project.id || '').toLowerCase();
   const pTitle = String(project.title || '').toLowerCase();
