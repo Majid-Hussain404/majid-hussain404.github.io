@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useScrollAnimation, useAdminMode } from '../hooks';
-import { PlusIcon, CloseIcon, GitHubIcon } from './Icons';
+import { PlusIcon, CloseIcon, GitHubIcon, FilterIcon, EyeIcon, EyeOffIcon } from './Icons';
 
 const DEFAULT_PROJECTS = [
   {
@@ -117,8 +117,22 @@ export default function ProjectsSection() {
 
   const [githubProjects, setGithubProjects] = useState([]);
   const [isFetchingGithub, setIsFetchingGithub] = useState(true);
+  const [hiddenRepoIds, setHiddenRepoIds] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('majid_portfolio_hidden_repos');
+      if (saved) {
+        try {
+          return JSON.parse(saved);
+        } catch {
+          return [];
+        }
+      }
+    }
+    return [];
+  });
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isManageReposModalOpen, setIsManageReposModalOpen] = useState(false);
   const [projectImage, setProjectImage] = useState(null);
   const [formData, setFormData] = useState({
     title: '',
@@ -128,6 +142,16 @@ export default function ProjectsSection() {
     tags: '',
     gradient: PRESET_GRADIENTS[0].value,
   });
+
+  useEffect(() => {
+    localStorage.setItem('majid_portfolio_hidden_repos', JSON.stringify(hiddenRepoIds));
+  }, [hiddenRepoIds]);
+
+  const toggleRepoVisibility = (id) => {
+    setHiddenRepoIds((prev) =>
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+    );
+  };
 
   const formatTimeAgo = (dateStr) => {
     if (!dateStr) return 'Updated recently';
@@ -187,10 +211,14 @@ export default function ProjectsSection() {
     localStorage.setItem('majid_portfolio_projects', JSON.stringify(customProjects));
   }, [customProjects]);
 
-  const displayProjects = [
+  const allProjectsList = [
     ...customProjects,
     ...(githubProjects.length > 0 ? githubProjects : DEFAULT_PROJECTS),
   ];
+
+  const displayProjects = isAdmin
+    ? allProjectsList
+    : allProjectsList.filter((p) => !hiddenRepoIds.includes(p.id));
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -359,31 +387,62 @@ export default function ProjectsSection() {
             </p>
           </div>
 
-          {/* Upload / Add Project Button */}
-          <button
-            onClick={handleUploadButtonClick}
-            title={isAdmin ? 'Upload new project' : 'Owner lock (Click to unlock & upload)'}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '8px',
-              padding: '12px 24px',
-              borderRadius: '1rem',
-              fontWeight: 600,
-              fontSize: '0.875rem',
-              background: 'var(--accent)',
-              color: '#ffffff',
-              border: 'none',
-              cursor: 'pointer',
-              boxShadow: 'var(--shadow)',
-              transition: 'all 0.2s ease',
-            }}
-            onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.9')}
-            onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
-          >
-            <PlusIcon />
-            Upload Project
-          </button>
+          {/* Top Right Header Controls */}
+          <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+            <button
+              onClick={() => {
+                if (isAdmin) {
+                  setIsManageReposModalOpen(true);
+                } else {
+                  toggleAdmin();
+                }
+              }}
+              title={isAdmin ? 'Select which repositories to display' : 'Owner lock (Click to unlock & select repos)'}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '12px 20px',
+                borderRadius: '1rem',
+                fontWeight: 600,
+                fontSize: '0.875rem',
+                background: 'var(--bg-card)',
+                color: 'var(--text)',
+                border: '1px solid var(--border)',
+                cursor: 'pointer',
+                boxShadow: 'var(--shadow)',
+                transition: 'all 0.2s ease',
+              }}
+            >
+              <FilterIcon />
+              Select Repos
+            </button>
+
+            <button
+              onClick={handleUploadButtonClick}
+              title={isAdmin ? 'Upload new custom project' : 'Owner lock (Click to unlock & upload)'}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '12px 24px',
+                borderRadius: '1rem',
+                fontWeight: 600,
+                fontSize: '0.875rem',
+                background: 'var(--accent)',
+                color: '#ffffff',
+                border: 'none',
+                cursor: 'pointer',
+                boxShadow: 'var(--shadow)',
+                transition: 'all 0.2s ease',
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.9')}
+              onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
+            >
+              <PlusIcon />
+              Upload Project
+            </button>
+          </div>
         </div>
 
         {/* Project Cards Grid */}
@@ -395,88 +454,111 @@ export default function ProjectsSection() {
             marginTop: '48px',
           }}
         >
-          {displayProjects.map((project, idx) => (
-            <div
-              className="card-animate"
-              key={project.id || project.title}
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                borderRadius: '2rem',
-                overflow: 'hidden',
-                border: '1px solid var(--border)',
-                background: 'var(--bg-card)',
-                boxShadow: 'var(--shadow)',
-                position: 'relative',
-                transition: 'all 0.4s ease, transform 0.4s ease',
-                transitionDelay: `${idx * 0.08}s`,
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateY(-6px)';
-                e.currentTarget.style.boxShadow = 'var(--shadow-lg)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = 'var(--shadow)';
-              }}
-            >
-              {/* Top Left Live Update Badge */}
+          {displayProjects.map((project, idx) => {
+            const isHidden = hiddenRepoIds.includes(project.id);
+            return (
               <div
+                className="card-animate"
+                key={project.id || project.title}
                 style={{
-                  position: 'absolute',
-                  top: '12px',
-                  left: '12px',
-                  zIndex: 10,
-                  background: 'rgba(0,0,0,0.65)',
-                  color: '#ffffff',
-                  padding: '4px 10px',
-                  borderRadius: '9999px',
-                  fontSize: '0.68rem',
-                  fontWeight: 600,
                   display: 'flex',
-                  alignItems: 'center',
-                  gap: '5px',
-                  backdropFilter: 'blur(4px)',
+                  flexDirection: 'column',
+                  borderRadius: '2rem',
+                  overflow: 'hidden',
+                  border: isHidden ? '2px dashed #ef4444' : '1px solid var(--border)',
+                  background: 'var(--bg-card)',
+                  boxShadow: 'var(--shadow)',
+                  position: 'relative',
+                  opacity: isHidden ? 0.75 : 1,
+                  transition: 'all 0.4s ease, transform 0.4s ease',
+                  transitionDelay: `${idx * 0.08}s`,
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-6px)';
+                  e.currentTarget.style.boxShadow = 'var(--shadow-lg)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.boxShadow = 'var(--shadow)';
                 }}
               >
-                <span
-                  style={{
-                    width: '6px',
-                    height: '6px',
-                    borderRadius: '50%',
-                    background: project.isGitHub ? '#38bdf8' : '#22c55e',
-                    boxShadow: project.isGitHub ? '0 0 6px #38bdf8' : '0 0 6px #22c55e',
-                  }}
-                />
-                {project.updatedAtFormatted || 'Updated recently'}
-              </div>
-
-              {/* Delete button if Custom and Admin */}
-              {isAdmin && project.isCustom && (
-                <button
-                  title="Remove custom project"
-                  onClick={() => handleDeleteProject(project.id)}
+                {/* Top Left Live Update Badge */}
+                <div
                   style={{
                     position: 'absolute',
                     top: '12px',
-                    right: '12px',
+                    left: '12px',
                     zIndex: 10,
-                    width: '32px',
-                    height: '32px',
-                    borderRadius: '50%',
                     background: 'rgba(0,0,0,0.65)',
-                    color: '#fff',
-                    border: 'none',
+                    color: '#ffffff',
+                    padding: '4px 10px',
+                    borderRadius: '9999px',
+                    fontSize: '0.68rem',
+                    fontWeight: 600,
                     display: 'flex',
                     alignItems: 'center',
-                    justifyContent: 'center',
-                    cursor: 'pointer',
+                    gap: '5px',
                     backdropFilter: 'blur(4px)',
                   }}
                 >
-                  <CloseIcon size={16} />
-                </button>
-              )}
+                  <span
+                    style={{
+                      width: '6px',
+                      height: '6px',
+                      borderRadius: '50%',
+                      background: project.isGitHub ? '#38bdf8' : '#22c55e',
+                      boxShadow: project.isGitHub ? '0 0 6px #38bdf8' : '0 0 6px #22c55e',
+                    }}
+                  />
+                  {project.updatedAtFormatted || 'Updated recently'}
+                </div>
+
+                {/* Owner Controls: Visibility Toggle + Delete */}
+                {isAdmin && (
+                  <div style={{ position: 'absolute', top: '12px', right: '12px', zIndex: 10, display: 'flex', gap: '6px' }}>
+                    <button
+                      title={isHidden ? 'Hidden from public (Click to show)' : 'Visible on public (Click to hide)'}
+                      onClick={() => toggleRepoVisibility(project.id)}
+                      style={{
+                        width: '32px',
+                        height: '32px',
+                        borderRadius: '50%',
+                        background: isHidden ? 'rgba(239, 68, 68, 0.85)' : 'rgba(0,0,0,0.65)',
+                        color: '#fff',
+                        border: 'none',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        cursor: 'pointer',
+                        backdropFilter: 'blur(4px)',
+                      }}
+                    >
+                      {isHidden ? <EyeOffIcon size={16} /> : <EyeIcon size={16} />}
+                    </button>
+
+                    {project.isCustom && (
+                      <button
+                        title="Remove custom project"
+                        onClick={() => handleDeleteProject(project.id)}
+                        style={{
+                          width: '32px',
+                          height: '32px',
+                          borderRadius: '50%',
+                          background: 'rgba(0,0,0,0.65)',
+                          color: '#fff',
+                          border: 'none',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          cursor: 'pointer',
+                          backdropFilter: 'blur(4px)',
+                        }}
+                      >
+                        <CloseIcon size={16} />
+                      </button>
+                    )}
+                  </div>
+                )}
 
               {/* Card Header Banner */}
               <div
@@ -608,7 +690,8 @@ export default function ProjectsSection() {
                 </a>
               </div>
             </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 
@@ -901,6 +984,207 @@ export default function ProjectsSection() {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Selective Repositories Manager Modal */}
+      {isManageReposModalOpen && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 999,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '20px',
+            background: 'rgba(0,0,0,0.65)',
+            backdropFilter: 'blur(8px)',
+            WebkitBackdropFilter: 'blur(8px)',
+          }}
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setIsManageReposModalOpen(false);
+          }}
+        >
+          <div
+            style={{
+              width: '100%',
+              maxWidth: '560px',
+              borderRadius: '2rem',
+              padding: '32px',
+              background: 'var(--bg-card)',
+              border: '1px solid var(--border)',
+              boxShadow: 'var(--shadow-lg)',
+              color: 'var(--text)',
+              position: 'relative',
+              maxHeight: '90vh',
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+          >
+            {/* Modal Header */}
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                marginBottom: '16px',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <div
+                  style={{
+                    padding: '8px',
+                    borderRadius: '0.75rem',
+                    background: 'var(--accent-bg)',
+                    color: 'var(--accent)',
+                    display: 'flex',
+                  }}
+                >
+                  <FilterIcon size={20} />
+                </div>
+                <h3 style={{ fontSize: '1.3rem', fontWeight: 700, margin: 0 }}>
+                  Select Repositories to Feature
+                </h3>
+              </div>
+              <button
+                onClick={() => setIsManageReposModalOpen(false)}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: 'var(--text-muted)',
+                  cursor: 'pointer',
+                  padding: '4px',
+                  display: 'flex',
+                }}
+              >
+                <CloseIcon />
+              </button>
+            </div>
+
+            <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)', marginBottom: '16px', marginTop: 0 }}>
+              Toggle which GitHub repositories or custom projects are visible to visitors on your portfolio website.
+            </p>
+
+            {/* Quick Bulk Action Buttons */}
+            <div style={{ display: 'flex', gap: '10px', marginBottom: '16px' }}>
+              <button
+                type="button"
+                onClick={() => setHiddenRepoIds([])}
+                style={{
+                  padding: '6px 14px',
+                  borderRadius: '0.6rem',
+                  border: '1px solid var(--border)',
+                  background: 'var(--bg-secondary)',
+                  color: 'var(--accent)',
+                  fontSize: '0.78rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                }}
+              >
+                Show All
+              </button>
+              <button
+                type="button"
+                onClick={() => setHiddenRepoIds(allProjectsList.map((p) => p.id))}
+                style={{
+                  padding: '6px 14px',
+                  borderRadius: '0.6rem',
+                  border: '1px solid var(--border)',
+                  background: 'var(--bg-secondary)',
+                  color: 'var(--text-muted)',
+                  fontSize: '0.78rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                }}
+              >
+                Hide All
+              </button>
+            </div>
+
+            {/* Repositories Checkbox List */}
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '10px',
+                maxHeight: '340px',
+                overflowY: 'auto',
+                paddingRight: '6px',
+                marginBottom: '20px',
+              }}
+            >
+              {allProjectsList.map((repo) => {
+                const isVisible = !hiddenRepoIds.includes(repo.id);
+                return (
+                  <div
+                    key={repo.id}
+                    onClick={() => toggleRepoVisibility(repo.id)}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      padding: '12px 16px',
+                      borderRadius: '1rem',
+                      background: 'var(--bg-secondary)',
+                      border: isVisible ? '1px solid var(--accent)' : '1px solid var(--border)',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s ease',
+                    }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                      <input
+                        type="checkbox"
+                        checked={isVisible}
+                        onChange={() => {}}
+                        style={{ width: '18px', height: '18px', accentColor: 'var(--accent)', cursor: 'pointer' }}
+                      />
+                      <div>
+                        <div style={{ fontSize: '0.9rem', fontWeight: 700, color: 'var(--text)' }}>
+                          {repo.title}
+                        </div>
+                        <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '2px' }}>
+                          {repo.subtitle} • {repo.updatedAtFormatted || 'Updated recently'}
+                        </div>
+                      </div>
+                    </div>
+                    <span
+                      style={{
+                        fontSize: '0.72rem',
+                        fontWeight: 700,
+                        padding: '4px 10px',
+                        borderRadius: '9999px',
+                        background: isVisible ? 'var(--accent-bg)' : 'rgba(239, 68, 68, 0.15)',
+                        color: isVisible ? 'var(--accent)' : '#ef4444',
+                      }}
+                    >
+                      {isVisible ? 'Visible' : 'Hidden'}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Modal Footer */}
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px' }}>
+              <button
+                type="button"
+                onClick={() => setIsManageReposModalOpen(false)}
+                style={{
+                  padding: '10px 24px',
+                  borderRadius: '0.85rem',
+                  border: 'none',
+                  background: 'var(--accent)',
+                  color: '#ffffff',
+                  fontSize: '0.875rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                }}
+              >
+                Done
+              </button>
+            </div>
           </div>
         </div>
       )}
