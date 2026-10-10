@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useScrollAnimation, useAdminMode } from '../hooks';
-import { PlusIcon, CloseIcon } from './Icons';
+import { PlusIcon, CloseIcon, GitHubIcon } from './Icons';
 
 const DEFAULT_PROJECTS = [
   {
@@ -13,6 +13,7 @@ const DEFAULT_PROJECTS = [
     textColor: '#ffffff',
     link: 'https://github.com/Majid-Hussain404',
     tags: ['Networking', 'Real-Time', 'Dashboard'],
+    updatedAtFormatted: 'Recently Updated',
     isCustom: false,
   },
   {
@@ -25,6 +26,7 @@ const DEFAULT_PROJECTS = [
     textColor: '#ffffff',
     link: 'https://github.com/Majid-Hussain404',
     tags: ['Cybersecurity', 'AES-256', 'Crypto'],
+    updatedAtFormatted: 'Recently Updated',
     isCustom: false,
   },
   {
@@ -37,6 +39,7 @@ const DEFAULT_PROJECTS = [
     textColor: '#ffffff',
     link: 'https://github.com/Majid-Hussain404',
     tags: ['React', 'CSS3', 'Portfolio'],
+    updatedAtFormatted: 'Recently Updated',
     isCustom: false,
   },
 ];
@@ -52,18 +55,24 @@ const PRESET_GRADIENTS = [
 
 export default function ProjectsSection() {
   const sectionRef = useScrollAnimation();
-  const { isAdmin } = useAdminMode();
-  const [projects, setProjects] = useState(() => {
+  const { isAdmin, toggleAdmin } = useAdminMode();
+
+  const [customProjects, setCustomProjects] = useState(() => {
     const saved = localStorage.getItem('majid_portfolio_projects');
     if (saved) {
       try {
-        return JSON.parse(saved);
+        const parsed = JSON.parse(saved);
+        return parsed.filter((p) => p.isCustom);
       } catch {
-        return DEFAULT_PROJECTS;
+        return [];
       }
     }
-    return DEFAULT_PROJECTS;
+    return [];
   });
+
+  const [githubProjects, setGithubProjects] = useState([]);
+  const [isFetchingGithub, setIsFetchingGithub] = useState(true);
+  const [lastSyncedTime, setLastSyncedTime] = useState('');
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [projectImage, setProjectImage] = useState(null);
@@ -76,9 +85,69 @@ export default function ProjectsSection() {
     gradient: PRESET_GRADIENTS[0].value,
   });
 
+  const formatTimeAgo = (dateStr) => {
+    if (!dateStr) return 'Updated recently';
+    const date = new Date(dateStr);
+    const now = new Date();
+    const diffMs = now - date;
+    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+    if (diffHours < 1) return 'Updated just now';
+    if (diffHours < 24) return `Updated ${diffHours}h ago`;
+    if (diffDays === 1) return 'Updated yesterday';
+    if (diffDays < 30) return `Updated ${diffDays}d ago`;
+    return `Updated ${date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`;
+  };
+
+  const fetchGitHubRepos = async () => {
+    setIsFetchingGithub(true);
+    try {
+      const res = await fetch(
+        'https://api.github.com/users/Majid-Hussain404/repos?sort=pushed&direction=desc'
+      );
+      if (res.ok) {
+        const data = await res.json();
+        const formatted = data
+          .filter((repo) => !repo.fork)
+          .map((repo, idx) => ({
+            id: `github-${repo.id}`,
+            title: repo.name,
+            subtitle: repo.language ? `${repo.language} Project` : 'GitHub Project',
+            description:
+              repo.description ||
+              `Public repository by @Majid-Hussain404 built with ${repo.language || 'modern tech'}.`,
+            gradient: PRESET_GRADIENTS[idx % PRESET_GRADIENTS.length].value,
+            link: repo.html_url,
+            tags: [repo.language, ...(repo.topics || []), 'GitHub'].filter(Boolean),
+            updatedAtFormatted: formatTimeAgo(repo.pushed_at || repo.updated_at),
+            stars: repo.stargazers_count,
+            forks: repo.forks_count,
+            isGitHub: true,
+            isCustom: false,
+          }));
+        setGithubProjects(formatted);
+        setLastSyncedTime(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+      }
+    } catch (err) {
+      console.error('Error fetching GitHub repos:', err);
+    } finally {
+      setIsFetchingGithub(false);
+    }
+  };
+
   useEffect(() => {
-    localStorage.setItem('majid_portfolio_projects', JSON.stringify(projects));
-  }, [projects]);
+    fetchGitHubRepos();
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('majid_portfolio_projects', JSON.stringify(customProjects));
+  }, [customProjects]);
+
+  const displayProjects = [
+    ...customProjects,
+    ...(githubProjects.length > 0 ? githubProjects : DEFAULT_PROJECTS),
+  ];
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -116,10 +185,11 @@ export default function ProjectsSection() {
       tags: formData.tags
         ? formData.tags.split(',').map((t) => t.trim()).filter(Boolean)
         : ['Project'],
+      updatedAtFormatted: 'Updated just now',
       isCustom: true,
     };
 
-    setProjects([newProj, ...projects]);
+    setCustomProjects([newProj, ...customProjects]);
     setFormData({
       title: '',
       subtitle: '',
@@ -133,8 +203,8 @@ export default function ProjectsSection() {
   };
 
   const handleDeleteProject = (id) => {
-    if (window.confirm('Are you sure you want to remove this project?')) {
-      setProjects(projects.filter((p) => p.id !== id));
+    if (window.confirm('Are you sure you want to remove this custom project?')) {
+      setCustomProjects(customProjects.filter((p) => p.id !== id));
     }
   };
 
@@ -142,10 +212,7 @@ export default function ProjectsSection() {
     if (isAdmin) {
       setIsModalOpen(true);
     } else {
-      const unlocked = toggleAdmin();
-      if (unlocked) {
-        setIsModalOpen(true);
-      }
+      toggleAdmin();
     }
   };
 
@@ -168,23 +235,56 @@ export default function ProjectsSection() {
           }}
         >
           <div>
-            <span
-              className="section-label-animate"
-              style={{
-                display: 'inline-block',
-                padding: '6px 16px',
-                borderRadius: '9999px',
-                fontSize: '0.7rem',
-                fontWeight: 700,
-                letterSpacing: '0.15em',
-                textTransform: 'uppercase',
-                marginBottom: '16px',
-                background: 'var(--accent-bg)',
-                color: 'var(--accent)',
-              }}
-            >
-              Work Gallery
-            </span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
+              <span
+                className="section-label-animate"
+                style={{
+                  display: 'inline-block',
+                  padding: '6px 16px',
+                  borderRadius: '9999px',
+                  fontSize: '0.7rem',
+                  fontWeight: 700,
+                  letterSpacing: '0.15em',
+                  textTransform: 'uppercase',
+                  background: 'var(--accent-bg)',
+                  color: 'var(--accent)',
+                }}
+              >
+                Work Gallery
+              </span>
+              <button
+                onClick={fetchGitHubRepos}
+                disabled={isFetchingGithub}
+                title="Fetch live updates from GitHub"
+                style={{
+                  background: 'var(--bg-secondary)',
+                  border: '1px solid var(--border)',
+                  padding: '4px 12px',
+                  borderRadius: '9999px',
+                  fontSize: '0.7rem',
+                  fontWeight: 600,
+                  color: 'var(--text-muted)',
+                  cursor: 'pointer',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  transition: 'all 0.2s ease',
+                }}
+              >
+                <span
+                  style={{
+                    width: '6px',
+                    height: '6px',
+                    borderRadius: '50%',
+                    background: isFetchingGithub ? '#f59e0b' : '#22c55e',
+                    boxShadow: isFetchingGithub
+                      ? '0 0 6px rgba(245, 158, 11, 0.8)'
+                      : '0 0 6px rgba(34, 197, 94, 0.8)',
+                  }}
+                />
+                {isFetchingGithub ? 'Syncing GitHub...' : 'Live GitHub Auto-Sync'}
+              </button>
+            </div>
             <h2
               className="section-animate"
               style={{
@@ -212,7 +312,7 @@ export default function ProjectsSection() {
                 transitionDelay: '0.2s',
               }}
             >
-              A showcase of my work, blending technical excellence with elegant design.
+              A live showcase of my public GitHub repositories and software projects, with real-time commit activity updates.
             </p>
           </div>
 
@@ -247,12 +347,12 @@ export default function ProjectsSection() {
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
             gap: '32px',
             marginTop: '48px',
           }}
         >
-          {projects.map((project, idx) => (
+          {displayProjects.map((project, idx) => (
             <div
               className="card-animate"
               key={project.id || project.title}
@@ -266,7 +366,7 @@ export default function ProjectsSection() {
                 boxShadow: 'var(--shadow)',
                 position: 'relative',
                 transition: 'all 0.4s ease, transform 0.4s ease',
-                transitionDelay: `${idx * 0.1}s`,
+                transitionDelay: `${idx * 0.08}s`,
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = 'translateY(-6px)';
@@ -277,10 +377,41 @@ export default function ProjectsSection() {
                 e.currentTarget.style.boxShadow = 'var(--shadow)';
               }}
             >
-              {/* Delete button if Admin */}
-              {isAdmin && (
+              {/* Top Left Live Update Badge */}
+              <div
+                style={{
+                  position: 'absolute',
+                  top: '12px',
+                  left: '12px',
+                  zIndex: 10,
+                  background: 'rgba(0,0,0,0.65)',
+                  color: '#ffffff',
+                  padding: '4px 10px',
+                  borderRadius: '9999px',
+                  fontSize: '0.68rem',
+                  fontWeight: 600,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '5px',
+                  backdropFilter: 'blur(4px)',
+                }}
+              >
+                <span
+                  style={{
+                    width: '6px',
+                    height: '6px',
+                    borderRadius: '50%',
+                    background: project.isGitHub ? '#38bdf8' : '#22c55e',
+                    boxShadow: project.isGitHub ? '0 0 6px #38bdf8' : '0 0 6px #22c55e',
+                  }}
+                />
+                {project.updatedAtFormatted || 'Updated recently'}
+              </div>
+
+              {/* Delete button if Custom and Admin */}
+              {isAdmin && project.isCustom && (
                 <button
-                  title="Remove project"
+                  title="Remove custom project"
                   onClick={() => handleDeleteProject(project.id)}
                   style={{
                     position: 'absolute',
@@ -338,11 +469,10 @@ export default function ProjectsSection() {
                   style={{
                     position: 'relative',
                     zIndex: 2,
-                    fontSize: '1.2rem',
+                    fontSize: '1.25rem',
                     fontWeight: 700,
-                    letterSpacing: '0.08em',
-                    textTransform: 'uppercase',
-                    textShadow: project.image ? '0 2px 4px rgba(0,0,0,0.7)' : 'none',
+                    letterSpacing: '0.05em',
+                    textShadow: project.image ? '0 2px 4px rgba(0,0,0,0.7)' : '0 2px 4px rgba(0,0,0,0.3)',
                   }}
                 >
                   {project.title}
@@ -412,7 +542,10 @@ export default function ProjectsSection() {
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
-                    display: 'block',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '8px',
                     width: '100%',
                     padding: '10px',
                     borderRadius: '0.85rem',
@@ -427,7 +560,8 @@ export default function ProjectsSection() {
                     textDecoration: 'none',
                   }}
                 >
-                  View Project
+                  <GitHubIcon />
+                  View on GitHub
                 </a>
               </div>
             </div>

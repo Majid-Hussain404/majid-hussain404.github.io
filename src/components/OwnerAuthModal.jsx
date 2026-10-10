@@ -459,9 +459,30 @@ export default function OwnerAuthModal({
               )}
 
               <div>
-                <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 600, marginBottom: '6px', color: 'var(--text-secondary)' }}>
-                  Current Passcode *
-                </label>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                  <label style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--text-secondary)', margin: 0 }}>
+                    Current Passcode *
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsSettingsModalOpen(false);
+                      setIsAuthModalOpen(true);
+                      setIsForgotMode(true);
+                    }}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      padding: 0,
+                      fontSize: '0.72rem',
+                      fontWeight: 600,
+                      color: 'var(--accent)',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    Forgot passcode? Reset via Email
+                  </button>
+                </div>
                 <input
                   type="password"
                   required
