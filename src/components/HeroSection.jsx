@@ -1,3 +1,4 @@
+import { useState, useRef, useEffect } from 'react';
 import { useTheme, useRotatingWords } from '../hooks';
 import {
   SunIcon,
@@ -6,6 +7,8 @@ import {
   LinkedInIcon,
   EmailIcon,
   DocumentIcon,
+  CameraIcon,
+  CloseIcon,
 } from './Icons';
 import resumePdf from './My resume .pdf';
 
@@ -14,6 +17,36 @@ const rotatingWords = ['Networks', 'WebApps', 'Security', 'Systems', 'Software']
 export default function HeroSection() {
   const { theme, toggleTheme } = useTheme();
   const { word, visible } = useRotatingWords(rotatingWords);
+
+  const fileInputRef = useRef(null);
+  const [avatarImage, setAvatarImage] = useState(() => {
+    return localStorage.getItem('majid_portfolio_avatar') || null;
+  });
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) {
+        alert('File size should be less than 5MB');
+        return;
+      }
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const result = reader.result;
+        setAvatarImage(result);
+        localStorage.setItem('majid_portfolio_avatar', result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleRemovePhoto = (e) => {
+    e.stopPropagation();
+    setAvatarImage(null);
+    localStorage.removeItem('majid_portfolio_avatar');
+    if (fileInputRef.current) fileInputRef.current.value = '';
+  };
 
   return (
     <section
@@ -36,6 +69,15 @@ export default function HeroSection() {
           pointerEvents: 'none',
           background: 'radial-gradient(ellipse at center, transparent 20%, var(--bg))',
         }}
+      />
+
+      {/* Hidden File Input for Avatar Upload */}
+      <input
+        type="file"
+        ref={fileInputRef}
+        accept="image/*"
+        onChange={handleImageUpload}
+        style={{ display: 'none' }}
       />
 
       {/* Hero Card */}
@@ -73,26 +115,76 @@ export default function HeroSection() {
             }}
           >
             <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-              {/* Avatar initials */}
+              {/* Profile Avatar Container */}
               <div
+                onClick={() => fileInputRef.current?.click()}
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+                title="Click to upload profile photo"
                 style={{
-                  width: '72px',
-                  height: '72px',
+                  position: 'relative',
+                  width: '76px',
+                  height: '76px',
                   borderRadius: '50%',
                   border: '2px solid var(--border)',
                   overflow: 'hidden',
                   flexShrink: 0,
-                  background: 'linear-gradient(135deg, var(--accent), #8b5cf6)',
+                  cursor: 'pointer',
+                  background: avatarImage
+                    ? 'none'
+                    : 'linear-gradient(135deg, var(--accent), #8b5cf6)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  color: '#fff',
-                  fontWeight: 800,
-                  fontSize: '1.5rem',
-                  fontFamily: 'var(--font-sans)',
+                  boxShadow: 'var(--shadow)',
+                  transition: 'all 0.3s ease',
                 }}
               >
-                MH
+                {avatarImage ? (
+                  <img
+                    src={avatarImage}
+                    alt="Majid Hussain"
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                    }}
+                  />
+                ) : (
+                  <span
+                    style={{
+                      color: '#fff',
+                      fontWeight: 800,
+                      fontSize: '1.5rem',
+                      fontFamily: 'var(--font-sans)',
+                    }}
+                  >
+                    MH
+                  </span>
+                )}
+
+                {/* Hover overlay with camera icon */}
+                <div
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    background: 'rgba(0,0,0,0.55)',
+                    color: '#ffffff',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '2px',
+                    opacity: isHovered ? 1 : 0,
+                    transition: 'opacity 0.2s ease',
+                    backdropFilter: 'blur(2px)',
+                  }}
+                >
+                  <CameraIcon size={18} />
+                  <span style={{ fontSize: '0.55rem', fontWeight: 700, textTransform: 'uppercase' }}>
+                    {avatarImage ? 'Change' : 'Upload'}
+                  </span>
+                </div>
               </div>
               <div>
                 <h1
@@ -116,6 +208,45 @@ export default function HeroSection() {
                 >
                   @majid-hussain404
                 </p>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '4px' }}>
+                  <button
+                    onClick={() => fileInputRef.current?.click()}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      padding: 0,
+                      fontSize: '0.72rem',
+                      fontWeight: 600,
+                      color: 'var(--accent)',
+                      cursor: 'pointer',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                    }}
+                  >
+                    <CameraIcon size={12} />
+                    {avatarImage ? 'Change photo' : 'Upload photo'}
+                  </button>
+                  {avatarImage && (
+                    <>
+                      <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>•</span>
+                      <button
+                        onClick={handleRemovePhoto}
+                        style={{
+                          background: 'none',
+                          border: 'none',
+                          padding: 0,
+                          fontSize: '0.72rem',
+                          fontWeight: 500,
+                          color: 'var(--text-muted)',
+                          cursor: 'pointer',
+                        }}
+                      >
+                        Remove
+                      </button>
+                    </>
+                  )}
+                </div>
               </div>
             </div>
             <button
