@@ -3,9 +3,26 @@ import { useScrollAnimation, useAdminMode } from '../hooks';
 import { PlusIcon, CloseIcon, GitHubIcon, FilterIcon, EyeIcon, EyeOffIcon } from './Icons';
 import hiddenReposConfig from '../config/hiddenRepos.json';
 
+export function isRepoHidden(project, hiddenList) {
+  if (!project || !hiddenList || !Array.isArray(hiddenList) || hiddenList.length === 0) return false;
+  const pId = String(project.id || '').toLowerCase();
+  const pTitle = String(project.title || '').toLowerCase();
+  const pGithubTitle = `github-${pTitle}`;
+  return hiddenList.some((item) => {
+    const s = String(item).toLowerCase();
+    return (
+      s === pId ||
+      s === pTitle ||
+      s === pGithubTitle ||
+      (pTitle && s.includes(pTitle)) ||
+      (pTitle && pTitle.includes(s))
+    );
+  });
+}
+
 const DEFAULT_PROJECTS = [
   {
-    id: 'github-netpulse',
+    id: 'NetPulse-Network-Monitoring-Dashboard',
     title: 'NetPulse-Network-Monitoring-Dashboard',
     subtitle: 'CSS / Python Project',
     description:
@@ -19,7 +36,7 @@ const DEFAULT_PROJECTS = [
     isCustom: false,
   },
   {
-    id: 'github-study-planner',
+    id: 'study-planner',
     title: 'study-planner',
     subtitle: 'TypeScript Project',
     description:
@@ -33,7 +50,7 @@ const DEFAULT_PROJECTS = [
     isCustom: false,
   },
   {
-    id: 'github-photo-portfolio',
+    id: 'photo-portfolio',
     title: 'photo-portfolio',
     subtitle: 'TypeScript Project',
     description:
@@ -47,7 +64,7 @@ const DEFAULT_PROJECTS = [
     isCustom: false,
   },
   {
-    id: 'github-cloud-monitor',
+    id: 'cloud-network-moniter',
     title: 'cloud-network-moniter',
     subtitle: 'Python Project',
     description:
@@ -61,7 +78,7 @@ const DEFAULT_PROJECTS = [
     isCustom: false,
   },
   {
-    id: 'github-network-monitor',
+    id: 'network-monitor',
     title: 'network-monitor',
     subtitle: 'Python Project',
     description:
@@ -75,7 +92,7 @@ const DEFAULT_PROJECTS = [
     isCustom: false,
   },
   {
-    id: 'github-majid404',
+    id: 'majid404',
     title: 'majid404',
     subtitle: 'JavaScript Project',
     description:
@@ -182,7 +199,7 @@ export default function ProjectsSection() {
         const formatted = data
           .filter((repo) => !repo.fork && repo.name !== 'test')
           .map((repo, idx) => ({
-            id: `github-${repo.id}`,
+            id: repo.name,
             title: repo.name,
             subtitle: repo.language ? `${repo.language} Project` : 'GitHub Project',
             description:
@@ -221,7 +238,7 @@ export default function ProjectsSection() {
 
   const displayProjects = isAdmin
     ? allProjectsList
-    : allProjectsList.filter((p) => !hiddenRepoIds.includes(p.id));
+    : allProjectsList.filter((p) => !isRepoHidden(p, hiddenRepoIds));
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -454,7 +471,7 @@ export default function ProjectsSection() {
           }}
         >
           {displayProjects.map((project, idx) => {
-            const isHidden = hiddenRepoIds.includes(project.id);
+            const isHidden = isRepoHidden(project, hiddenRepoIds);
             return (
               <div
                 className="card-animate"
@@ -1115,7 +1132,7 @@ export default function ProjectsSection() {
               }}
             >
               {allProjectsList.map((repo) => {
-                const isVisible = !hiddenRepoIds.includes(repo.id);
+                const isVisible = !isRepoHidden(repo, hiddenRepoIds);
                 return (
                   <div
                     key={repo.id}
